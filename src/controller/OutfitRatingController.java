@@ -16,7 +16,7 @@ public class OutfitRatingController {
 	public OutfitRatingController(Model model, MainFrame view) {
 		InputOutput io = new InputOutput();
 		this.userRepo = new UserRepository(io);
-		this.outfitRepo = new OutfitRepository(io);
+		//this.outfitRepo = new OutfitRepository(io);
 		this.model = model;
 		this.view = view;
 	}

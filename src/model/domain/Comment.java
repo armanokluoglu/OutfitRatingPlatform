@@ -1,8 +1,11 @@
 package model.domain;
 
+import model.utilities.*;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Comment {
 
@@ -53,5 +56,13 @@ public class Comment {
 		commentJson.put("Author", author.toSimpleJSON());
 		commentJson.put("Date", getDate().toString());
 		return commentJson;
+	}
+
+	public static Comment parseJson(org.json.simple.JSONObject commentJSON) {
+		int id = ((Long) commentJSON.get("Id")).intValue();
+		String content = (String) commentJSON.get("Content");
+
+
+		return new Comment(id,content,null,null);
 	}
 }

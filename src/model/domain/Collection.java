@@ -1,6 +1,9 @@
 package model.domain;
 
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +99,25 @@ public class Collection implements Subject {
 		collectionJSON.put("Outfits", outfitsJSON);
 
 		return collectionJSON;
+	}
+
+	public Node toXMLNode(Document doc) {
+		Element collection = doc.createElement("Collection");
+		//set id attribute
+		collection.setAttribute("id", String.valueOf(getId()));
+		//create name element
+		collection.appendChild(getOutfitElements(doc, collection, "Name", getName()));
+
+		for(Outfit outfit:outfits){
+			collection.appendChild(getOutfitElements(doc,collection,"OutfitId",String.valueOf(outfit.getId())));
+		}
+
+		return collection;
+	}
+	private Node getOutfitElements(Document doc, Element element, String name, String value) {
+		Element node = doc.createElement(name);
+		node.appendChild(doc.createTextNode(value));
+		return node;
 	}
 
 	// OBSERVATION METHODS

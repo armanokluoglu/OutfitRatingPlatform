@@ -200,11 +200,33 @@ public class Outfit implements Subject {
 		outfitJSON.put("Dislikes", getDislikes());
 
 		List<JSONObject> commentsList = new ArrayList<>();
-		for(Comment comment:comments){
-			commentsList.add(comment.toJSON());
+		if(comments!=null){
+			for(Comment comment:comments){
+				commentsList.add(comment.toJSON());
+			}
 		}
-		outfitJSON.put("Domments", commentsList);
+		outfitJSON.put("Comments", commentsList);
 		return outfitJSON;
+	}
+	public static Outfit parseJson(org.json.simple.JSONObject outfitJSON) {
+		int id = ((Long) outfitJSON.get("Id")).intValue();
+		Brand brand = Brand.valueOf((String) outfitJSON.get("Brand"));
+		Type type = Type.valueOf((String) outfitJSON.get("Type"));
+		Occasion occasion = Occasion.valueOf((String) outfitJSON.get("Occasion"));
+		Gender gender = Gender.valueOf((String) outfitJSON.get("Gender"));
+		Color color = Color.valueOf((String) outfitJSON.get("Color"));
+		int likes = ((Long) outfitJSON.get("Likes")).intValue();
+		int dislikes = ((Long) outfitJSON.get("Dislikes")).intValue();
+
+		List<Size> sizes = new ArrayList<>();
+		org.json.simple.JSONArray sizesJson = (org.json.simple.JSONArray) outfitJSON.get("Sizes");
+		sizesJson.forEach(entry -> sizes.add(Size.valueOf((String) entry)));
+
+		List<Comment> comments = new ArrayList<>();
+		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
+		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry)));
+
+		return null;
 	}
 
 	// OBSERVATION METHODS
