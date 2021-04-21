@@ -1,5 +1,7 @@
 package model.domain;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public class Collection implements Subject {
 	private List<Outfit> outfits;
 	private boolean changed;
 	private List<Observer> observers;
-	
+
 	public Collection(int id, String name, List<Outfit> outfits) {
 		this.id = id;
 		this.name = name;
@@ -82,7 +84,20 @@ public class Collection implements Subject {
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
 	}
-	
+
+	public JSONObject toJSON(){
+		JSONObject collectionJSON = new JSONObject();
+		collectionJSON.put("Id", getId());
+		collectionJSON.put("Name", getName());
+		List<JSONObject> outfitsJSON = new ArrayList<>();
+		for(Outfit outfit:outfits){
+			outfitsJSON.add(outfit.toJSON());
+		}
+		collectionJSON.put("Outfits", outfitsJSON);
+
+		return collectionJSON;
+	}
+
 	// OBSERVATION METHODS
 
 	@Override

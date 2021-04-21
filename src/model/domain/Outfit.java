@@ -8,6 +8,7 @@ import model.utilities.Gender;
 import model.utilities.Occasion;
 import model.utilities.Size;
 import model.utilities.Type;
+import org.json.JSONObject;
 
 public class Outfit implements Subject {
 
@@ -185,7 +186,27 @@ public class Outfit implements Subject {
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
 	}
-	
+
+	public JSONObject toJSON(){
+		JSONObject outfitJSON = new JSONObject();
+		outfitJSON.put("Id", getId());
+		outfitJSON.put("Brand", getBrand());
+		outfitJSON.put("Type", getType());
+		outfitJSON.put("Occasion", getOccasion());
+		outfitJSON.put("Gender", getGender());
+		outfitJSON.put("Sizes", getSizes());
+		outfitJSON.put("Color", getColor());
+		outfitJSON.put("Likes", getLikes());
+		outfitJSON.put("Dislikes", getDislikes());
+
+		List<JSONObject> commentsList = new ArrayList<>();
+		for(Comment comment:comments){
+			commentsList.add(comment.toJSON());
+		}
+		outfitJSON.put("Domments", commentsList);
+		return outfitJSON;
+	}
+
 	// OBSERVATION METHODS
 	
 	@Override

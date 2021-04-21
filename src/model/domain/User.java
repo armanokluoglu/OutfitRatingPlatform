@@ -1,5 +1,7 @@
 package model.domain;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,8 @@ public class User implements Subject {
 	private List<Collection> collections;
 	private boolean changed;
 	private List<Observer> observers;
+
+
 
 	public User(int id, String username, String password, List<User> followers, List<User> followings,
 			List<Collection> collections) {
@@ -158,6 +162,36 @@ public class User implements Subject {
 
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
+	}
+
+	public JSONObject toJSON(){
+		JSONObject userJSON = new JSONObject();
+		userJSON.put("Id", getId());
+		userJSON.put("Username", getUsername());
+		userJSON.put("Password", getPassword());
+		List<JSONObject> followersJSON = new ArrayList<>();
+		List<JSONObject> followingsJSON = new ArrayList<>();
+		for(User user:followers){
+			followersJSON.add(user.toSimpleJSON());
+		}
+		for(User user:followings){
+			followingsJSON.add(user.toSimpleJSON());
+		}
+		userJSON.put("Followers", followersJSON);
+		userJSON.put("Followings", followingsJSON);
+		List<JSONObject> collectionsList = new ArrayList<>();
+		for(Collection collection:collections){
+			collectionsList.add(collection.toJSON());
+		}
+		userJSON.put("Collections", collectionsList);
+
+		return userJSON;
+	}
+	public JSONObject toSimpleJSON(){
+		JSONObject simpleJSON = new JSONObject();
+		simpleJSON.put("Id", getId());
+		simpleJSON.put("Username", getUsername());
+		return simpleJSON;
 	}
 
 	// OBSERVATION METHODS

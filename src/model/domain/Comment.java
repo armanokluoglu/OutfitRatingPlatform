@@ -1,5 +1,7 @@
 package model.domain;
 
+import org.json.JSONObject;
+
 import java.util.Date;
 
 public class Comment {
@@ -44,4 +46,12 @@ public class Comment {
 		this.date = date;
 	}
 
+	public JSONObject toJSON(){
+		JSONObject commentJson = new JSONObject();
+		commentJson.put("Id", getId());
+		commentJson.put("Content", getContent());
+		commentJson.put("Author", author.toSimpleJSON());
+		commentJson.put("Date", getDate().toString());
+		return commentJson;
+	}
 }
