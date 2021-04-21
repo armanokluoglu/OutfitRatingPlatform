@@ -1,17 +1,15 @@
 package model.domain;
 
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import model.utilities.Observer;
+import model.utilities.Subject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Subject {
+
 	private int id;
 	private String username;
 	private String password;
@@ -169,6 +167,8 @@ public class User implements Subject {
 		this.observers = observers;
 	}
 
+	// JSON METHODS
+	
 	public JSONObject toJSON(){
 		JSONObject userJSON = new JSONObject();
 		userJSON.put("Id", getId());
@@ -192,61 +192,12 @@ public class User implements Subject {
 
 		return userJSON;
 	}
+	
 	public JSONObject toSimpleJSON(){
 		JSONObject simpleJSON = new JSONObject();
 		simpleJSON.put("Id", getId());
 		simpleJSON.put("Username", getUsername());
 		return simpleJSON;
-	}
-
-	public Node toXMLNode(Document doc) {
-		Element user = doc.createElement("User");
-		//set id attribute
-		user.setAttribute("id", String.valueOf(getId()));
-		//create name element
-		user.appendChild(getUserElements(doc, user, "UserName", getUsername()));
-		//create age element
-		user.appendChild(getUserElements(doc, user, "Password", getPassword()));
-
-		Element node = doc.createElement("Followers");
-		if(!followers.isEmpty()){
-			for(User follower:followers){
-				node.appendChild(follower.toSimpleXMLNode(doc));
-			}
-		}
-		Element node2 = doc.createElement("Followings");
-		if(!followings.isEmpty()){
-			for(User following:followings){
-				node2.appendChild(following.toSimpleXMLNode(doc));
-			}
-		}
-		Element node3 = doc.createElement("Collections");
-		if(!collections.isEmpty()){
-			for(Collection collection:collections){
-				node3.appendChild(collection.toXMLNode(doc));
-			}
-		}
-		user.appendChild(node);
-		user.appendChild(node2);
-		user.appendChild(node3);
-		return user;
-	}
-	private Node toSimpleXMLNode(Document doc) {
-		Element user = doc.createElement("User");
-
-		//set id attribute
-		user.setAttribute("id", String.valueOf(getId()));
-		//create name element
-		user.appendChild(getUserElements(doc, user, "UserName", getUsername()));
-		//create age element
-		user.appendChild(getUserElements(doc, user, "Password", getPassword()));
-
-		return user;
-	}
-	private Node getUserElements(Document doc, Element element, String name, String value) {
-		Element node = doc.createElement(name);
-		node.appendChild(doc.createTextNode(value));
-		return node;
 	}
 
 	// OBSERVATION METHODS

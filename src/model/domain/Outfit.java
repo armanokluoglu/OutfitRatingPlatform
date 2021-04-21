@@ -5,8 +5,10 @@ import java.util.List;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
+import model.utilities.Observer;
 import model.utilities.Occasion;
 import model.utilities.Size;
+import model.utilities.Subject;
 import model.utilities.Type;
 import org.json.JSONObject;
 
@@ -187,6 +189,8 @@ public class Outfit implements Subject {
 		this.observers = observers;
 	}
 
+	// JSON METHODS
+	
 	public JSONObject toJSON(){
 		JSONObject outfitJSON = new JSONObject();
 		outfitJSON.put("Id", getId());
@@ -200,33 +204,11 @@ public class Outfit implements Subject {
 		outfitJSON.put("Dislikes", getDislikes());
 
 		List<JSONObject> commentsList = new ArrayList<>();
-		if(comments!=null){
-			for(Comment comment:comments){
-				commentsList.add(comment.toJSON());
-			}
+		for(Comment comment:comments){
+			commentsList.add(comment.toJSON());
 		}
-		outfitJSON.put("Comments", commentsList);
+		outfitJSON.put("Domments", commentsList);
 		return outfitJSON;
-	}
-	public static Outfit parseJson(org.json.simple.JSONObject outfitJSON) {
-		int id = ((Long) outfitJSON.get("Id")).intValue();
-		Brand brand = Brand.valueOf((String) outfitJSON.get("Brand"));
-		Type type = Type.valueOf((String) outfitJSON.get("Type"));
-		Occasion occasion = Occasion.valueOf((String) outfitJSON.get("Occasion"));
-		Gender gender = Gender.valueOf((String) outfitJSON.get("Gender"));
-		Color color = Color.valueOf((String) outfitJSON.get("Color"));
-		int likes = ((Long) outfitJSON.get("Likes")).intValue();
-		int dislikes = ((Long) outfitJSON.get("Dislikes")).intValue();
-
-		List<Size> sizes = new ArrayList<>();
-		org.json.simple.JSONArray sizesJson = (org.json.simple.JSONArray) outfitJSON.get("Sizes");
-		sizesJson.forEach(entry -> sizes.add(Size.valueOf((String) entry)));
-
-		List<Comment> comments = new ArrayList<>();
-		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
-		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry)));
-
-		return null;
 	}
 
 	// OBSERVATION METHODS

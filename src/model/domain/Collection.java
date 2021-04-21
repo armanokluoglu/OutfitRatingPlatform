@@ -1,9 +1,9 @@
 package model.domain;
 
 import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+
+import model.utilities.Observer;
+import model.utilities.Subject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,22 +16,28 @@ public class Collection implements Subject {
 	private boolean changed;
 	private List<Observer> observers;
 
-	public Collection(int id, String name, List<Outfit> outfits) {
+	public Collection(int id, String name) {
 		this.id = id;
 		this.name = name;
-		this.outfits = outfits;
+		this.outfits = new ArrayList<Outfit>();;
 		this.changed = false;
 		this.observers = new ArrayList<Observer>();
 	}
 
-	public void addOutfit(Outfit outfit) {
+	public void addOutfit(Outfit outfit) throws IllegalStateException {
 		List<Outfit> outfits = getOutfits();
+		if (outfits.contains(outfit)) {
+			throw new IllegalStateException("Collection already contains outfit.");
+		}
 		outfits.add(outfit);
 		setOutfits(outfits);
 	}
 
-	public void removeOutfit(Outfit outfit) {
+	public void removeOutfit(Outfit outfit) throws IllegalStateException {
 		List<Outfit> outfits = getOutfits();
+		if (!outfits.contains(outfit)) {
+			throw new IllegalStateException("Collection does not contain outfit.");
+		}
 		outfits.remove(outfit);
 		setOutfits(outfits);
 	}
@@ -87,6 +93,8 @@ public class Collection implements Subject {
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
 	}
+	
+	// JSON METHODS
 
 	public JSONObject toJSON(){
 		JSONObject collectionJSON = new JSONObject();
@@ -99,25 +107,6 @@ public class Collection implements Subject {
 		collectionJSON.put("Outfits", outfitsJSON);
 
 		return collectionJSON;
-	}
-
-	public Node toXMLNode(Document doc) {
-		Element collection = doc.createElement("Collection");
-		//set id attribute
-		collection.setAttribute("id", String.valueOf(getId()));
-		//create name element
-		collection.appendChild(getOutfitElements(doc, collection, "Name", getName()));
-
-		for(Outfit outfit:outfits){
-			collection.appendChild(getOutfitElements(doc,collection,"OutfitId",String.valueOf(outfit.getId())));
-		}
-
-		return collection;
-	}
-	private Node getOutfitElements(Document doc, Element element, String name, String value) {
-		Element node = doc.createElement(name);
-		node.appendChild(doc.createTextNode(value));
-		return node;
 	}
 
 	// OBSERVATION METHODS
