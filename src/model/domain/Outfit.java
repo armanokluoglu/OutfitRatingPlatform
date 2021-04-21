@@ -1,5 +1,6 @@
 package model.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.utilities.Brand;
 import model.utilities.Color;
@@ -8,7 +9,7 @@ import model.utilities.Occasion;
 import model.utilities.Size;
 import model.utilities.Type;
 
-public class Outfit {
+public class Outfit implements Subject {
 
 	private int id;
 	private Brand brand;
@@ -20,8 +21,10 @@ public class Outfit {
 	private int likes;
 	private int dislikes;
 	private List<Comment> comments;
+	private boolean changed;
+	private List<Observer> observers;
 
-	public Outfit(int id, Brand brand, Type type, Occasion occasion, Gender gender, List<Size> sizes, Color color,
+ 	public Outfit(int id, Brand brand, Type type, Occasion occasion, Gender gender, List<Size> sizes, Color color,
 			int likes, int dislikes, List<Comment> comments) {
 		this.id = id;
 		this.brand = brand;
@@ -33,6 +36,8 @@ public class Outfit {
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.comments = comments;
+		this.changed = false;
+		this.observers = new ArrayList<Observer>();
 	}
 
 	public void like() {
@@ -140,6 +145,8 @@ public class Outfit {
 	}
 
 	public void setLikes(int likes) {
+		setChanged(true);
+		notifyObservers();
 		this.likes = likes;
 	}
 
@@ -148,6 +155,8 @@ public class Outfit {
 	}
 
 	public void setDislikes(int dislikes) {
+		setChanged(true);
+		notifyObservers();
 		this.dislikes = dislikes;
 	}
 
@@ -156,7 +165,62 @@ public class Outfit {
 	}
 
 	public void setComments(List<Comment> comments) {
+		setChanged(true);
+		notifyObservers();
 		this.comments = comments;
 	}
+	
+	public boolean isChanged() {
+		return changed;
+	}
 
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+	
+	public List<Observer> getObservers() {
+		return observers;
+	}
+
+	public void setObservers(List<Observer> observers) {
+		this.observers = observers;
+	}
+	
+	// OBSERVATION METHODS
+	
+	@Override
+	public void register(Observer obj) {
+		if (obj == null) {
+			throw new NullPointerException("The given observer is null.");
+		}
+		List<Observer> observers = getObservers();
+		if (!observers.contains(obj)) {
+			observers.add(obj);
+			setObservers(observers);
+		}
+	}
+
+	@Override
+	public void unregister(Observer obj) {
+		if (obj == null) {
+			throw new NullPointerException("The given observer is null.");
+		}
+		List<Observer> observers = getObservers();
+		if (!observers.contains(obj)) {
+			observers.remove(obj);
+			setObservers(observers);
+		}
+	}
+
+	@Override
+	public void notifyObservers() {
+		if (!isChanged()) {
+			return;
+		}
+		setChanged(false);
+		List<Observer> observers = getObservers();
+		for (Observer observer : observers) {
+			observer.update();
+		}
+	}
 }

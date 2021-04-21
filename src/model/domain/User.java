@@ -1,8 +1,9 @@
 package model.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Subject {
 
 	private int id;
 	private String username;
@@ -10,6 +11,8 @@ public class User {
 	private List<User> followers;
 	private List<User> followings;
 	private List<Collection> collections;
+	private boolean changed;
+	private List<Observer> observers;
 
 	public User(int id, String username, String password, List<User> followers, List<User> followings,
 			List<Collection> collections) {
@@ -19,6 +22,8 @@ public class User {
 		this.followers = followers;
 		this.followings = followings;
 		this.collections = collections;
+		this.changed = false;
+		this.observers = new ArrayList<Observer>();
 	}
 
 	public void addFollower(User user) {
@@ -114,6 +119,8 @@ public class User {
 	}
 
 	public void setFollowers(List<User> followers) {
+		setChanged(true);
+		notifyObservers();
 		this.followers = followers;
 	}
 
@@ -122,6 +129,8 @@ public class User {
 	}
 
 	public void setFollowings(List<User> followings) {
+		setChanged(true);
+		notifyObservers();
 		this.followings = followings;
 	}
 
@@ -130,7 +139,62 @@ public class User {
 	}
 
 	public void setCollections(List<Collection> collections) {
+		setChanged(true);
+		notifyObservers();
 		this.collections = collections;
 	}
 
+	public boolean isChanged() {
+		return changed;
+	}
+
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+	
+	public List<Observer> getObservers() {
+		return observers;
+	}
+
+	public void setObservers(List<Observer> observers) {
+		this.observers = observers;
+	}
+
+	// OBSERVATION METHODS
+	
+	@Override
+	public void register(Observer obj) {
+		if (obj == null) {
+			throw new NullPointerException("The given observer is null.");
+		}
+		List<Observer> observers = getObservers();
+		if (!observers.contains(obj)) {
+			observers.add(obj);
+			setObservers(observers);
+		}
+	}
+
+	@Override
+	public void unregister(Observer obj) {
+		if (obj == null) {
+			throw new NullPointerException("The given observer is null.");
+		}
+		List<Observer> observers = getObservers();
+		if (!observers.contains(obj)) {
+			observers.remove(obj);
+			setObservers(observers);
+		}
+	}
+
+	@Override
+	public void notifyObservers() {
+		if (!isChanged()) {
+			return;
+		}
+		setChanged(false);
+		List<Observer> observers = getObservers();
+		for (Observer observer : observers) {
+			observer.update();
+		}
+	}
 }
