@@ -1,11 +1,8 @@
 package model.domain;
 
-import model.utilities.*;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Comment {
 
@@ -48,6 +45,8 @@ public class Comment {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	// JSON METHODS
 
 	public JSONObject toJSON(){
 		JSONObject commentJson = new JSONObject();
@@ -57,7 +56,7 @@ public class Comment {
 		commentJson.put("Date", getDate().toString());
 		return commentJson;
 	}
-
+	
 	public static Comment parseJson(org.json.simple.JSONObject commentJSON) {
 		int id = ((Long) commentJSON.get("Id")).intValue();
 		String content = (String) commentJSON.get("Content");

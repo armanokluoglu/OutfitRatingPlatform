@@ -5,8 +5,10 @@ import java.util.List;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
+import model.utilities.Observer;
 import model.utilities.Occasion;
 import model.utilities.Size;
+import model.utilities.Subject;
 import model.utilities.Type;
 import org.json.JSONObject;
 
@@ -187,6 +189,8 @@ public class Outfit implements Subject {
 		this.observers = observers;
 	}
 
+	// JSON METHODS
+	
 	public JSONObject toJSON(){
 		JSONObject outfitJSON = new JSONObject();
 		outfitJSON.put("Id", getId());
@@ -208,6 +212,7 @@ public class Outfit implements Subject {
 		outfitJSON.put("Comments", commentsList);
 		return outfitJSON;
 	}
+	
 	public static Outfit parseJson(org.json.simple.JSONObject outfitJSON) {
 		int id = ((Long) outfitJSON.get("Id")).intValue();
 		Brand brand = Brand.valueOf((String) outfitJSON.get("Brand"));
@@ -228,7 +233,7 @@ public class Outfit implements Subject {
 
 		return null;
 	}
-
+	
 	// OBSERVATION METHODS
 	
 	@Override

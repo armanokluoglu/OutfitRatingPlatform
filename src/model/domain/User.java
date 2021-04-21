@@ -4,7 +4,8 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
+import model.utilities.Observer;
+import model.utilities.Subject;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Subject {
+
 	private int id;
 	private String username;
 	private String password;
@@ -169,6 +171,8 @@ public class User implements Subject {
 		this.observers = observers;
 	}
 
+	// JSON METHODS
+	
 	public JSONObject toJSON(){
 		JSONObject userJSON = new JSONObject();
 		userJSON.put("Id", getId());
@@ -192,13 +196,16 @@ public class User implements Subject {
 
 		return userJSON;
 	}
+	
 	public JSONObject toSimpleJSON(){
 		JSONObject simpleJSON = new JSONObject();
 		simpleJSON.put("Id", getId());
 		simpleJSON.put("Username", getUsername());
 		return simpleJSON;
 	}
-
+	
+	// XML METHODS
+	
 	public Node toXMLNode(Document doc) {
 		Element user = doc.createElement("User");
 		//set id attribute
@@ -231,6 +238,7 @@ public class User implements Subject {
 		user.appendChild(node3);
 		return user;
 	}
+	
 	private Node toSimpleXMLNode(Document doc) {
 		Element user = doc.createElement("User");
 
@@ -243,12 +251,13 @@ public class User implements Subject {
 
 		return user;
 	}
+	
 	private Node getUserElements(Document doc, Element element, String name, String value) {
 		Element node = doc.createElement(name);
 		node.appendChild(doc.createTextNode(value));
 		return node;
 	}
-
+	
 	// OBSERVATION METHODS
 	
 	@Override
