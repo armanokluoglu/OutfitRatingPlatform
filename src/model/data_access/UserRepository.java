@@ -1,11 +1,46 @@
 package model.data_access;
 
+import java.util.Arrays;
+import java.util.List;
+
+import model.domain.Outfit;
+import model.domain.User;
+
 public class UserRepository {
 
 	private InputOutput io;
+	private List<User> userList;
 
 	public UserRepository(InputOutput io) {
 		this.io = io;
 	}
 	
+	public List<User> findAll(){
+		return userList;
+	}
+	
+	public void setUsers(List<User> users) {
+		this.userList = users;
+	}
+
+	public User findUserByUsername(String username) {
+		for (User user : userList) {
+			if (user.getUsername().equals(username)) {
+				return user;
+			}
+		}
+		throw new IllegalStateException("No user with the given username exists.");
+	}
+
+	public User findUserById(int userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Outfit getUserWithMostFollowers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }
+//return new User(1, "arman", "1234", Arrays.asList(), Arrays.asList(), Arrays.asList());

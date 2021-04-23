@@ -13,6 +13,6 @@ public class MainFrame extends JFrame {
 		super("Outfit Rating MVC");
 		this.fm = fm;
 		this.model = model;
-        LoginFrame login = new LoginFrame(this.model, this.fm);
+        LoginFrame login = new LoginFrame(this.fm);
 	}
 }

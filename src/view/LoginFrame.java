@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -10,7 +9,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import model.domain.Model;
 
 public class LoginFrame extends JFrame {
 
@@ -18,12 +16,10 @@ public class LoginFrame extends JFrame {
 	private JTextField usernameField = new JTextField(20);
 	private JPasswordField passwordField = new JPasswordField(20);;
 	private JButton loginButton = new JButton("Login");
-	private Model model;
 	private FrameManager fm;
 	
-	public LoginFrame(Model model, FrameManager fm) {
+	public LoginFrame(FrameManager fm) {
 		this.fm = fm;
-		this.model = model;
 		JPanel content = new JPanel();
         content.setLayout(new FlowLayout());
         content.add(new JLabel("Username: "));
@@ -31,7 +27,6 @@ public class LoginFrame extends JFrame {
         content.add(new JLabel("Password: "));
         content.add(passwordField);
         content.add(loginButton);
-
         getFrameManager().setNewPanel(content);
 	}
 	

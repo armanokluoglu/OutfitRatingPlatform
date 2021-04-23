@@ -7,21 +7,35 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 
 public class Collection implements Subject {
 
 	private int id;
 	private String name;
+	private User creator;
+	private Date creationDate;
 	private List<Outfit> outfits;
 	private boolean changed;
 	private List<Observer> observers;
 
-	public Collection(int id, String name) {
+	public Collection(int id, String name, User creator) {
 		this.id = id;
 		this.name = name;
+		this.creator = creator;
+		this.creationDate = new Date();
 		this.outfits = new ArrayList<Outfit>();;
+		this.changed = false;
+		this.observers = new ArrayList<Observer>();
+	}
+	
+	public Collection(int id, String name, User creator, Date date, List<Outfit> outfits) {
+		this.id = id;
+		this.name = name;
+		this.creator = creator;
+		this.creationDate = date;
+		this.outfits = outfits;
 		this.changed = false;
 		this.observers = new ArrayList<Observer>();
 	}
@@ -68,6 +82,14 @@ public class Collection implements Subject {
 		setChanged(true);
 		notifyObservers();
 		this.name = name;
+	}
+
+	public User getCreator() {
+		return creator;
+	}
+
+	public Date getCreationDate() {
+		return creationDate;
 	}
 
 	public List<Outfit> getOutfits() {

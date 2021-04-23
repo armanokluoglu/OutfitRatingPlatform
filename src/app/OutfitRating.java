@@ -1,6 +1,6 @@
 package app;
 
-import controller.OutfitRatingController;
+import controller.MainController;
 import model.domain.Model;
 import view.FrameManager;
 import view.MainFrame;
@@ -15,6 +15,6 @@ public class OutfitRating {
 	public void start() {
 		Model model = new Model();
         MainFrame view = new MainFrame(model, this.fm);
-        OutfitRatingController controller = new OutfitRatingController(model, view);
+        MainController controller = new MainController(model, view, this.fm);
 	}
 }

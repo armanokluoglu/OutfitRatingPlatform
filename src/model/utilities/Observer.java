@@ -4,5 +4,7 @@ public interface Observer {
 
 	public void update();
 	
-	public void setSubject(Subject sub);
+	public void addSubject(Subject sub);
+	
+	public void removeSubject(Subject sub);
 }

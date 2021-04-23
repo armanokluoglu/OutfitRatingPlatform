@@ -9,7 +9,7 @@ public class FrameManager {
     public FrameManager() {
         this.frame = new JFrame();
         frame = new JFrame("Outfit Rating MVC");
-        frame.setSize(1200, 700);
+        frame.setSize(800, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
