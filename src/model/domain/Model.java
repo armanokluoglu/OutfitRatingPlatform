@@ -190,7 +190,7 @@ public class Model implements Observer, Subject {
 		return outfitRepo.getOutfitWithMostDislikes();
 	}
 	
-	public Outfit getMostFollowedUser() {
+	public User getMostFollowedUser() {
 		return userRepo.getUserWithMostFollowers();
 	}
 	

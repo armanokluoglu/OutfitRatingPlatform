@@ -6,6 +6,7 @@ import java.util.List;
 
 import model.domain.Collection;
 import model.domain.Model;
+import model.domain.Outfit;
 import model.domain.User;
 import view.HomeFrame;
 import view.OutfitFrame;
@@ -22,7 +23,14 @@ public class StatisticsController {
 		this.view = view;
 		this.session = session;
 		
-		view.setContent("1", "2", "3");
+		Outfit mostLikedOutfit = model.getMostLikedOutfit();
+		String mostLiked = mostLikedOutfit.getBrand() + " " + mostLikedOutfit.getType() + " (" + mostLikedOutfit.getLikes() + " likes)";
+		Outfit mostDislikedOutfit = model.getMostDislikedOutfit();
+		String mostDisliked = mostDislikedOutfit.getBrand() + " " + mostDislikedOutfit.getType() + " (" + mostDislikedOutfit.getDislikes() + " dislikes)";
+		User mostFollowedUser = model.getMostFollowedUser();
+		String mostFollowed = mostFollowedUser.getUsername() + " (" + mostFollowedUser.getFollowers().size() + " followers)";
+
+		view.setContent(mostLiked, mostDisliked, mostFollowed);
 		
 		view.addSubject(model);
 		view.addHomeActionListener(new OpenHomeListener());

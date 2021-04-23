@@ -37,7 +37,7 @@ public class UserRepository {
 		return null;
 	}
 
-	public Outfit getUserWithMostFollowers() {
+	public User getUserWithMostFollowers() {
 		// TODO Auto-generated method stub
 		return null;
 	}
