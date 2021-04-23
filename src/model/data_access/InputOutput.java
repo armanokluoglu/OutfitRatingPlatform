@@ -6,30 +6,28 @@ import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import java.io.File;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 public class InputOutput {
+
+    private List<User> users;
+    private List<Outfit> outfits;
 
     private static FileWriter file;
 
@@ -67,16 +65,8 @@ public class InputOutput {
             org.json.simple.JSONObject outfits = (org.json.simple.JSONObject) obj;
             org.json.simple.JSONArray entries = (org.json.simple.JSONArray) outfits.get("Outfits");
 
-            entries.forEach(entry -> Outfit.parseJson((org.json.simple.JSONObject) entry));
+            entries.forEach(entry -> Outfit.parseJson((org.json.simple.JSONObject) entry,new UserRepository(this)));
 
-            String x = "";
-//			List<Product> allProducts = new ArrayList<>();
-//			for(Product product:products){
-//				if(product instanceof Part)
-//					allProducts.add(product);
-//				if(product instanceof Assembly)
-//					allProducts.addAll(((Assembly) product).getAllProductsSeperatly());
-//			}
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -180,9 +170,126 @@ public class InputOutput {
 
 
 
+    public void inputUsers() {
+        List<User> users = new ArrayList<>();
+        List<UserWithUsers> followersList = new ArrayList<>();
+        List<UserWithUsers> followingsList = new ArrayList<>();
+        List<List<UserWithCollection>> collectionsList = new ArrayList<>();
+        try {
+            File inputFile = new File("users.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("User");
+
+            Node nNode = nList.item(0);
+            System.out.println("\nCurrent Element :" + nNode.getNodeName());
+            int length = nNode.getChildNodes().getLength();
+            for(int i=0;i<length;i++){
+                if (nNode!=null && nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    int id = Integer.valueOf(eElement.getAttribute("id"));
+                    String userName = eElement.getElementsByTagName("UserName").item(0).getTextContent();
+                    String password = eElement.getElementsByTagName("Password").item(0).getTextContent();
+
+                    User user = new User(id,userName,password,new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+                    Node followers = eElement.getElementsByTagName("Followers").item(0);
+                    Node followings = eElement.getElementsByTagName("Followings").item(0);
+                    Node collections = eElement.getElementsByTagName("Collections").item(0);
+
+                    UserWithUsers followersObject = nodeToUserWithUsers(id,followers);
+                    UserWithUsers followingsObject = nodeToUserWithUsers(id,followings);
+                    List<UserWithCollection> userWithCollections = nodeToUserWithCollection(id,collections);
+
+                    users.add(user);
+                    followersList.add(followersObject);
+                    followingsList.add(followingsObject);
+                    collectionsList.add(userWithCollections);
+
+                    nNode=nNode.getNextSibling().getNextSibling();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        matchUsersAndFollowers(users,followersList);
+        matchUsersAndFollowings(users,followingsList);
+        matchUsersAndCollections(users,collectionsList);
+        this.users=users;
+    }
+
+    private UserWithUsers nodeToUserWithUsers(int userId,Node node){
+        NodeList nList = node.getChildNodes();
+        List<Integer> relatedUsers = new ArrayList<>();
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                int id = Integer.valueOf(eElement.getAttribute("id"));
+                System.out.print(id + "  ");
+                relatedUsers.add(id);
+            }
+        }
+        return new UserWithUsers(userId,relatedUsers);
+
+    }
+
+    private List<UserWithCollection> nodeToUserWithCollection(int userId,Node node){
+        NodeList nList = node.getChildNodes();
+        List<UserWithCollection> userWithCollections = new ArrayList<>();
+
+        for (int temp = 0; temp < nList.getLength(); temp++) {
+            Node nNode = nList.item(temp);
+            List<Integer> outfitIdsList = new ArrayList<>();
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                Element eElement = (Element) nNode;
+                int id = Integer.valueOf(eElement.getAttribute("id"));
+                String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
+                String outfitIds = eElement.getElementsByTagName("OutfitIds").item(0).getTextContent();
+                String[] values = outfitIds.split(" ");
+                for(String s:values)
+                    outfitIdsList.add(Integer.valueOf(s));
+                UserWithCollection userWithCollection = new UserWithCollection(userId,id,outfitIdsList);
+                userWithCollections.add(userWithCollection);
+            }
+        }
+        return userWithCollections;
+
+    }
 
 
+    private class UserWithUsers{
+
+        int userId;
+        List<Integer> connectedUserIds;
+
+        public UserWithUsers(int userId, List<Integer> connectedUserIds) {
+            this.userId = userId;
+            this.connectedUserIds = connectedUserIds;
+        }
+    }
+    private class UserWithCollection{
+
+        int userId;
+        int collectionId;
+        List<Integer> outfitIds;
+        public UserWithCollection(int userId, int collectionId, List<Integer> outfitIds) {
+            this.userId = userId;
+            this.collectionId = collectionId;
+            this.outfitIds = outfitIds;
+        }
+    }
 
 
+    public void matchUsersAndFollowers( List<User> users, List<UserWithUsers> followersList){
 
+    }
+    public void matchUsersAndFollowings( List<User> users, List<UserWithUsers> followingsList){
+
+    }
+    public void matchUsersAndCollections( List<User> users, List<List<UserWithCollection>> lists){
+
+    }
 }

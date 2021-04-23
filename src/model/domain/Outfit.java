@@ -3,6 +3,8 @@ package model.domain;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import model.data_access.UserRepository;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
@@ -224,7 +226,7 @@ public class Outfit implements Subject {
 		return outfitJSON;
 	}
 	
-	public static Outfit parseJson(org.json.simple.JSONObject outfitJSON) {
+	public static Outfit parseJson(org.json.simple.JSONObject outfitJSON, UserRepository repository) {
 		int id = ((Long) outfitJSON.get("Id")).intValue();
 		Brand brand = Brand.valueOf((String) outfitJSON.get("Brand"));
 		Type type = Type.valueOf((String) outfitJSON.get("Type"));
@@ -240,7 +242,7 @@ public class Outfit implements Subject {
 
 		List<Comment> comments = new ArrayList<>();
 		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
-		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry)));
+		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry,repository)));
 
 		return null;
 	}

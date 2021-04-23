@@ -1,5 +1,6 @@
 package model.domain;
 
+import model.data_access.UserRepository;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -52,16 +53,17 @@ public class Comment {
 		JSONObject commentJson = new JSONObject();
 		commentJson.put("Id", getId());
 		commentJson.put("Content", getContent());
-		commentJson.put("Author", author.toSimpleJSON());
+		commentJson.put("AuthorId", author.getId());
 		commentJson.put("Date", getDate().toString());
 		return commentJson;
 	}
 	
-	public static Comment parseJson(org.json.simple.JSONObject commentJSON) {
+	public static Comment parseJson(org.json.simple.JSONObject commentJSON, UserRepository repository) {
 		int id = ((Long) commentJSON.get("Id")).intValue();
 		String content = (String) commentJSON.get("Content");
+		int userId = ((Long) commentJSON.get("AuthorId")).intValue();
+		User user = repository.findUserById(userId);
 
-
-		return new Comment(id,content,null,null);
+		return new Comment(id,content,user,null);
 	}
 }

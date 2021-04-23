@@ -141,10 +141,12 @@ public class Collection implements Subject {
 		collection.setAttribute("id", String.valueOf(getId()));
 		//create name element
 		collection.appendChild(getOutfitElements(doc, collection, "Name", getName()));
-
+		String outfitIds="";
 		for(Outfit outfit:outfits){
-			collection.appendChild(getOutfitElements(doc,collection,"OutfitId",String.valueOf(outfit.getId())));
+			outfitIds+=outfit.getId()+" ";
 		}
+		outfitIds = outfitIds.substring(0, outfitIds.length() - 1);
+		collection.appendChild(getOutfitElements(doc,collection,"OutfitIds",outfitIds));
 
 		return collection;
 	}
