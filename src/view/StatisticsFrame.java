@@ -98,9 +98,9 @@ public class StatisticsFrame extends JFrame implements Observer {
 		
 		leftSide.add(titleLabel, gbc);
 		leftSide.add(pageLabel, gbc);
+		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
-		leftSide.add(homePageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 		this.leftSide = leftSide;
 	}

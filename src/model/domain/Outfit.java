@@ -1,5 +1,6 @@
 package model.domain;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import model.utilities.Brand;
@@ -21,6 +22,7 @@ public class Outfit implements Subject {
 	private Gender gender;
 	private List<Size> sizes;
 	private Color color;
+	private BufferedImage image;
 	private int likes;
 	private int dislikes;
 	private List<Comment> comments;
@@ -39,6 +41,7 @@ public class Outfit implements Subject {
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.comments = comments;
+		this.image = null;
 		this.changed = false;
 		this.observers = new ArrayList<Observer>();
 	}
@@ -141,6 +144,14 @@ public class Outfit implements Subject {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public void setImage(BufferedImage image) {
+		this.image = image;
 	}
 
 	public int getLikes() {

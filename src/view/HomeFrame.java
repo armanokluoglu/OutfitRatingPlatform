@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -49,6 +50,7 @@ public class HomeFrame extends JFrame implements Observer {
 		
 		setLeftSide();
 		JPanel content = new JPanel();
+		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 		
 		mainPanel.add(leftSide);
@@ -121,9 +123,9 @@ public class HomeFrame extends JFrame implements Observer {
         	userButtons.add(userButton);
         	collectionButtons.add(collectionButton);
         	
-        	panel.setPreferredSize(new Dimension(300, 60));
-        	userButton.setPreferredSize(new Dimension(100, 50));
-        	collectionButton.setPreferredSize(new Dimension(100, 50));
+        	panel.setPreferredSize(new Dimension(350, 70));
+        	userButton.setPreferredSize(new Dimension(150, 50));
+        	collectionButton.setPreferredSize(new Dimension(150, 50));
         	
         	panel.add(userButton);
         	panel.add(collectionButton);

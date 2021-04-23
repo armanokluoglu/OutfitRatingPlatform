@@ -1,11 +1,16 @@
 package model.domain;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import model.data_access.InputOutput;
 import model.data_access.OutfitRepository;
 import model.data_access.UserRepository;
@@ -73,6 +78,11 @@ public class Model implements Observer, Subject {
 		Outfit outfit4 = new Outfit(4, Brand.FENDI,Type.BLOUSE, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.BLACK,5,4,new ArrayList<>());
 		Outfit outfit5 = new Outfit(5, Brand.GAP,Type.BRA, Occasion.SPORTY, Gender.WOMEN,sizeList,Color.ORANGE,3,4,new ArrayList<>());
 		Outfit outfit6 = new Outfit(6, Brand.ARMANI,Type.BELT, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GRAY,50,4,new ArrayList<>());
+		try {
+			outfit4.setImage(ImageIO.read(new File("assets/fendi_black_blouse.jpg")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		Collection collection = new Collection(1,"collection1",user1,new Date(1618923364000L), Arrays.asList(outfit,outfit2));
 		Collection collection2 = new Collection(2,"collection2",user2,new Date(1618836964000L), Arrays.asList(outfit3,outfit));
@@ -89,7 +99,7 @@ public class Model implements Observer, Subject {
 		user6.addCollection(collection6);
 
 		List<User> userList = Arrays.asList(user1,user2,user3,user4,user5,user6);
-		List<Outfit> outfits = Arrays.asList(outfit, outfit2,outfit3,outfit4,outfit4,outfit5,outfit6);
+		List<Outfit> outfits = Arrays.asList(outfit,outfit2,outfit3,outfit4,outfit5,outfit6);
 		
 		this.outfitRepo.setOutfits(outfits);
 		this.userRepo.setUsers(userList);
@@ -180,6 +190,10 @@ public class Model implements Observer, Subject {
 	    });
 		return collections;
 		
+	}
+	
+	public List<Outfit> getAllOutfits() {
+		return outfitRepo.findAll();
 	}
 	
 	public Outfit getMostLikedOutfit() {

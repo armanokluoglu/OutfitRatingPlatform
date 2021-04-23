@@ -6,6 +6,7 @@ import java.util.List;
 
 import model.domain.Collection;
 import model.domain.Model;
+import model.domain.Outfit;
 import view.HomeFrame;
 import view.OutfitFrame;
 import view.OutfitsFrame;
@@ -23,12 +24,12 @@ public class OutfitsController {
 		
 		view.addSubject(model);
 		
-		List<Collection> collections = model.getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
+		List<Outfit> collections = model.getAllOutfits();
 		view.setCards(collections);
-		for (Collection collection : collections) {
-			view.addOpenCollectionActionListener(new OpenCollectionListener(), collection.getName());
-			view.addOpenUserActionListener(new OpenUserListener(), collection.getCreator().getUsername());
-		}
+//		for (Collection collection : collections) {
+//			view.addOpenCollectionActionListener(new OpenCollectionListener(), collection.getName());
+//			view.addOpenUserActionListener(new OpenUserListener(), collection.getCreator().getUsername());
+//		}
 	}
 	
     class OpenUserListener implements ActionListener {
