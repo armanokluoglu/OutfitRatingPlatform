@@ -111,14 +111,14 @@ public class StatisticsFrame extends JFrame implements Observer {
 		GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(50, 5, 5, 5);
 		
 		JLabel mostLikedLabel = new JLabel("Most liked outfit: " + mostLikedOutfit);
-		mostLikedLabel.setFont(new Font(mostLikedLabel.getFont().getName(), mostLikedLabel.getFont().getStyle(), 20));
+		mostLikedLabel.setFont(new Font(mostLikedLabel.getFont().getName(), mostLikedLabel.getFont().getStyle(), 15));
 		JLabel mostDislikedLabel = new JLabel("Most disliked outfit: " + mostDislikedOutfit);
-		mostDislikedLabel.setFont(new Font(mostDislikedLabel.getFont().getName(), mostDislikedLabel.getFont().getStyle(), 20));
+		mostDislikedLabel.setFont(new Font(mostDislikedLabel.getFont().getName(), mostDislikedLabel.getFont().getStyle(), 15));
 		JLabel mostFollowedLabel = new JLabel("Most followed user: " + mostFollowedUser);
-		mostFollowedLabel.setFont(new Font(mostFollowedLabel.getFont().getName(), mostFollowedLabel.getFont().getStyle(), 20));
+		mostFollowedLabel.setFont(new Font(mostFollowedLabel.getFont().getName(), mostFollowedLabel.getFont().getStyle(), 15));
 		
 		content.add(mostLikedLabel, gbc);
 		content.add(mostDislikedLabel, gbc);

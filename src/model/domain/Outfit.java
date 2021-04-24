@@ -51,52 +51,61 @@ public class Outfit implements Subject {
 		this.observers = new ArrayList<Observer>();
 	}
 
-	public void like() {
+ 	private void like() {
 		int likes = getLikes();
 		likes++;
 		setLikes(likes);
 	}
 
-	public void removeLike() {
+	private void removeLike() {
 		int likes = getLikes();
 		likes--;
 		setLikes(likes);
 	}
 
-	public void dislike() {
+	private void dislike() {
 		int dislikes = getDislikes();
 		dislikes++;
 		setDislikes(dislikes);
 	}
 
-	public void removeDislike() {
+	private void removeDislike() {
 		int dislikes = getDislikes();
 		dislikes--;
 		setDislikes(dislikes);
 	}
 
-	public void like(User user) throws UserAlreadyException {
- 		if(likedUsers.contains(user))
- 			throw new UserAlreadyException("User already Liked");
+	public void like(User user) {
+ 		if(likedUsers.contains(user)) {
+ 			removeLike(user);
+ 			return;
+ 		}
+ 		if(dislikedUsers.contains(user)) {
+ 			removeDislike(user);
+ 		}
 		likedUsers.add(user);
+		like();
 	}
 
-	public void removeLike(User user) throws UserAlreadyException {
-		if(!likedUsers.contains(user))
-			throw new UserAlreadyException("User never liked");
+	private void removeLike(User user) {
 		likedUsers.remove(user);
+		removeLike();
 }
 
-	public void dislike(User user) throws UserAlreadyException {
-		if(dislikedUsers.contains(user))
-			throw new UserAlreadyException("User already disliked");
+	public void dislike(User user) {
+		if(dislikedUsers.contains(user)) {
+			removeDislike(user);
+		}
+		if(likedUsers.contains(user)) {
+ 			removeLike(user);
+ 		}
 		dislikedUsers.add(user);
+		dislike();
 	}
 
-	public void removeDislike(User user) throws UserAlreadyException {
-		if(!dislikedUsers.contains(user))
-			throw new UserAlreadyException("User never disliked");
+	private void removeDislike(User user) {
 		dislikedUsers.remove(user);
+		removeDislike();
 	}
 
 	public Comment getCommentFromId(int id) {

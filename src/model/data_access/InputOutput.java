@@ -142,7 +142,7 @@ public class InputOutput {
             //write data
             transformer.transform(source, console);
             transformer.transform(source, file);
-            System.out.println("DONE");
+            //System.out.println("DONE");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -191,11 +191,11 @@ public class InputOutput {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(inputFile);
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            //System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("User");
 
             Node nNode = nList.item(0);
-            System.out.println("\nCurrent Element :" + nNode.getNodeName());
+            //System.out.println("\nCurrent Element :" + nNode.getNodeName());
             int length = nNode.getChildNodes().getLength();
             for(int i=0;i<length;i++){
                 if (nNode!=null && nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -239,7 +239,7 @@ public class InputOutput {
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
                 int id = Integer.valueOf(eElement.getAttribute("id"));
-                System.out.print(id + "  ");
+                //System.out.print(id + "  ");
                 relatedUsers.add(id);
             }
         }

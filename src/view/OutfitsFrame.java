@@ -122,14 +122,20 @@ public class OutfitsFrame extends JFrame implements Observer {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.insets = new Insets(10, 10, 10, 10);
         for (Outfit outfit : outfits) {
-        	ImageIcon icon = new ImageIcon("This outfit does not have an image.");
+        	JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        	JButton outfitButton = new JButton();
+        	JLabel brand = new JLabel(outfit.getBrand().toString());
+        	JLabel color = new JLabel(outfit.getColor().toString());
+        	JLabel type = new JLabel(outfit.getType().toString());
+
+        	ImageIcon icon = null;
         	BufferedImage image = outfit.getImage();
         	if(image != null) {
         		Image iconImage = image.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
         		icon = new ImageIcon(iconImage);
+        	} else {
+        		outfitButton.setText("This outfit does not have an image.");
         	}
-        	JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        	JButton outfitButton = new JButton();
         	
         	outfitButton.setName("" + outfit.getId());
         	outfitButton.setIcon(icon);
@@ -140,6 +146,9 @@ public class OutfitsFrame extends JFrame implements Observer {
         	outfitButton.setPreferredSize(new Dimension(350, 350));
         	
         	panel.add(outfitButton);
+        	panel.add(brand);
+        	panel.add(color);
+        	panel.add(type);
         	
         	cards.add(panel, gbc);
         }
@@ -153,6 +162,22 @@ public class OutfitsFrame extends JFrame implements Observer {
 				jButton.addActionListener(actionListener);
 			}
 		}
+    }
+    
+    public void addOpenProfileActionListener(ActionListener actionListener) {
+    	profilePageButton.addActionListener(actionListener);   
+    }
+    
+    public void addStatisticsActionListener(ActionListener actionListener) {
+    	statisticsPageButton.addActionListener(actionListener);
+    }
+    
+    public void addHomeActionListener(ActionListener actionListener) {
+    	homePageButton.addActionListener(actionListener);
+    }
+    
+    public void addLogoutActionListener(ActionListener actionListener) {
+    	logoutButton.addActionListener(actionListener);
     }
 
     public FrameManager getFrameManager() {

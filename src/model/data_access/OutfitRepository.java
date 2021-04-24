@@ -38,13 +38,31 @@ public class OutfitRepository {
 	}
 
 	public Outfit getOutfitWithMostLikes() {
-		// TODO Auto-generated method stub
-		return null;
+		Outfit mostLikedOutfit = null;
+		for (Outfit outfit : outfitList) {
+			if (mostLikedOutfit == null) {
+				mostLikedOutfit = outfit;
+			} else {
+				if (mostLikedOutfit != null && outfit.getLikes() > mostLikedOutfit.getLikes()) {
+					mostLikedOutfit = outfit;
+				}
+			}
+		}
+		return mostLikedOutfit;
 	}
 
 	public Outfit getOutfitWithMostDislikes() {
-		// TODO Auto-generated method stub
-		return null;
+		Outfit mostDislikedOutfit = null;
+		for (Outfit outfit : outfitList) {
+			if (mostDislikedOutfit == null) {
+				mostDislikedOutfit = outfit;
+			} else {
+				if (mostDislikedOutfit != null && outfit.getDislikes() > mostDislikedOutfit.getDislikes()) {
+					mostDislikedOutfit = outfit;
+				}
+			}
+		}
+		return mostDislikedOutfit;
 	}
 	
 }

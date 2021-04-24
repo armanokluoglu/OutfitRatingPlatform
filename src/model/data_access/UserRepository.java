@@ -43,8 +43,17 @@ public class UserRepository {
 	}
 
 	public User getUserWithMostFollowers() {
-		// TODO Auto-generated method stub
-		return null;
+		User mostFollowedUser = null;
+		for (User user: userList) {
+			if (mostFollowedUser == null) {
+				mostFollowedUser = user;
+			} else {
+				if (mostFollowedUser != null && user.getFollowers().size() > mostFollowedUser.getFollowers().size()) {
+					mostFollowedUser = user;
+				}
+			}
+		}
+		return mostFollowedUser;
 	}
 	
 }
