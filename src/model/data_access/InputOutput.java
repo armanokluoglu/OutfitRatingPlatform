@@ -1,5 +1,6 @@
 package model.data_access;
 
+import model.domain.Collection;
 import model.domain.Outfit;
 import model.domain.User;
 import org.json.JSONObject;
@@ -28,8 +29,16 @@ public class InputOutput {
 
     private List<User> users;
     private List<Outfit> outfits;
-
+    List<List<UserWithCollection>> collectionsList;
     private static FileWriter file;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public List<Outfit> getOutfits() {
+        return outfits;
+    }
 
     public void outputOutfits(List<Outfit> outfits){
         List<JSONObject> allOutfitsJSON = new ArrayList<>();
@@ -59,14 +68,15 @@ public class InputOutput {
 
     public void inputOutfits() {
         JSONParser jsonParser = new JSONParser();
-
+        List<Outfit> outfitsList = new ArrayList<>();
         try (FileReader reader = new FileReader("outfits.json")) {
             Object obj = jsonParser.parse(reader);
             org.json.simple.JSONObject outfits = (org.json.simple.JSONObject) obj;
             org.json.simple.JSONArray entries = (org.json.simple.JSONArray) outfits.get("Outfits");
 
-            entries.forEach(entry -> Outfit.parseJson((org.json.simple.JSONObject) entry,new UserRepository(this)));
-
+            entries.forEach(entry -> outfitsList.add(Outfit.parseJson((org.json.simple.JSONObject) entry,new UserRepository(this))));
+            this.outfits = outfitsList;
+            matchUsersAndCollections(collectionsList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -170,7 +180,7 @@ public class InputOutput {
 
 
 
-    public void inputUsers() {
+    public List<User> inputUsers() {
         List<User> users = new ArrayList<>();
         List<UserWithUsers> followersList = new ArrayList<>();
         List<UserWithUsers> followingsList = new ArrayList<>();
@@ -214,10 +224,11 @@ public class InputOutput {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        matchUsersAndFollowers(users,followersList);
-        matchUsersAndFollowings(users,followingsList);
-        matchUsersAndCollections(users,collectionsList);
         this.users=users;
+        matchUsersAndFollowers(followersList);
+        matchUsersAndFollowings(followingsList);
+        this.collectionsList=collectionsList;
+        return this.users;
     }
 
     private UserWithUsers nodeToUserWithUsers(int userId,Node node){
@@ -247,11 +258,12 @@ public class InputOutput {
                 Element eElement = (Element) nNode;
                 int id = Integer.valueOf(eElement.getAttribute("id"));
                 String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
+
                 String outfitIds = eElement.getElementsByTagName("OutfitIds").item(0).getTextContent();
                 String[] values = outfitIds.split(" ");
                 for(String s:values)
                     outfitIdsList.add(Integer.valueOf(s));
-                UserWithCollection userWithCollection = new UserWithCollection(userId,id,outfitIdsList);
+                UserWithCollection userWithCollection = new UserWithCollection(userId,id,name,outfitIdsList);
                 userWithCollections.add(userWithCollection);
             }
         }
@@ -274,22 +286,63 @@ public class InputOutput {
 
         int userId;
         int collectionId;
+        String collectionName;
         List<Integer> outfitIds;
-        public UserWithCollection(int userId, int collectionId, List<Integer> outfitIds) {
+
+        public UserWithCollection(int userId, int collectionId, String collectionName, List<Integer> outfitIds) {
             this.userId = userId;
             this.collectionId = collectionId;
+            this.collectionName = collectionName;
             this.outfitIds = outfitIds;
         }
     }
 
 
-    public void matchUsersAndFollowers( List<User> users, List<UserWithUsers> followersList){
+    private void matchUsersAndFollowers( List<UserWithUsers> followersList){
+        for(UserWithUsers user:followersList){
+            User followed = findUserById(user.userId);
+            for(int id:user.connectedUserIds){
+                User follower = findUserById(id);
+                followed.addFollower(follower);
+            }
+        }
+    }
+    private void matchUsersAndFollowings(List<UserWithUsers> followingsList){
+        for(UserWithUsers user:followingsList){
+            User following = findUserById(user.userId);
+            for(int id:user.connectedUserIds){
+                User followed = findUserById(id);
+                following.addFollowing(followed);
+            }
+        }
 
     }
-    public void matchUsersAndFollowings( List<User> users, List<UserWithUsers> followingsList){
-
+    private void matchUsersAndCollections(List<List<UserWithCollection>> lists){
+        for(List<UserWithCollection> usersCollections:lists){
+            for(UserWithCollection userCollections: usersCollections){
+                User user = findUserById(userCollections.userId);
+                int collectionId = userCollections.collectionId;
+                Collection collection = new Collection(collectionId,userCollections.collectionName,user);
+                for(int outfitId:userCollections.outfitIds){
+                    Outfit outfit = findOutfitById(outfitId);
+                    collection.addOutfit(outfit);
+                }
+                user.addCollection(collection);
+            }
+        }
     }
-    public void matchUsersAndCollections( List<User> users, List<List<UserWithCollection>> lists){
-
+    private User findUserById(int id){
+        for(User user:users){
+            if(user.getId()==id)
+                return user;
+        }
+        return null;
+    }
+    private Outfit findOutfitById(int id){
+        for(Outfit outfit:outfits){
+            if(outfit.getId()==id)
+                return outfit;
+        }
+        return null;
     }
 }

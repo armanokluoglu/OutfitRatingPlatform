@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.data_access.UserRepository;
+import model.exception.UserAlreadyException;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
@@ -27,6 +28,8 @@ public class Outfit implements Subject {
 	private BufferedImage image;
 	private int likes;
 	private int dislikes;
+	private List<User> likedUsers = new ArrayList<>();
+	private List<User> dislikedUsers = new ArrayList<>();;
 	private List<Comment> comments;
 	private boolean changed;
 	private List<Observer> observers;
@@ -70,6 +73,30 @@ public class Outfit implements Subject {
 		int dislikes = getDislikes();
 		dislikes--;
 		setDislikes(dislikes);
+	}
+
+	public void like(User user) throws UserAlreadyException {
+ 		if(likedUsers.contains(user))
+ 			throw new UserAlreadyException("User already Liked");
+		likedUsers.add(user);
+	}
+
+	public void removeLike(User user) throws UserAlreadyException {
+		if(!likedUsers.contains(user))
+			throw new UserAlreadyException("User never liked");
+		likedUsers.remove(user);
+}
+
+	public void dislike(User user) throws UserAlreadyException {
+		if(dislikedUsers.contains(user))
+			throw new UserAlreadyException("User already disliked");
+		dislikedUsers.add(user);
+	}
+
+	public void removeDislike(User user) throws UserAlreadyException {
+		if(!dislikedUsers.contains(user))
+			throw new UserAlreadyException("User never disliked");
+		dislikedUsers.remove(user);
 	}
 
 	public Comment getCommentFromId(int id) {
@@ -156,6 +183,22 @@ public class Outfit implements Subject {
 		this.image = image;
 	}
 
+	public List<User> getLikedUsers() {
+		return likedUsers;
+	}
+
+	public void setLikedUsers(List<User> likedUsers) {
+		this.likedUsers = likedUsers;
+	}
+
+	public List<User> getDislikedUsers() {
+		return dislikedUsers;
+	}
+
+	public void setDislikedUsers(List<User> dislikedUsers) {
+		this.dislikedUsers = dislikedUsers;
+	}
+
 	public int getLikes() {
 		return likes;
 	}
@@ -216,6 +259,22 @@ public class Outfit implements Subject {
 		outfitJSON.put("Likes", getLikes());
 		outfitJSON.put("Dislikes", getDislikes());
 
+		List<Integer> likedUserIds = new ArrayList<>();
+		if(likedUsers!=null){
+			for(User user:likedUsers){
+				likedUserIds.add(user.getId());
+			}
+		}
+		List<Integer> dislikedUserIds = new ArrayList<>();
+		if(dislikedUsers!=null){
+			for(User user:dislikedUsers){
+				dislikedUserIds.add(user.getId());
+			}
+		}
+
+		outfitJSON.put("LikedUserIds", likedUserIds);
+		outfitJSON.put("DislikedUserIds", dislikedUserIds);
+
 		List<JSONObject> commentsList = new ArrayList<>();
 		if(comments!=null){
 			for(Comment comment:comments){
@@ -236,6 +295,15 @@ public class Outfit implements Subject {
 		int likes = ((Long) outfitJSON.get("Likes")).intValue();
 		int dislikes = ((Long) outfitJSON.get("Dislikes")).intValue();
 
+		List<User> likedUsers = new ArrayList<>();
+		List<User> dislikedUsers = new ArrayList<>();
+
+		org.json.simple.JSONArray likedUserIds = (org.json.simple.JSONArray) outfitJSON.get("LikedUserIds");
+		org.json.simple.JSONArray dislikedUserIds = (org.json.simple.JSONArray) outfitJSON.get("DislikedUserIds");
+		likedUserIds.forEach(entry -> likedUsers.add(repository.findUserById(((Long) entry).intValue())));
+		dislikedUserIds.forEach(entry -> dislikedUsers.add(repository.findUserById(((Long) entry).intValue())));
+
+
 		List<Size> sizes = new ArrayList<>();
 		org.json.simple.JSONArray sizesJson = (org.json.simple.JSONArray) outfitJSON.get("Sizes");
 		sizesJson.forEach(entry -> sizes.add(Size.valueOf((String) entry)));
@@ -244,7 +312,10 @@ public class Outfit implements Subject {
 		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
 		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry,repository)));
 
-		return null;
+		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,likes,dislikes,comments);
+		outfit.setLikedUsers(likedUsers);
+		outfit.setDislikedUsers(dislikedUsers);
+		return outfit;
 	}
 	
 	// OBSERVATION METHODS

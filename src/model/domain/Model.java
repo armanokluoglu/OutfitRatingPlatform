@@ -14,6 +14,7 @@ import javax.imageio.ImageIO;
 import model.data_access.InputOutput;
 import model.data_access.OutfitRepository;
 import model.data_access.UserRepository;
+import model.exception.UserAlreadyException;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
@@ -31,7 +32,7 @@ public class Model implements Observer, Subject {
 	private List<Observer> observers;
 	private List<Subject> subjects;
 	
-	public Model() {
+	public Model() throws UserAlreadyException {
 		InputOutput io = new InputOutput();
 		this.userRepo = new UserRepository(io);
 		this.outfitRepo = new OutfitRepository(io);
@@ -98,11 +99,24 @@ public class Model implements Observer, Subject {
 		user5.addCollection(collection5);
 		user6.addCollection(collection6);
 
+		outfit.like(user1);outfit2.like(user2);outfit2.like(user3);outfit2.like(user4);outfit3.like(user5);
+		outfit3.like(user6);outfit4.like(user1);outfit4.like(user2);outfit5.like(user3);outfit6.like(user4);
+
+
+		outfit.dislike(user2);outfit.dislike(user3);
+		outfit2.dislike(user1);outfit4.dislike(user6);
+
+
 		List<User> userList = Arrays.asList(user1,user2,user3,user4,user5,user6);
 		List<Outfit> outfits = Arrays.asList(outfit,outfit2,outfit3,outfit4,outfit5,outfit6);
-		
-		this.outfitRepo.setOutfits(outfits);
-		this.userRepo.setUsers(userList);
+
+		io.outputOutfits(outfits);
+
+		io.inputUsers();
+		io.inputOutfits();
+
+		this.outfitRepo.setOutfits(io.getOutfits());
+		this.userRepo.setUsers(io.getUsers());
 	}
 	
 	public User login(String username, String password) throws IllegalArgumentException, IllegalStateException {

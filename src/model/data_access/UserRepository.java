@@ -13,6 +13,7 @@ public class UserRepository {
 
 	public UserRepository(InputOutput io) {
 		this.io = io;
+		userList = io.inputUsers();
 	}
 	
 	public List<User> findAll(){
@@ -34,6 +35,10 @@ public class UserRepository {
 
 	public User findUserById(int userId) {
 		// TODO Auto-generated method stub
+		for(User user:userList){
+			if(user.getId()==userId)
+				return user;
+		}
 		return null;
 	}
 
