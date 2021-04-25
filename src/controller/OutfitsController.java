@@ -2,39 +2,25 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import controller.HomeController.LogoutListener;
-import controller.HomeController.OpenOutfitsListener;
-import controller.HomeController.OpenStatisticsListener;
-import controller.HomeController.OpenUserListener;
-import model.domain.Collection;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
-import view.HomeFrame;
-import view.OutfitFrame;
 import view.OutfitsFrame;
 
 public class OutfitsController {
 
 	private SessionManager session;
-	private Model model;
-	private OutfitsFrame view;
 
 	public OutfitsController(Model model, OutfitsFrame view, SessionManager session) {
-		this.model = model;
-		this.view = view;
 		this.session = session;
 		
 		view.addSubject(model);
+		model.register(view);
 		
 		List<Outfit> outfits = model.getAllOutfits();
-		view.setCards(outfits);
+		view.setCards();
+		
 		for (Outfit outfit : outfits) {
 			view.addOpenOutfitActionListener(new OpenOutfitListener(outfit), "" + outfit.getId());
 		}

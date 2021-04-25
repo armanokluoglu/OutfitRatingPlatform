@@ -1,30 +1,21 @@
 package view;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import model.domain.Collection;
 import model.domain.Model;
+import model.domain.Outfit;
 import model.domain.User;
 import model.utilities.Observer;
 import model.utilities.Subject;
@@ -32,7 +23,7 @@ import model.utilities.Subject;
 public class StatisticsFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Model model;
+	private Subject sub;
 	private FrameManager fm;
 	private JPanel mainPanel;
 	private JPanel leftSide;
@@ -42,9 +33,8 @@ public class StatisticsFrame extends JFrame implements Observer {
 	private JButton outfitsPageButton;
 	private JButton logoutButton;
 	
-	public StatisticsFrame(Model model, FrameManager fm) {
+	public StatisticsFrame(FrameManager fm) {
 		this.fm = fm;
-		this.model = model;
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 		
@@ -105,7 +95,15 @@ public class StatisticsFrame extends JFrame implements Observer {
 		this.leftSide = leftSide;
 	}
 	
-	public void setContent(String mostLikedOutfit, String mostDislikedOutfit, String mostFollowedUser) {
+	public void setContent() {
+		Model model = (Model) sub;
+		Outfit mostLikedOutfit = model.getMostLikedOutfit();
+		String mostLiked = mostLikedOutfit.getBrand() + " " + mostLikedOutfit.getType() + " (" + mostLikedOutfit.getLikes() + " likes)";
+		Outfit mostDislikedOutfit = model.getMostDislikedOutfit();
+		String mostDisliked = mostDislikedOutfit.getBrand() + " " + mostDislikedOutfit.getType() + " (" + mostDislikedOutfit.getDislikes() + " dislikes)";
+		User mostFollowedUser = model.getMostFollowedUser();
+		String mostFollowed = mostFollowedUser.getUsername() + " (" + mostFollowedUser.getFollowers().size() + " followers)";
+		
 		content.setLayout(new GridBagLayout());
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -113,17 +111,17 @@ public class StatisticsFrame extends JFrame implements Observer {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(50, 5, 5, 5);
 		
-		JLabel mostLikedLabel = new JLabel("Most liked outfit: " + mostLikedOutfit);
+		JLabel mostLikedLabel = new JLabel("Most liked outfit: " + mostLiked);
 		mostLikedLabel.setFont(new Font(mostLikedLabel.getFont().getName(), mostLikedLabel.getFont().getStyle(), 15));
-		JLabel mostDislikedLabel = new JLabel("Most disliked outfit: " + mostDislikedOutfit);
+		JLabel mostDislikedLabel = new JLabel("Most disliked outfit: " + mostDisliked);
 		mostDislikedLabel.setFont(new Font(mostDislikedLabel.getFont().getName(), mostDislikedLabel.getFont().getStyle(), 15));
-		JLabel mostFollowedLabel = new JLabel("Most followed user: " + mostFollowedUser);
+		JLabel mostFollowedLabel = new JLabel("Most followed user: " + mostFollowed);
 		mostFollowedLabel.setFont(new Font(mostFollowedLabel.getFont().getName(), mostFollowedLabel.getFont().getStyle(), 15));
 		
+		content.removeAll();
 		content.add(mostLikedLabel, gbc);
 		content.add(mostDislikedLabel, gbc);
 		content.add(mostFollowedLabel, gbc);
-		mainPanel.add(content);
 		getFrameManager().setNewPanel(mainPanel);
 	}
 	
@@ -154,21 +152,18 @@ public class StatisticsFrame extends JFrame implements Observer {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		setContent();
 	}
 
 
 	@Override
 	public void addSubject(Subject sub) {
-		// TODO Auto-generated method stub
-		
+		this.sub = sub;
 	}
 
 
 	@Override
 	public void removeSubject(Subject sub) {
-		// TODO Auto-generated method stub
-		
+		this.sub = null;
 	}
 }

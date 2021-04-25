@@ -12,18 +12,15 @@ import view.HomeFrame;
 public class HomeController {
 
 	private SessionManager session;
-	private Model model;
-	private HomeFrame view;
 
 	public HomeController(Model model, HomeFrame view, SessionManager session) {
-		this.model = model;
-		this.view = view;
 		this.session = session;
 		
 		view.addSubject(model);
+		model.register(view);
 		
 		List<Collection> collections = model.getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
-		view.setCards(collections);
+		view.setCards();
 		for (Collection collection : collections) {
 			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
 			view.addOpenUserActionListener(new OpenUserListener(collection.getCreator()), collection.getCreator().getUsername());

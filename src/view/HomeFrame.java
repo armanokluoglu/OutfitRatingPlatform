@@ -28,8 +28,9 @@ import model.utilities.Subject;
 public class HomeFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Model model;
+	private Subject sub;
 	private FrameManager fm;
+	private User currentUser;
 	private JPanel mainPanel;
 	private JPanel leftSide;
 	private JPanel content;
@@ -40,9 +41,9 @@ public class HomeFrame extends JFrame implements Observer {
 	private List<JButton> userButtons;
 	private List<JButton> collectionButtons;
 	
-	public HomeFrame(Model model, FrameManager fm) {
+	public HomeFrame(FrameManager fm, User currentUser) {
 		this.fm = fm;
-		this.model = model;
+		this.currentUser = currentUser;
 		this.userButtons = new ArrayList<>();
 		this.collectionButtons = new ArrayList<>();
 		JPanel mainPanel = new JPanel();
@@ -106,7 +107,10 @@ public class HomeFrame extends JFrame implements Observer {
 		this.leftSide = leftSide;
 	}
 	
-	public void setCards(List<Collection> collections) {
+	public void setCards() {
+		Model model = (Model) sub;
+		List<Collection> collections = model.getCollectionsOfFollowingsOfUserChronologically(currentUser);
+		
         JPanel cards = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -178,19 +182,16 @@ public class HomeFrame extends JFrame implements Observer {
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		setCards();
 	}
 
 	@Override
 	public void addSubject(Subject sub) {
-		// TODO Auto-generated method stub
-		
+		this.sub = sub;
 	}
 
 	@Override
 	public void removeSubject(Subject sub) {
-		// TODO Auto-generated method stub
-		
+		this.sub = null;
 	}
 }

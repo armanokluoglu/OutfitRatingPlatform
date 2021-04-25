@@ -27,7 +27,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import model.domain.Comment;
-import model.domain.Model;
 import model.domain.Outfit;
 import model.utilities.Observer;
 import model.utilities.Subject;

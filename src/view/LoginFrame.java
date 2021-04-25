@@ -1,7 +1,13 @@
 package view;
 
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,14 +26,23 @@ public class LoginFrame extends JFrame {
 	
 	public LoginFrame(FrameManager fm) {
 		this.fm = fm;
-		JPanel content = new JPanel();
-        content.setLayout(new FlowLayout());
-        content.add(new JLabel("Username: "));
-        content.add(usernameField);
-        content.add(new JLabel("Password: "));
-        content.add(passwordField);
-        content.add(loginButton);
-        getFrameManager().setNewPanel(content);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		
+		JPanel content = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.insets = new Insets(10, 10, 10, 10);
+        
+        content.add(new JLabel("Username: "), gbc);
+        content.add(usernameField, gbc);
+        content.add(new JLabel("Password: "), gbc);
+        content.add(passwordField, gbc);
+        content.add(loginButton, gbc);
+        
+        panel.add(content);
+        getFrameManager().setNewPanel(panel);
 	}
 	
     public void addLoginActionListener(ActionListener actionListener) {

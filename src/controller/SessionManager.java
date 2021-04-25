@@ -30,17 +30,17 @@ public class SessionManager {
     }
     
     public void homePage() {
-    	HomeFrame homeView = new HomeFrame(model, fm);
+    	HomeFrame homeView = new HomeFrame(fm, currentUser);
     	HomeController homeController = new HomeController(model, homeView, this);
     }
     
     public void userPage(User user) {
-    	UserFrame userView = new UserFrame(model, fm);
+    	UserFrame userView = new UserFrame(fm, currentUser, user);
     	UserController userController = new UserController(model, userView, this, user);
     }
     
     public void collectionPage(Collection collection) {
-    	CollectionFrame collectionView = new CollectionFrame(model, fm);
+    	CollectionFrame collectionView = new CollectionFrame(fm);
     	CollectionController collectionController = new CollectionController(model, collectionView, this, collection);
     }
     
@@ -50,12 +50,12 @@ public class SessionManager {
     }
 
     public void outfitsPage() {
-    	OutfitsFrame outfitsView = new OutfitsFrame(model, fm);
+    	OutfitsFrame outfitsView = new OutfitsFrame(fm);
     	OutfitsController outfitsController = new OutfitsController(model, outfitsView, this);
     }
     
     public void statisticsPage() {
-    	StatisticsFrame statisticsView = new StatisticsFrame(model, fm);
+    	StatisticsFrame statisticsView = new StatisticsFrame(fm);
     	StatisticsController statisticsControler = new StatisticsController(model, statisticsView, this);
     }
     
