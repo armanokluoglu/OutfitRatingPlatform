@@ -74,16 +74,16 @@ public class Model implements Observer, Subject {
 //		sizeList.add(Size.M);
 //		
 //		Comment com1 = new Comment(1, "Denemeeeee", user1, new Date());
-//		Comment com2 = new Comment(1, "YORUUm", user5, new Date());
-//		Comment com3 = new Comment(1, "yorum deneme", user3, new Date());
-//		Comment com4 = new Comment(1, "testtesttest", user4, new Date());
+//		Comment com2 = new Comment(2, "YORUUm", user5, new Date());
+//		Comment com3 = new Comment(3, "yorum deneme", user3, new Date());
+//		Comment com4 = new Comment(4, "testtesttest", user4, new Date());
 //
-//		Outfit outfit = new Outfit(1, Brand.GAP,Type.BIKINIBOTTOM, Occasion.CASUAL, Gender.WOMEN,sizeList,Color.BLACK,135,44,Arrays.asList(com1, com2, com3, com4));
-//		Outfit outfit2 = new Outfit(2, Brand.BURBERRY,Type.BRACELET, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GREEN,55,14,new ArrayList<>());
-//		Outfit outfit3 = new Outfit(3, Brand.CALVINKLEIN,Type.COAT, Occasion.FORMAL, Gender.WOMEN,sizeList,Color.BLACK,15,40,new ArrayList<>());
-//		Outfit outfit4 = new Outfit(4, Brand.FENDI,Type.BLOUSE, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.BLACK,5,4,new ArrayList<>());
-//		Outfit outfit5 = new Outfit(5, Brand.GAP,Type.BRA, Occasion.SPORTY, Gender.WOMEN,sizeList,Color.ORANGE,3,4,new ArrayList<>());
-//		Outfit outfit6 = new Outfit(6, Brand.ARMANI,Type.BELT, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GRAY,50,4,new ArrayList<>());
+//		Outfit outfit = new Outfit(1, Brand.GAP,Type.BIKINIBOTTOM, Occasion.CASUAL, Gender.WOMEN,sizeList,Color.BLACK,Arrays.asList(com1, com2, com3, com4));
+//		Outfit outfit2 = new Outfit(2, Brand.BURBERRY,Type.BRACELET, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GREEN,new ArrayList<>());
+//		Outfit outfit3 = new Outfit(3, Brand.CALVINKLEIN,Type.COAT, Occasion.FORMAL, Gender.WOMEN,sizeList,Color.BLACK,new ArrayList<>());
+//		Outfit outfit4 = new Outfit(4, Brand.FENDI,Type.BLOUSE, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.BLACK,new ArrayList<>());
+//		Outfit outfit5 = new Outfit(5, Brand.GAP,Type.BRA, Occasion.SPORTY, Gender.WOMEN,sizeList,Color.ORANGE,new ArrayList<>());
+//		Outfit outfit6 = new Outfit(6, Brand.ARMANI,Type.BELT, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GRAY,new ArrayList<>());
 //		try {
 //			outfit4.setImage(ImageIO.read(new File("assets/fendi_black_blouse.jpg")));
 //		} catch (IOException e) {

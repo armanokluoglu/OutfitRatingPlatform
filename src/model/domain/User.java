@@ -23,8 +23,6 @@ public class User implements Subject {
 	private boolean changed;
 	private List<Observer> observers;
 
-
-
 	public User(int id, String username, String password, List<User> followers, List<User> followings,
 			List<Collection> collections) {
 		this.id = id;
@@ -101,6 +99,11 @@ public class User implements Subject {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		return getId() == ((User) o).getId();
 	}
 
 	// GETTERS AND SETTERS

@@ -3,9 +3,7 @@ package model.domain;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-
 import model.data_access.UserRepository;
-import model.exception.UserAlreadyException;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
@@ -26,16 +24,13 @@ public class Outfit implements Subject {
 	private List<Size> sizes;
 	private Color color;
 	private BufferedImage image;
-	private int likes;
-	private int dislikes;
 	private List<User> likedUsers = new ArrayList<>();
 	private List<User> dislikedUsers = new ArrayList<>();;
 	private List<Comment> comments;
 	private boolean changed;
 	private List<Observer> observers;
 
- 	public Outfit(int id, Brand brand, Type type, Occasion occasion, Gender gender, List<Size> sizes, Color color,
-			int likes, int dislikes, List<Comment> comments) {
+ 	public Outfit(int id, Brand brand, Type type, Occasion occasion, Gender gender, List<Size> sizes, Color color, List<Comment> comments) {
 		this.id = id;
 		this.brand = brand;
 		this.type = type;
@@ -43,36 +38,10 @@ public class Outfit implements Subject {
 		this.gender = gender;
 		this.sizes = sizes;
 		this.color = color;
-		this.likes = likes;
-		this.dislikes = dislikes;
 		this.comments = comments;
 		this.image = null;
 		this.changed = false;
 		this.observers = new ArrayList<Observer>();
-	}
-
- 	private void like() {
-		int likes = getLikes();
-		likes++;
-		setLikes(likes);
-	}
-
-	private void removeLike() {
-		int likes = getLikes();
-		likes--;
-		setLikes(likes);
-	}
-
-	private void dislike() {
-		int dislikes = getDislikes();
-		dislikes++;
-		setDislikes(dislikes);
-	}
-
-	private void removeDislike() {
-		int dislikes = getDislikes();
-		dislikes--;
-		setDislikes(dislikes);
 	}
 
 	public void like(User user) {
@@ -84,28 +53,33 @@ public class Outfit implements Subject {
  			removeDislike(user);
  		}
 		likedUsers.add(user);
-		like();
+		setChanged(true);
+		notifyObservers();
 	}
 
 	private void removeLike(User user) {
 		likedUsers.remove(user);
-		removeLike();
-}
+		setChanged(true);
+		notifyObservers();
+	}
 
 	public void dislike(User user) {
 		if(dislikedUsers.contains(user)) {
 			removeDislike(user);
+			return;
 		}
 		if(likedUsers.contains(user)) {
  			removeLike(user);
  		}
 		dislikedUsers.add(user);
-		dislike();
+		setChanged(true);
+		notifyObservers();
 	}
 
 	private void removeDislike(User user) {
 		dislikedUsers.remove(user);
-		removeDislike();
+		setChanged(true);
+		notifyObservers();
 	}
 
 	public Comment getCommentFromId(int id) {
@@ -209,23 +183,11 @@ public class Outfit implements Subject {
 	}
 
 	public int getLikes() {
-		return likes;
-	}
-
-	public void setLikes(int likes) {
-		setChanged(true);
-		notifyObservers();
-		this.likes = likes;
+		return likedUsers.size();
 	}
 
 	public int getDislikes() {
-		return dislikes;
-	}
-
-	public void setDislikes(int dislikes) {
-		setChanged(true);
-		notifyObservers();
-		this.dislikes = dislikes;
+		return dislikedUsers.size();
 	}
 
 	public List<Comment> getComments() {
@@ -301,8 +263,6 @@ public class Outfit implements Subject {
 		Occasion occasion = Occasion.valueOf((String) outfitJSON.get("Occasion"));
 		Gender gender = Gender.valueOf((String) outfitJSON.get("Gender"));
 		Color color = Color.valueOf((String) outfitJSON.get("Color"));
-		int likes = ((Long) outfitJSON.get("Likes")).intValue();
-		int dislikes = ((Long) outfitJSON.get("Dislikes")).intValue();
 
 		List<User> likedUsers = new ArrayList<>();
 		List<User> dislikedUsers = new ArrayList<>();
@@ -321,7 +281,7 @@ public class Outfit implements Subject {
 		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
 		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry,repository)));
 
-		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,likes,dislikes,comments);
+		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,comments);
 		outfit.setLikedUsers(likedUsers);
 		outfit.setDislikedUsers(dislikedUsers);
 		return outfit;

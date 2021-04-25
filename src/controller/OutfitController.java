@@ -5,21 +5,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import javax.imageio.ImageIO;
-
-import controller.HomeController.LogoutListener;
-import controller.HomeController.OpenOutfitsListener;
-import controller.HomeController.OpenStatisticsListener;
-import controller.HomeController.OpenUserListener;
-import model.domain.Collection;
 import model.domain.Comment;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
-import view.HomeFrame;
 import view.OutfitFrame;
-import view.OutfitsFrame;
 
 public class OutfitController {
 
@@ -34,14 +25,18 @@ public class OutfitController {
 		this.session = session;
 		this.outfit = outfit;
 		
-		view.addSubject(model);
+		//TEMPORARY
 		try {
 			outfit.setImage(ImageIO.read(new File("assets/fendi_black_blouse.jpg")));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
+		
+		view.addSubject(outfit);
+		outfit.register(view);
+		
 		view.setCurrentUserId(session.getCurrentUser().getId());
-		view.setOutfit(outfit);
+		view.setOutfit();
 		
 		view.addLikeOutfitActionListener(new LikeOutfitListener());
 		view.addDislikeOutfitActionListener(new DislikeOutfitListener());
@@ -72,7 +67,8 @@ public class OutfitController {
 	
 	class AddCommentOnOutfitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	model.commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
+        	Comment comment = model.commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
+        	view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
         	view.clearComment();
         }
     }
@@ -86,6 +82,10 @@ public class OutfitController {
     	
         public void actionPerformed(ActionEvent e) {
         	model.removeCommentOnOutfit(outfit, comment);
+        	List<Comment> comments = outfit.getComments();
+    		for (Comment comment : comments) {
+    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
+    		}
         }
     }
 	

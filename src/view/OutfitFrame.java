@@ -26,9 +26,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-
 import model.domain.Comment;
 import model.domain.Model;
 import model.domain.Outfit;
@@ -38,7 +35,7 @@ import model.utilities.Subject;
 public class OutfitFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Model model;
+	private Subject sub;
 	private FrameManager fm;
 	private int currentUserId;
 	private JPanel mainPanel;
@@ -49,6 +46,7 @@ public class OutfitFrame extends JFrame implements Observer {
 	private JButton dislikeButton;
 	private JTextField commentField;
 	private List<CommentPanel> commentPanels;
+	private List<JButton> removeCommentButtons;
 	
 	private JButton profilePageButton;
 	private JButton homePageButton;
@@ -56,21 +54,31 @@ public class OutfitFrame extends JFrame implements Observer {
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 	
-	public OutfitFrame(Model model, FrameManager fm) {
+	public OutfitFrame(FrameManager fm) {
 		this.fm = fm;
-		this.model = model;
 		this.currentUserId = 0;
 		this.commentPanels = new ArrayList<>();
+		this.removeCommentButtons = new ArrayList<>();
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 		
+		JButton likeButton = new JButton("👍");
+    	this.likeButton = likeButton;
+    	
+    	JButton dislikeButton = new JButton("👎");
+    	this.dislikeButton = dislikeButton;
+    	
+    	JTextField commentField = new JTextField();
+    	commentField.setPreferredSize(new Dimension(300, 30));
+    	this.commentField = commentField;
+    	
 		setLeftSide();
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 		
 		mainPanel.add(leftSide);
-		mainPanel.add(content);
+		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
         getFrameManager().setNewPanel(mainPanel);
 	}
@@ -128,7 +136,8 @@ public class OutfitFrame extends JFrame implements Observer {
 		this.leftSide = leftSide;
 	}
 	
-	public void setOutfit(Outfit outfit) {
+	public void setOutfit() {
+		Outfit outfit = (Outfit) sub;
 		JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -141,18 +150,9 @@ public class OutfitFrame extends JFrame implements Observer {
     	JLabel sizes = new JLabel("Sizes: " + outfit.getSizes().toString());
     	JLabel occasion = new JLabel("Occasion: " + outfit.getOccasion().toString());
     	JLabel gender = new JLabel("Gender: " + outfit.getGender().toString());
-    	
     	JLabel likes = new JLabel("" + outfit.getLikes());
-    	JButton likeButton = new JButton("👍");
-    	this.likeButton = likeButton;
     	JLabel dislikes = new JLabel("" + outfit.getDislikes());
-    	JButton dislikeButton = new JButton("👎");
-    	this.dislikeButton = dislikeButton;
-    	
     	JLabel leaveComment = new JLabel("Leave a comment: ");
-    	JTextField commentField = new JTextField();
-    	commentField.setPreferredSize(new Dimension(300, 30));
-    	this.commentField = commentField;
     	
     	ImageIcon icon = null;
     	BufferedImage image = outfit.getImage();
@@ -189,10 +189,26 @@ public class OutfitFrame extends JFrame implements Observer {
     	panel.add(leaveComment, gbc);
     	panel.add(commentField, gbc);
     	panel.add(getCommentsPanel(outfit.getComments()), gbc);
-        	
-        content.add(new JScrollPane(panel));
+    	
+    	content.removeAll();
+		content.add(new JScrollPane(panel));
         getFrameManager().setNewPanel(mainPanel);
     }
+	
+	@Override
+	public void update() {
+		setOutfit();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.sub = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.sub = null;
+	}
 	
 	public void setCurrentUserId(int currentUserId) {
 		this.currentUserId = currentUserId;
@@ -268,24 +284,6 @@ public class OutfitFrame extends JFrame implements Observer {
     	commentField.setText("");
     }
     
-	@Override
-	public void update() {
-		
-	}
-
-
-	@Override
-	public void addSubject(Subject sub) {
-		model = (Model) sub;
-	}
-
-
-	@Override
-	public void removeSubject(Subject sub) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	private class CommentPanel {
 		private JPanel panel;
 		private JLabel author;
@@ -318,6 +316,7 @@ public class OutfitFrame extends JFrame implements Observer {
 			main.add(Box.createHorizontalGlue());
 			if (currentUserId == comment.getAuthor().getId()) {
 				main.add(removeButton);
+				removeCommentButtons.add(removeButton);
 			}
 		    
 			panel.setPreferredSize(new Dimension(300, 50));

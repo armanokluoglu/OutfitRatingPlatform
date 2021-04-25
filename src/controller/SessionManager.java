@@ -45,7 +45,7 @@ public class SessionManager {
     }
     
     public void outfitPage(Outfit outfit) {
-    	OutfitFrame outfitView = new OutfitFrame(model, fm);
+    	OutfitFrame outfitView = new OutfitFrame(fm);
     	OutfitController outfitController = new OutfitController(model, outfitView, this, outfit);
     }
 
