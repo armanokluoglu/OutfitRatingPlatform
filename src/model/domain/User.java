@@ -273,7 +273,6 @@ public class User implements Subject {
 	}
 	
 	// OBSERVATION METHODS
-	
 	@Override
 	public void register(Observer obj) {
 		if (obj == null) {
@@ -297,6 +296,7 @@ public class User implements Subject {
 			setObservers(observers);
 		}
 	}
+
 
 	@Override
 	public void notifyObservers() {

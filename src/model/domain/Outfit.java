@@ -3,6 +3,7 @@ package model.domain;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -284,7 +285,13 @@ public class Outfit implements Subject {
 
 		List<Comment> comments = new ArrayList<>();
 		org.json.simple.JSONArray commentsJSON = (org.json.simple.JSONArray) outfitJSON.get("Comments");
-		commentsJSON.forEach(entry -> comments.add(Comment.parseJson((org.json.simple.JSONObject) entry,repository)));
+		commentsJSON.forEach(entry -> {
+			try {
+				comments.add(Comment.parseJson((org.json.simple.JSONObject) entry, repository));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		});
 
 		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,comments);
 		outfit.setLikedUsers(likedUsers);

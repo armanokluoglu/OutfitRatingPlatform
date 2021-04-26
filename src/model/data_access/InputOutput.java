@@ -30,6 +30,8 @@ public class InputOutput {
     private List<User> users;
     private List<Outfit> outfits;
     List<List<UserWithCollection>> collectionsList;
+    List<UserWithUsers> followersList;
+    List<UserWithUsers> followingsList;
     private static FileWriter file;
 
     public List<User> getUsers() {

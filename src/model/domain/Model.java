@@ -121,7 +121,7 @@ public class Model implements Observer, Subject {
 //		List<User> userList = Arrays.asList(user1, user2, user3, user4, user5, user6);
 //		List<Outfit> outfits = Arrays.asList(outfit, outfit2, outfit3, outfit4, outfit5, outfit6, outfit7, outfit8, outfit9, outfit10, outfit11, outfit12, outfit13, outfit14, outfit15);
 //
-//		io.outputUsers(userList);
+//		io.xmlOutput(userList);
 //		io.outputOutfits(outfits);
 
 		io.inputUsers();
