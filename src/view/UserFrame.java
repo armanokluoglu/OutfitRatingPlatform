@@ -36,8 +36,10 @@ public class UserFrame extends JFrame implements Observer {
 	private User user;
 	private FrameManager fm;
 	private JPanel mainPanel;
+
 	private JPanel leftSide;
 	private JPanel content;
+	private JButton createCollectionButton;
 	
 	private JButton profilePageButton;
 	private JButton homePageButton;
@@ -52,6 +54,7 @@ public class UserFrame extends JFrame implements Observer {
 		this.currentUser = currentUser;
 		this.collectionButtons = new ArrayList<>();
 		this.user = user;
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
     	
@@ -59,6 +62,10 @@ public class UserFrame extends JFrame implements Observer {
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
+		
+		this.createCollectionButton = new JButton("Create New Collection");
+		this.createCollectionButton.setPreferredSize(new Dimension(200, 50));
+		this.createCollectionButton.setBackground(Color.PINK);
 		
 		mainPanel.add(leftSide);
 		mainPanel.add(this.content);
@@ -150,8 +157,12 @@ public class UserFrame extends JFrame implements Observer {
         panel.add(followings, gbc);
         panel.add(followings, gbc);
         panel.add(collectionsLabel, gbc);
+        if(user.equals(currentUser)) {
+        	panel.add(createCollectionButton, gbc);
+        }
         panel.add(collectionsPanel, gbc);
         
+        content.removeAll();
         content.add(new JScrollPane(panel));
         getFrameManager().setNewPanel(mainPanel);
     }
@@ -162,6 +173,10 @@ public class UserFrame extends JFrame implements Observer {
 				jButton.addActionListener(actionListener);
 			}
 		}
+    }
+	
+	public void addCreateCollectionActionListener(ActionListener actionListener) {
+		createCollectionButton.addActionListener(actionListener);   
     }
 	
     public void addOpenProfileActionListener(ActionListener actionListener) {
@@ -183,7 +198,7 @@ public class UserFrame extends JFrame implements Observer {
     public void addLogoutActionListener(ActionListener actionListener) {
     	logoutButton.addActionListener(actionListener);
     }
-
+    
     public FrameManager getFrameManager() {
         return this.fm;
     }
@@ -192,6 +207,9 @@ public class UserFrame extends JFrame implements Observer {
     	JOptionPane.showMessageDialog(getFrameManager().getFrame(), message);
     }
 
+    public String showInputDialog(String message) { 
+    	return JOptionPane.showInputDialog(getFrameManager().getFrame(), message);
+    }
 
 	@Override
 	public void update() {

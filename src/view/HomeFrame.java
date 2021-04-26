@@ -136,6 +136,8 @@ public class HomeFrame extends JFrame implements Observer {
         	
         	cards.add(panel, gbc);
         }
+        
+        content.removeAll();
         content.add(new JScrollPane(cards));
         getFrameManager().setNewPanel(mainPanel);
     }

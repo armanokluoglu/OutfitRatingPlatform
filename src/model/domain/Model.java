@@ -1,26 +1,16 @@
 package model.domain;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import javax.imageio.ImageIO;
 import model.data_access.InputOutput;
 import model.data_access.OutfitRepository;
 import model.data_access.UserRepository;
 import model.exception.UserAlreadyException;
-import model.utilities.Brand;
-import model.utilities.Color;
-import model.utilities.Gender;
 import model.utilities.Observer;
-import model.utilities.Occasion;
-import model.utilities.Size;
 import model.utilities.Subject;
-import model.utilities.Type;
 
 public class Model implements Observer, Subject {
 
@@ -147,7 +137,7 @@ public class Model implements Observer, Subject {
 	}
 
 	public User login(String username, String password) throws IllegalArgumentException, IllegalStateException {
-		username = "test";
+		username = "tugkantuglular";
 		password = "1234";
 		User user = userRepo.findUserByUsername(username);
 		if (!user.getPassword().equals(password)) {

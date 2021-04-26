@@ -11,23 +11,34 @@ import view.OutfitsFrame;
 public class OutfitsController {
 
 	private SessionManager session;
-
+	private OutfitsFrame view;
+	private List<Outfit> outfits;
+	
 	public OutfitsController(Model model, OutfitsFrame view, SessionManager session) {
 		this.session = session;
+		this.view = view;
 		
 		view.addSubject(model);
 		model.register(view);
 		
-		List<Outfit> outfits = model.getAllOutfits();
+		this.outfits = model.getAllOutfits();
 		view.setCards();
 		
-		for (Outfit outfit : outfits) {
-			view.addOpenOutfitActionListener(new OpenOutfitListener(outfit), "" + outfit.getId());
-		}
+		setSidebarListeners();
+		setContentListeners();
+	}
+	
+	private void setSidebarListeners() {
 		view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
 		view.addLogoutActionListener(new LogoutListener());
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
+	}
+	
+	private void setContentListeners() {
+		for (Outfit outfit : outfits) {
+			view.addOpenOutfitActionListener(new OpenOutfitListener(outfit), "" + outfit.getId());
+		}
 	}
 	
     class OpenOutfitListener implements ActionListener {

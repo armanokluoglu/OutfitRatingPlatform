@@ -7,12 +7,9 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -153,12 +150,9 @@ public class OutfitFrame extends JFrame implements Observer {
     	JLabel dislikes = new JLabel("" + outfit.getDislikes());
     	JLabel leaveComment = new JLabel("Leave a comment: ");
     	
-    	ImageIcon icon = null;
-    	BufferedImage image = outfit.getImage();
-    	if(image != null) {
-    		Image iconImage = image.getScaledInstance(320, 320, Image.SCALE_SMOOTH);
-    		icon = new ImageIcon(iconImage);
-    	} else {
+    	
+    	ImageIcon icon = outfit.getImage();
+    	if(icon == null) {
     		outfitImage.setText("This outfit does not have an image.");
     		Border border = BorderFactory.createLineBorder(Color.BLACK);
         	outfitImage.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(150,60,150,60)));
@@ -296,8 +290,7 @@ public class OutfitFrame extends JFrame implements Observer {
 			this.panel = new JPanel();
 			panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 			this.author = new JLabel(comment.getAuthor().getUsername());
-			this.date = new JLabel((new Date()).toString());
-			//this.date = new JLabel(comment.getDate().toString());
+			this.date = new JLabel(comment.getDate().toString());
 			this.content = new JLabel(comment.getContent());
 			this.removeButton = new JButton("🗑");
 			

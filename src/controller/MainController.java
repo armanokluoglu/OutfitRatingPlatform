@@ -1,10 +1,6 @@
 package controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import model.domain.Model;
-import model.domain.User;
 import view.FrameManager;
 import view.MainFrame;
 

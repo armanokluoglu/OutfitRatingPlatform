@@ -27,9 +27,13 @@ public class OutfitRepository {
 		return 0;
 	}
 
-	public Outfit findOutfitById(int outfitId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Outfit findOutfitById(int outfitId) throws IllegalStateException {
+		for (Outfit outfit : outfitList) {
+			if (outfit.getId() == outfitId) {
+				return outfit;
+			}
+		}
+		throw new IllegalStateException("No outfit found with the given id.");
 	}
 
 	public int createCommentId() {

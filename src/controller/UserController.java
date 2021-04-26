@@ -19,26 +19,40 @@ import view.UserFrame;
 public class UserController {
 
 	private SessionManager session;
+	private UserFrame view;
 	private Model model;
+	private User user;
+	private List<Collection> collections;
 
 	public UserController(Model model, UserFrame view, SessionManager session, User user) {
 		this.model = model;
 		this.session = session;
+		this.view = view;
+		this.user = user;
+		this.collections = user.getCollections();
 		
 		view.addSubject(model);
 		model.register(view);
 		
 		view.setCards();
-		List<Collection> collections = user.getCollections();
-		for (Collection collection : collections) {
-			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
-		}
-		
+		setSidebarListeners();
+		setContentListeners();
+	}
+	
+	private void setSidebarListeners() {
 		view.addOpenProfileActionListener(new OpenUserListener());
 		view.addLogoutActionListener(new LogoutListener());
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
+	}
+	
+	private void setContentListeners() {
+		List<Collection> collections = user.getCollections();
+		for (Collection collection : collections) {
+			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
+		}
+		view.addCreateCollectionActionListener(new CreateCollectionListener());
 	}
 	
     class OpenOutfitsListener implements ActionListener {
@@ -56,6 +70,20 @@ public class UserController {
     	
         public void actionPerformed(ActionEvent e) {
         	session.collectionPage(collection);
+        }
+    }
+    
+    class CreateCollectionListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+        	String newCollectionName = view.showInputDialog("Enter the name of the collection:");
+        	if (newCollectionName == null || newCollectionName == "")  {
+        		return;
+        	}
+        	newCollectionName = newCollectionName.trim();
+        	model.createCollectionForUser(newCollectionName, session.getCurrentUser());
+        	for (Collection collection : collections) {
+    			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
+    		}
         }
     }
 	

@@ -2,10 +2,7 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import javax.imageio.ImageIO;
 import model.domain.Comment;
 import model.domain.Model;
 import model.domain.Outfit;
@@ -18,6 +15,7 @@ public class OutfitController {
 	private Model model;
 	private Outfit outfit;
 	private OutfitFrame view;
+	private List<Comment> comments;
 
 	public OutfitController(Model model, OutfitFrame view, SessionManager session, Outfit outfit) {
 		this.model = model;
@@ -28,17 +26,16 @@ public class OutfitController {
 		view.addSubject(outfit);
 		outfit.register(view);
 		
+		this.comments = outfit.getComments();
+		
 		view.setCurrentUserId(session.getCurrentUser().getId());
 		view.setOutfit();
-		
-		view.addLikeOutfitActionListener(new LikeOutfitListener());
-		view.addDislikeOutfitActionListener(new DislikeOutfitListener());
-		view.addCommentOnOutfitActionListener(new AddCommentOnOutfitListener());
-		List<Comment> comments = outfit.getComments();
-		for (Comment comment : comments) {
-			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
-		}
-		
+
+		setSidebarListeners();
+		setContentListeners();
+	}
+	
+	private void setSidebarListeners() {
 		view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
 		view.addLogoutActionListener(new LogoutListener());
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
@@ -46,23 +43,40 @@ public class OutfitController {
 		view.addStatisticsActionListener(new OpenStatisticsListener());
 	}
 	
+	private void setContentListeners() {
+		view.addLikeOutfitActionListener(new LikeOutfitListener());
+		view.addDislikeOutfitActionListener(new DislikeOutfitListener());
+		view.addCommentOnOutfitActionListener(new AddCommentOnOutfitListener());
+		for (Comment comment : comments) {
+			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
+		}
+	}
+	
 	class LikeOutfitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	model.likeOutfitAsUser(outfit, session.getCurrentUser());
+        	for (Comment comment : comments) {
+    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
+    		}
         }
     }
 	
 	class DislikeOutfitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	model.dislikeOutfitAsUser(outfit, session.getCurrentUser());
+        	for (Comment comment : comments) {
+    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
+    		}
         }
     }
 	
 	class AddCommentOnOutfitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	Comment comment = model.commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
-        	view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
+        	model.commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
         	view.clearComment();
+        	for (Comment com : comments) {
+    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(com), com.getId());
+    		}
         }
     }
 	

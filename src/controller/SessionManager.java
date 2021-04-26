@@ -40,7 +40,7 @@ public class SessionManager {
     }
     
     public void collectionPage(Collection collection) {
-    	CollectionFrame collectionView = new CollectionFrame(fm);
+    	CollectionFrame collectionView = new CollectionFrame(fm, currentUser);
     	CollectionController collectionController = new CollectionController(model, collectionView, this, collection);
     }
     

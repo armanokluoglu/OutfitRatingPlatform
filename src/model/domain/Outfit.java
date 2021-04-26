@@ -1,14 +1,9 @@
 package model.domain;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-
+import javax.swing.ImageIcon;
 import model.data_access.UserRepository;
 import model.utilities.Brand;
 import model.utilities.Color;
@@ -29,7 +24,7 @@ public class Outfit implements Subject {
 	private Gender gender;
 	private List<Size> sizes;
 	private Color color;
-	private BufferedImage image;
+	private ImageIcon image;
 	private List<User> likedUsers = new ArrayList<>();
 	private List<User> dislikedUsers = new ArrayList<>();;
 	private List<Comment> comments;
@@ -164,11 +159,11 @@ public class Outfit implements Subject {
 		this.color = color;
 	}
 
-	public BufferedImage getImage() {
+	public ImageIcon getImage() {
 		return image;
 	}
 
-	public void setImage(BufferedImage image) {
+	public void setImage(ImageIcon image) {
 		this.image = image;
 	}
 
@@ -296,11 +291,7 @@ public class Outfit implements Subject {
 		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,comments);
 		outfit.setLikedUsers(likedUsers);
 		outfit.setDislikedUsers(dislikedUsers);
-		try {
-			outfit.setImage(ImageIO.read(new File("assets/" + id + ".jpg")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		outfit.setImage(new ImageIcon("assets/" + id + ".jpg"));		
 		return outfit;
 	}
 	

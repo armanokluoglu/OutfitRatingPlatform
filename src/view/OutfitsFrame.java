@@ -121,12 +121,8 @@ public class OutfitsFrame extends JFrame implements Observer {
         	JLabel color = new JLabel(outfit.getColor().toString());
         	JLabel type = new JLabel(outfit.getType().toString());
 
-        	ImageIcon icon = null;
-        	BufferedImage image = outfit.getImage();
-        	if(image != null) {
-        		Image iconImage = image.getScaledInstance(350, 350, Image.SCALE_SMOOTH);
-        		icon = new ImageIcon(iconImage);
-        	} else {
+        	ImageIcon icon = outfit.getImage();
+        	if(icon == null) {
         		outfitButton.setText("This outfit does not have an image.");
         	}
         	
@@ -145,6 +141,8 @@ public class OutfitsFrame extends JFrame implements Observer {
         	
         	cards.add(panel, gbc);
         }
+        
+        content.removeAll();
         content.add(new JScrollPane(cards));
         getFrameManager().setNewPanel(mainPanel);
     }
