@@ -8,9 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-
 import javax.imageio.ImageIO;
-
 import model.data_access.InputOutput;
 import model.data_access.OutfitRepository;
 import model.data_access.UserRepository;
@@ -31,21 +29,21 @@ public class Model implements Observer, Subject {
 	private boolean changed;
 	private List<Observer> observers;
 	private List<Subject> subjects;
-	
+
 	public Model() throws UserAlreadyException {
 		InputOutput io = new InputOutput();
 		this.userRepo = new UserRepository(io);
 		this.outfitRepo = new OutfitRepository(io);
-		this.changed = false;
+		setChanged(false);
 		setObservers(new ArrayList<Observer>());
-		this.subjects = new ArrayList<Subject>();
-		
-//		User user1 = new User(1,"test","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-//		User user2 = new User(2,"test2","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-//		User user3 = new User(3,"test3","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-//		User user4 = new User(4,"test4","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-//		User user5 = new User(5,"test5","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
-//		User user6 = new User(6,"test6","1234",new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
+		setSubjects(new ArrayList<Subject>());
+
+//		User user1 = new User(1, "tugkantuglular", "1234");
+//		User user2 = new User(2, "dilekozturk", "1234");
+//		User user3 = new User(3, "serhatcaner", "1234");
+//		User user4 = new User(4, "armanokluoglu", "1234");
+//		User user5 = new User(5, "ekremozturk", "1234");
+//		User user6 = new User(6, "elonmusk", "1234");
 //
 //		user1.addFollower(user2);
 //		user1.addFollower(user3);
@@ -69,33 +67,33 @@ public class Model implements Observer, Subject {
 //		user1.addFollowing(user5);
 //		user1.addFollowing(user6);
 //
-//		List<Size> sizeList = new ArrayList<>();
-//		sizeList.add(Size.L);
-//		sizeList.add(Size.M);
-//		
 //		Comment com1 = new Comment(1, "Denemeeeee", user1, new Date());
 //		Comment com2 = new Comment(2, "YORUUm", user5, new Date());
 //		Comment com3 = new Comment(3, "yorum deneme", user3, new Date());
 //		Comment com4 = new Comment(4, "testtesttest", user4, new Date());
 //
-//		Outfit outfit = new Outfit(1, Brand.GAP,Type.BIKINIBOTTOM, Occasion.CASUAL, Gender.WOMEN,sizeList,Color.BLACK,Arrays.asList(com1, com2, com3, com4));
-//		Outfit outfit2 = new Outfit(2, Brand.BURBERRY,Type.BRACELET, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GREEN,new ArrayList<>());
-//		Outfit outfit3 = new Outfit(3, Brand.CALVINKLEIN,Type.COAT, Occasion.FORMAL, Gender.WOMEN,sizeList,Color.BLACK,new ArrayList<>());
-//		Outfit outfit4 = new Outfit(4, Brand.FENDI,Type.BLOUSE, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.BLACK,new ArrayList<>());
-//		Outfit outfit5 = new Outfit(5, Brand.GAP,Type.BRA, Occasion.SPORTY, Gender.WOMEN,sizeList,Color.ORANGE,new ArrayList<>());
-//		Outfit outfit6 = new Outfit(6, Brand.ARMANI,Type.BELT, Occasion.ELEGANT, Gender.WOMEN,sizeList,Color.GRAY,new ArrayList<>());
-//		try {
-//			outfit4.setImage(ImageIO.read(new File("assets/fendi_black_blouse.jpg")));
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+//		Outfit outfit = new Outfit(1, Brand.GAP, Type.HOODIE, Occasion.CASUAL, Gender.UNISEX, Arrays.asList(Size.S, Size.M, Size.L), Color.ORANGE, Arrays.asList(com1, com2, com3, com4));
+//		Outfit outfit2 = new Outfit(2, Brand.BURBERRY, Type.SCARF, Occasion.ELEGANT, Gender.UNISEX, Arrays.asList(Size.M), Color.TAN, new ArrayList<>());
+//		Outfit outfit3 = new Outfit(3, Brand.CALVINKLEIN, Type.COAT, Occasion.CASUAL, Gender.WOMEN, Arrays.asList(Size.XS, Size.S, Size.M, Size.L, Size.XL), Color.WHITE, new ArrayList<>());
+//		Outfit outfit4 = new Outfit(4, Brand.FENDI, Type.BLOUSE, Occasion.ELEGANT, Gender.WOMEN, Arrays.asList(Size.S, Size.M, Size.L), Color.BLACK, new ArrayList<>());
+//		Outfit outfit5 = new Outfit(5, Brand.GUCCI, Type.BELT, Occasion.ELEGANT, Gender.UNISEX, Arrays.asList(Size.M), Color.BLACK, new ArrayList<>());
+//		Outfit outfit6 = new Outfit(6, Brand.ARMANI, Type.PANTS, Occasion.PARTY, Gender.MEN, Arrays.asList(Size.XS, Size.S, Size.M, Size.L, Size.XL), Color.PINK, new ArrayList<>());
+//		Outfit outfit7 = new Outfit(7, Brand.ROLEX, Type.WATCH, Occasion.CASUAL, Gender.MEN, Arrays.asList(Size.M), Color.GRAY, new ArrayList<>());
+//		Outfit outfit8 = new Outfit(8, Brand.ADIDAS, Type.SWEATPANTS, Occasion.SPORTY, Gender.UNISEX, Arrays.asList(Size.S, Size.M, Size.L), Color.BLACK, new ArrayList<>());
+//		Outfit outfit9 = new Outfit(9, Brand.CONVERSE, Type.FOOTWEAR, Occasion.CASUAL, Gender.UNISEX, Arrays.asList(Size.XS, Size.S, Size.M, Size.L, Size.XL), Color.RED, new ArrayList<>());
+//		Outfit outfit10 = new Outfit(10, Brand.ZARA, Type.SWIMSUIT, Occasion.SPORTY, Gender.WOMEN, Arrays.asList(Size.XS, Size.S, Size.M, Size.L, Size.XL), Color.PATTERNED, new ArrayList<>());
+//		Outfit outfit11 = new Outfit(11, Brand.HERMES, Type.BRACELET, Occasion.ELEGANT, Gender.WOMEN, Arrays.asList(Size.M), Color.ROSEGOLD, new ArrayList<>());
+//		Outfit outfit12 = new Outfit(12, Brand.NIKE, Type.FOOTWEAR, Occasion.SPORTY, Gender.MEN, Arrays.asList(Size.XS, Size.S, Size.M, Size.L, Size.XL), Color.GREEN, new ArrayList<>());
+//		Outfit outfit13 = new Outfit(13, Brand.LEVIS, Type.JEANS, Occasion.CASUAL, Gender.WOMEN, Arrays.asList(Size.S, Size.M, Size.L), Color.BLUE, new ArrayList<>());
+//		Outfit outfit14 = new Outfit(14, Brand.PRADA, Type.DRESS, Occasion.ELEGANT, Gender.WOMEN, Arrays.asList(Size.S, Size.M, Size.L), Color.BLACK, new ArrayList<>());
+//		Outfit outfit15 = new Outfit(15, Brand.RAYBAN, Type.GLASSES, Occasion.CASUAL, Gender.UNISEX, Arrays.asList(Size.M), Color.GOLD, new ArrayList<>());
 //
-//		Collection collection = new Collection(1,"collection1",user1,new Date(1618923364000L), Arrays.asList(outfit,outfit2));
-//		Collection collection2 = new Collection(2,"collection2",user2,new Date(1618836964000L), Arrays.asList(outfit3,outfit));
-//		Collection collection3 = new Collection(3,"collection3",user3,new Date(1618750564000L), Arrays.asList(outfit4,outfit3));
-//		Collection collection4 = new Collection(4,"collection4",user4,new Date(1619009764000L), Arrays.asList(outfit,outfit2,outfit3));
-//		Collection collection5 = new Collection(5,"collection5",user5,new Date(1619096164000L), Arrays.asList(outfit5,outfit2,outfit6));
-//		Collection collection6 = new Collection(6,"collection6",user6,new Date(1618919764000L), Arrays.asList(outfit6,outfit2,outfit,outfit3));
+//		Collection collection = new Collection(1, "collection1", user1, new Date(1618923364000L), Arrays.asList(outfit, outfit2));
+//		Collection collection2 = new Collection(2, "collection2", user2, new Date(1618836964000L), Arrays.asList(outfit3, outfit));
+//		Collection collection3 = new Collection(3, "collection3", user3, new Date(1618750564000L), Arrays.asList(outfit4, outfit3));
+//		Collection collection4 = new Collection(4, "collection4", user4, new Date(1619009764000L), Arrays.asList(outfit, outfit2, outfit3));
+//		Collection collection5 = new Collection(5, "collection5", user5, new Date(1619096164000L), Arrays.asList(outfit5, outfit2, outfit6));
+//		Collection collection6 = new Collection(6, "collection6", user6, new Date(1618919764000L), Arrays.asList(outfit6, outfit2, outfit, outfit3));
 //
 //		user1.addCollection(collection);
 //		user2.addCollection(collection2);
@@ -104,17 +102,26 @@ public class Model implements Observer, Subject {
 //		user5.addCollection(collection5);
 //		user6.addCollection(collection6);
 //
-//		outfit.like(user1);outfit2.like(user2);outfit2.like(user3);outfit2.like(user4);outfit3.like(user5);
-//		outfit3.like(user6);outfit4.like(user1);outfit4.like(user2);outfit5.like(user3);outfit6.like(user4);
+//		outfit.like(user1);
+//		outfit2.like(user2);
+//		outfit2.like(user3);
+//		outfit2.like(user4);
+//		outfit3.like(user5);
+//		outfit3.like(user6);
+//		outfit4.like(user1);
+//		outfit4.like(user2);
+//		outfit5.like(user3);
+//		outfit6.like(user4);
 //
+//		outfit.dislike(user2);
+//		outfit.dislike(user3);
+//		outfit2.dislike(user1);
+//		outfit4.dislike(user6);
 //
-//		outfit.dislike(user2);outfit.dislike(user3);
-//		outfit2.dislike(user1);outfit4.dislike(user6);
+//		List<User> userList = Arrays.asList(user1, user2, user3, user4, user5, user6);
+//		List<Outfit> outfits = Arrays.asList(outfit, outfit2, outfit3, outfit4, outfit5, outfit6, outfit7, outfit8, outfit9, outfit10, outfit11, outfit12, outfit13, outfit14, outfit15);
 //
-//
-//		List<User> userList = Arrays.asList(user1,user2,user3,user4,user5,user6);
-//		List<Outfit> outfits = Arrays.asList(outfit,outfit2,outfit3,outfit4,outfit5,outfit6);
-//
+//		io.outputUsers(userList);
 //		io.outputOutfits(outfits);
 
 		io.inputUsers();
@@ -122,8 +129,23 @@ public class Model implements Observer, Subject {
 
 		this.outfitRepo.setOutfits(io.getOutfits());
 		this.userRepo.setUsers(io.getUsers());
+
+		registerAll();
 	}
-	
+
+	private void registerAll() {
+		List<User> users = userRepo.findAll();
+		List<Outfit> outfits = outfitRepo.findAll();
+		for (User user : users) {
+			user.register(this);
+			addSubject(user);
+		}
+		for (Outfit outfit : outfits) {
+			outfit.register(this);
+			addSubject(outfit);
+		}
+	}
+
 	public User login(String username, String password) throws IllegalArgumentException, IllegalStateException {
 		username = "test";
 		password = "1234";
@@ -133,65 +155,65 @@ public class Model implements Observer, Subject {
 		}
 		return user;
 	}
-	
+
 	public Collection createCollectionForUser(String name, User user) {
 		int id = outfitRepo.createCollectionId();
 		Collection collection = new Collection(id, name, user);
 		user.addCollection(collection);
 		return collection;
 	}
-	
+
 	public void addOutfitToCollection(int outfitId, Collection collection) throws IllegalStateException {
 		Outfit outfit = outfitRepo.findOutfitById(outfitId);
 		collection.addOutfit(outfit);
 	}
-	
+
 	public void removeOutfitFromCollection(int outfitId, Collection collection) throws IllegalStateException {
 		Outfit outfit = outfitRepo.findOutfitById(outfitId);
 		collection.removeOutfit(outfit);
 	}
-	
+
 	public void likeOutfitAsUser(Outfit outfit, User user) {
 		outfit.like(user);
 	}
-	
+
 	public void dislikeOutfitAsUser(Outfit outfit, User user) {
 		outfit.dislike(user);
 	}
-	
+
 	public Comment commentOnOutfitAsUser(Outfit outfit, String commentContent, User user) {
 		int id = outfitRepo.createCommentId();
 		Comment comment = new Comment(id, commentContent, user, new Date());
 		outfit.addComment(comment);
 		return comment;
 	}
-	
+
 	public void removeCommentOnOutfit(Outfit outfit, Comment comment) {
 		outfit.removeComment(comment);
 	}
-	
+
 	public void followUserAsUser(int userId, User user) {
 		User userToFollow = userRepo.findUserById(userId);
 		user.addFollowing(userToFollow);
 		userToFollow.addFollower(user);
 	}
-	
+
 	public void unfollowUserAsUser(int userId, User user) {
 		User userToUnfollow = userRepo.findUserById(userId);
 		user.removeFollowing(userToUnfollow);
 		userToUnfollow.removeFollower(user);
 	}
-	
+
 	public List<User> getFollowingsOfUser(int userId) {
 		User user = userRepo.findUserById(userId);
 		return user.getFollowings();
 	}
-	
+
 	public List<User> getFollowersOfUser(int userId) {
 		User user = userRepo.findUserById(userId);
 		return user.getFollowers();
 	}
-	
+
 	public List<Collection> getCollectionsOfFollowingsOfUserChronologically(User user) {
 		List<User> followings = user.getFollowings();
 		List<Collection> collections = new ArrayList<>();
@@ -199,30 +221,30 @@ public class Model implements Observer, Subject {
 			collections.addAll(following.getCollections());
 		}
 		Collections.sort(collections, new Comparator<Collection>() {
-	        public int compare(Collection col1, Collection col2) {
-	            return col2.getCreationDate().compareTo(col1.getCreationDate());
-	        }
-	    });
+			public int compare(Collection col1, Collection col2) {
+				return col2.getCreationDate().compareTo(col1.getCreationDate());
+			}
+		});
 		return collections;
-		
+
 	}
-	
+
 	public List<Outfit> getAllOutfits() {
 		return outfitRepo.findAll();
 	}
-	
+
 	public Outfit getMostLikedOutfit() {
 		return outfitRepo.getOutfitWithMostLikes();
 	}
-	
+
 	public Outfit getMostDislikedOutfit() {
 		return outfitRepo.getOutfitWithMostDislikes();
 	}
-	
+
 	public User getMostFollowedUser() {
 		return userRepo.getUserWithMostFollowers();
 	}
-	
+
 	public boolean isChanged() {
 		return changed;
 	}
@@ -230,7 +252,7 @@ public class Model implements Observer, Subject {
 	public void setChanged(boolean changed) {
 		this.changed = changed;
 	}
-	
+
 	public List<Observer> getObservers() {
 		return observers;
 	}
@@ -238,7 +260,15 @@ public class Model implements Observer, Subject {
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
 	}
-	
+
+	public List<Subject> getSubjects() {
+		return subjects;
+	}
+
+	public void setSubjects(List<Subject> subjects) {
+		this.subjects = subjects;
+	}
+
 	// SUBJECT METHODS
 
 	@Override
@@ -276,7 +306,7 @@ public class Model implements Observer, Subject {
 			observer.update();
 		}
 	}
-	
+
 	// OBSERVER METHODS
 
 	@Override
@@ -289,7 +319,7 @@ public class Model implements Observer, Subject {
 	public void addSubject(Subject sub) {
 		this.subjects.add(sub);
 	}
-	
+
 	@Override
 	public void removeSubject(Subject sub) {
 		this.subjects.remove(sub);

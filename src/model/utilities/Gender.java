@@ -1,5 +1,5 @@
 package model.utilities;
 
 public enum Gender {
-	MEN, WOMEN
+	MEN, WOMEN, UNISEX
 }

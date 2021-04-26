@@ -1,8 +1,13 @@
 package model.domain;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import model.data_access.UserRepository;
 import model.utilities.Brand;
 import model.utilities.Color;
@@ -284,6 +289,11 @@ public class Outfit implements Subject {
 		Outfit outfit = new Outfit(id,brand,type,occasion,gender,sizes,color,comments);
 		outfit.setLikedUsers(likedUsers);
 		outfit.setDislikedUsers(dislikedUsers);
+		try {
+			outfit.setImage(ImageIO.read(new File("assets/" + id + ".jpg")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return outfit;
 	}
 	

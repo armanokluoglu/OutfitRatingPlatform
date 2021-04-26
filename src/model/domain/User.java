@@ -23,6 +23,17 @@ public class User implements Subject {
 	private boolean changed;
 	private List<Observer> observers;
 
+	public User(int id, String username, String password) {
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.followers = new ArrayList<>();
+		this.followings = new ArrayList<>();
+		this.collections = new ArrayList<>();
+		this.changed = false;
+		this.observers = new ArrayList<Observer>();
+	}
+	
 	public User(int id, String username, String password, List<User> followers, List<User> followings,
 			List<Collection> collections) {
 		this.id = id;

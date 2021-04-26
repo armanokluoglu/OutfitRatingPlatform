@@ -25,13 +25,6 @@ public class OutfitController {
 		this.session = session;
 		this.outfit = outfit;
 		
-		//TEMPORARY
-		try {
-			outfit.setImage(ImageIO.read(new File("assets/fendi_black_blouse.jpg")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}	
-		
 		view.addSubject(outfit);
 		outfit.register(view);
 		
