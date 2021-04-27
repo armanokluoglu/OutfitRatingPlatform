@@ -19,6 +19,7 @@ public class Collection implements Subject {
 	private List<Outfit> outfits;
 	private boolean changed;
 	private List<Observer> observers;
+	private static int idCounter = 10;
 
 	public Collection(int id, String name, User creator) {
 		this.id = id;
@@ -29,7 +30,16 @@ public class Collection implements Subject {
 		this.changed = false;
 		this.observers = new ArrayList<Observer>();
 	}
-	
+	public Collection(String name, User creator) {
+		this.id = idCounter;
+		idCounter++;
+		this.name = name;
+		this.creator = creator;
+		this.creationDate = new Date();
+		this.outfits = new ArrayList<Outfit>();;
+		this.changed = false;
+		this.observers = new ArrayList<Observer>();
+	}
 	public Collection(int id, String name, User creator, Date date, List<Outfit> outfits) {
 		this.id = id;
 		this.name = name;

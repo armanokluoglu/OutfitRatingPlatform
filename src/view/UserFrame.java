@@ -40,7 +40,9 @@ public class UserFrame extends JFrame implements Observer {
 	private JPanel leftSide;
 	private JPanel content;
 	private JButton createCollectionButton;
-	
+	private JButton unfollowButton;
+	private JButton followButton;
+
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
@@ -66,7 +68,15 @@ public class UserFrame extends JFrame implements Observer {
 		this.createCollectionButton = new JButton("Create New Collection");
 		this.createCollectionButton.setPreferredSize(new Dimension(200, 50));
 		this.createCollectionButton.setBackground(Color.PINK);
-		
+
+		this.unfollowButton =  new JButton("Unfollow");
+		this.unfollowButton.setPreferredSize(new Dimension(100, 50));
+		this.unfollowButton.setBackground(Color.RED);
+
+		this.followButton =  new JButton("follow");
+		this.followButton.setPreferredSize(new Dimension(100, 50));
+		this.followButton.setBackground(Color.GREEN);
+
 		mainPanel.add(leftSide);
 		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
@@ -159,8 +169,15 @@ public class UserFrame extends JFrame implements Observer {
         panel.add(collectionsLabel, gbc);
         if(user.equals(currentUser)) {
         	panel.add(createCollectionButton, gbc);
-        }
-        panel.add(collectionsPanel, gbc);
+        }else{
+        	if(currentUser.getFollowings().contains(user))
+				panel.add(unfollowButton, gbc);
+			else
+				panel.add(followButton, gbc);
+
+		}
+
+		panel.add(collectionsPanel, gbc);
         
         content.removeAll();
         content.add(new JScrollPane(panel));
@@ -178,7 +195,14 @@ public class UserFrame extends JFrame implements Observer {
 	public void addCreateCollectionActionListener(ActionListener actionListener) {
 		createCollectionButton.addActionListener(actionListener);   
     }
-	
+	public void addUnfollowUserActionListener(ActionListener actionListener) {
+		unfollowButton.addActionListener(actionListener);
+	}
+
+	public void addFollowUserActionListener(ActionListener actionListener) {
+		followButton.addActionListener(actionListener);
+	}
+
     public void addOpenProfileActionListener(ActionListener actionListener) {
     	profilePageButton.addActionListener(actionListener);   
     }

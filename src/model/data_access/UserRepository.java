@@ -15,7 +15,11 @@ public class UserRepository {
 		this.io = io;
 		userList = io.inputUsers();
 	}
-	
+
+	public void outputUsers(){
+		io.xmlOutput(userList);
+	}
+
 	public List<User> findAll(){
 		return userList;
 	}

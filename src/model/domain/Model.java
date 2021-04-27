@@ -1,14 +1,12 @@
 package model.domain;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import model.data_access.InputOutput;
 import model.data_access.OutfitRepository;
 import model.data_access.UserRepository;
 import model.exception.UserAlreadyException;
+import model.utilities.*;
 import model.utilities.Observer;
 import model.utilities.Subject;
 
@@ -19,11 +17,15 @@ public class Model implements Observer, Subject {
 	private boolean changed;
 	private List<Observer> observers;
 	private List<Subject> subjects;
-
+	List<User> userList = new ArrayList<>();
+	List<Outfit> outfits = new ArrayList<>();
+	InputOutput io;
 	public Model() throws UserAlreadyException {
-		InputOutput io = new InputOutput();
+		io = new InputOutput();
 		this.userRepo = new UserRepository(io);
 		this.outfitRepo = new OutfitRepository(io);
+		userList=userRepo.findAll();
+		outfits =outfitRepo.findAll();
 		setChanged(false);
 		setObservers(new ArrayList<Observer>());
 		setSubjects(new ArrayList<Subject>());
@@ -108,17 +110,14 @@ public class Model implements Observer, Subject {
 //		outfit2.dislike(user1);
 //		outfit4.dislike(user6);
 //
-//		List<User> userList = Arrays.asList(user1, user2, user3, user4, user5, user6);
-//		List<Outfit> outfits = Arrays.asList(outfit, outfit2, outfit3, outfit4, outfit5, outfit6, outfit7, outfit8, outfit9, outfit10, outfit11, outfit12, outfit13, outfit14, outfit15);
+//		userList = Arrays.asList(user1, user2, user3, user4, user5, user6);
+//		outfits = Arrays.asList(outfit, outfit2, outfit3, outfit4, outfit5, outfit6, outfit7, outfit8, outfit9, outfit10, outfit11, outfit12, outfit13, outfit14, outfit15);
 //
 //		io.xmlOutput(userList);
 //		io.outputOutfits(outfits);
-
-		io.inputUsers();
-		io.inputOutfits();
-
-		this.outfitRepo.setOutfits(io.getOutfits());
-		this.userRepo.setUsers(io.getUsers());
+//
+//		io.inputUsers();
+//		io.inputOutfits();
 
 		registerAll();
 	}
@@ -136,8 +135,12 @@ public class Model implements Observer, Subject {
 		}
 	}
 
+	public void outputData(){
+		userRepo.outputUsers();
+		outfitRepo.outputOutfits();
+	}
 	public User login(String username, String password) throws IllegalArgumentException, IllegalStateException {
-		username = "tugkantuglular";
+		username = "dilekozturk";
 		password = "1234";
 		User user = userRepo.findUserByUsername(username);
 		if (!user.getPassword().equals(password)) {
@@ -147,8 +150,7 @@ public class Model implements Observer, Subject {
 	}
 
 	public Collection createCollectionForUser(String name, User user) {
-		int id = outfitRepo.createCollectionId();
-		Collection collection = new Collection(id, name, user);
+		Collection collection = new Collection(name, user);
 		user.addCollection(collection);
 		return collection;
 	}
@@ -156,42 +158,49 @@ public class Model implements Observer, Subject {
 	public void addOutfitToCollection(int outfitId, Collection collection) throws IllegalStateException {
 		Outfit outfit = outfitRepo.findOutfitById(outfitId);
 		collection.addOutfit(outfit);
+		outputData();
 	}
 
 	public void removeOutfitFromCollection(int outfitId, Collection collection) throws IllegalStateException {
 		Outfit outfit = outfitRepo.findOutfitById(outfitId);
 		collection.removeOutfit(outfit);
+		outputData();
 	}
 
 	public void likeOutfitAsUser(Outfit outfit, User user) {
 		outfit.like(user);
+		outputData();
 	}
 
 	public void dislikeOutfitAsUser(Outfit outfit, User user) {
 		outfit.dislike(user);
+		outputData();
 	}
 
 	public Comment commentOnOutfitAsUser(Outfit outfit, String commentContent, User user) {
-		int id = outfitRepo.createCommentId();
-		Comment comment = new Comment(id, commentContent, user, new Date());
+		Comment comment = new Comment(commentContent, user, new Date());
 		outfit.addComment(comment);
+		outputData();
 		return comment;
 	}
 
 	public void removeCommentOnOutfit(Outfit outfit, Comment comment) {
 		outfit.removeComment(comment);
+		outputData();
 	}
 
 	public void followUserAsUser(int userId, User user) {
 		User userToFollow = userRepo.findUserById(userId);
 		user.addFollowing(userToFollow);
 		userToFollow.addFollower(user);
+		outputData();
 	}
 
 	public void unfollowUserAsUser(int userId, User user) {
 		User userToUnfollow = userRepo.findUserById(userId);
 		user.removeFollowing(userToUnfollow);
 		userToUnfollow.removeFollower(user);
+		outputData();
 	}
 
 	public List<User> getFollowingsOfUser(int userId) {
@@ -230,6 +239,8 @@ public class Model implements Observer, Subject {
 	public Outfit getMostDislikedOutfit() {
 		return outfitRepo.getOutfitWithMostDislikes();
 	}
+
+	public List<User> getAllUsers(){ return userRepo.findAll();}
 
 	public User getMostFollowedUser() {
 		return userRepo.getUserWithMostFollowers();

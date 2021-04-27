@@ -12,20 +12,21 @@ public class OutfitRepository {
 	
 	public OutfitRepository(InputOutput io) {
 		this.io = io;
+		outfitList = io.inputOutfits();
 	}
 
 	public List<Outfit> findAll(){
 		return outfitList;
+	}
+
+	public void outputOutfits(){
+		io.outputOutfits(outfitList);
 	}
 	
 	public void setOutfits(List<Outfit> outfits) {
 		this.outfitList = outfits;
 	}
 
-	public int createCollectionId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	public Outfit findOutfitById(int outfitId) throws IllegalStateException {
 		for (Outfit outfit : outfitList) {
@@ -34,11 +35,6 @@ public class OutfitRepository {
 			}
 		}
 		throw new IllegalStateException("No outfit found with the given id.");
-	}
-
-	public int createCommentId() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	public Outfit getOutfitWithMostLikes() {

@@ -4,14 +4,7 @@ import model.domain.Collection;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
-import view.CollectionFrame;
-import view.FrameManager;
-import view.HomeFrame;
-import view.LoginFrame;
-import view.OutfitFrame;
-import view.OutfitsFrame;
-import view.StatisticsFrame;
-import view.UserFrame;
+import view.*;
 
 public class SessionManager {
     private User currentUser;
@@ -38,6 +31,10 @@ public class SessionManager {
     	UserFrame userView = new UserFrame(fm, currentUser, user);
     	UserController userController = new UserController(model, userView, this, user);
     }
+    public void allUsersPage(User user) {
+        AllUsersFrame userView = new AllUsersFrame(fm, currentUser, model.getAllUsers());
+        AllUsersController userController = new AllUsersController(model, userView, this);
+    }
     
     public void collectionPage(Collection collection) {
     	CollectionFrame collectionView = new CollectionFrame(fm, currentUser);
@@ -53,7 +50,6 @@ public class SessionManager {
     	OutfitsFrame outfitsView = new OutfitsFrame(fm);
     	OutfitsController outfitsController = new OutfitsController(model, outfitsView, this);
     }
-    
     public void statisticsPage() {
     	StatisticsFrame statisticsView = new StatisticsFrame(fm);
     	StatisticsController statisticsControler = new StatisticsController(model, statisticsView, this);

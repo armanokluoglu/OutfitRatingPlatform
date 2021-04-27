@@ -53,6 +53,9 @@ public class UserController {
 			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
 		}
 		view.addCreateCollectionActionListener(new CreateCollectionListener());
+		view.addUnfollowUserActionListener(new UnfollowUserListener());
+		view.addFollowUserActionListener(new FollowUserListener());
+
 	}
 	
     class OpenOutfitsListener implements ActionListener {
@@ -86,7 +89,18 @@ public class UserController {
     		}
         }
     }
-	
+	class UnfollowUserListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			model.unfollowUserAsUser(user.getId(), session.getCurrentUser());
+		}
+	}
+
+	class FollowUserListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			model.followUserAsUser(user.getId(), session.getCurrentUser());
+		}
+	}
+
     class OpenUserListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	session.userPage(session.getCurrentUser());

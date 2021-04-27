@@ -15,8 +15,17 @@ public class Comment {
 	private User author;
 	private Date date;
 	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+	private static int idCounter=50;
 	public Comment(int id, String content, User author, Date date) {
 		this.id = id;
+		this.content = content;
+		this.author = author;
+		this.date = date;
+	}
+
+	public Comment(String content, User author, Date date) {
+		this.id = idCounter;
+		idCounter++;
 		this.content = content;
 		this.author = author;
 		this.date = date;

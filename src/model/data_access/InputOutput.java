@@ -68,7 +68,7 @@ public class InputOutput {
     }
 
 
-    public void inputOutfits() {
+    public List<Outfit> inputOutfits() {
         JSONParser jsonParser = new JSONParser();
         List<Outfit> outfitsList = new ArrayList<>();
         try (FileReader reader = new FileReader("outfits.json")) {
@@ -86,6 +86,7 @@ public class InputOutput {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return outfitsList;
     }
 
 
