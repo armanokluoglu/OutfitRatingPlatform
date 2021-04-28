@@ -15,7 +15,7 @@ public class OutfitRating {
 		this.fm2 = new FrameManager();
 	}
 	
-	public void start() throws UserAlreadyException {
+	public void start() {
 		Model model = new Model();
         MainFrame view = new MainFrame(model, this.fm);
         MainController controller = new MainController(model, view, this.fm);

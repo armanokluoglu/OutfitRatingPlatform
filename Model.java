@@ -144,6 +144,7 @@ public class Model implements Observer, Subject {
 	public Collection createCollectionForUser(String name, User user) {
 		Collection collection = new Collection(name, user);
 		user.addCollection(collection);
+		outputData();
 		return collection;
 	}
 

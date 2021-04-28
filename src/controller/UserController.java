@@ -3,17 +3,9 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
-import controller.HomeController.OpenCollectionListener;
-import controller.OutfitController.LogoutListener;
-import controller.OutfitController.OpenHomeListener;
-import controller.OutfitController.OpenOutfitsListener;
-import controller.OutfitController.OpenStatisticsListener;
-import controller.OutfitController.OpenUserListener;
 import model.domain.Collection;
 import model.domain.Model;
 import model.domain.User;
-import view.HomeFrame;
 import view.UserFrame;
 
 public class UserController {
@@ -46,7 +38,6 @@ public class UserController {
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
 		view.addAllUsersActionListener(new OpenAllUserListener(session.getCurrentUser()));
-
 	}
 	
 	private void setContentListeners() {
@@ -57,7 +48,6 @@ public class UserController {
 		view.addCreateCollectionActionListener(new CreateCollectionListener());
 		view.addUnfollowUserActionListener(new UnfollowUserListener());
 		view.addFollowUserActionListener(new FollowUserListener());
-
 	}
 	
     class OpenOutfitsListener implements ActionListener {
