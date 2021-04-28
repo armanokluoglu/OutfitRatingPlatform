@@ -16,10 +16,6 @@
                 <UserName>ekremozturk</UserName>
                 <Password>1234</Password>
             </User>
-            <User id="2">
-                <UserName>dilekozturk</UserName>
-                <Password>1234</Password>
-            </User>
         </Followers>
         <Followings>
             <User id="3">
@@ -51,10 +47,6 @@
             </User>
         </Followers>
         <Followings>
-            <User id="1">
-                <UserName>tugkantuglular</UserName>
-                <Password>1234</Password>
-            </User>
             <User id="3">
                 <UserName>serhatcaner</UserName>
                 <Password>1234</Password>
