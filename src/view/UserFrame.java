@@ -46,6 +46,7 @@ public class UserFrame extends JFrame implements Observer {
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
+	private JButton allUsersPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 	
@@ -118,6 +119,11 @@ public class UserFrame extends JFrame implements Observer {
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		this.allUsersPageButton = allUsersPageButton;
 		
 		JButton statisticsPageButton = new JButton("Statistics");
 		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -136,6 +142,7 @@ public class UserFrame extends JFrame implements Observer {
 			leftSide.add(profilePageButton, gbc);
 		}
 		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 		this.leftSide = leftSide;
@@ -214,6 +221,10 @@ public class UserFrame extends JFrame implements Observer {
     public void addStatisticsActionListener(ActionListener actionListener) {
     	statisticsPageButton.addActionListener(actionListener);
     }
+
+	public void addAllUsersActionListener(ActionListener actionListener) {
+		allUsersPageButton.addActionListener(actionListener);
+	}
     
     public void addHomeActionListener(ActionListener actionListener) {
     	homePageButton.addActionListener(actionListener);

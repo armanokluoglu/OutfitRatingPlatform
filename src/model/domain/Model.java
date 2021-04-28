@@ -29,7 +29,7 @@ public class Model implements Observer, Subject {
 		setChanged(false);
 		setObservers(new ArrayList<Observer>());
 		setSubjects(new ArrayList<Subject>());
-
+//
 //		User user1 = new User(1, "tugkantuglular", "1234");
 //		User user2 = new User(2, "dilekozturk", "1234");
 //		User user3 = new User(3, "serhatcaner", "1234");

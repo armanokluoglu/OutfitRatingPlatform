@@ -47,10 +47,10 @@ public class AllUsersFrame extends JFrame implements Observer {
     private List<JButton> collectionButtons;
 
     public AllUsersFrame(FrameManager fm, User currentUser, List<User> users) {
-        users.remove(currentUser);
+        this.users = new ArrayList<>(users);
+        this.users.remove(currentUser);
         this.fm = fm;
         this.currentUser = currentUser;
-        this.users = users;
         this.userButtons = new ArrayList<>();
         this.collectionButtons = new ArrayList<>();
         JPanel mainPanel = new JPanel();

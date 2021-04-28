@@ -45,6 +45,8 @@ public class UserController {
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
+		view.addAllUsersActionListener(new OpenAllUserListener(session.getCurrentUser()));
+
 	}
 	
 	private void setContentListeners() {
@@ -75,6 +77,17 @@ public class UserController {
         	session.collectionPage(collection);
         }
     }
+	class OpenAllUserListener implements ActionListener {
+		private User user;
+
+		public OpenAllUserListener(User user) {
+			this.user = user;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			session.allUsersPage(user);
+		}
+	}
     
     class CreateCollectionListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

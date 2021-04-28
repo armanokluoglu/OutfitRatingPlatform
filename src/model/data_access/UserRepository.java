@@ -38,7 +38,6 @@ public class UserRepository {
 	}
 
 	public User findUserById(int userId) {
-		// TODO Auto-generated method stub
 		for(User user:userList){
 			if(user.getId()==userId)
 				return user;
