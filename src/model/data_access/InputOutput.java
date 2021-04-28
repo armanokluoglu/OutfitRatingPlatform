@@ -68,7 +68,7 @@ public class InputOutput {
     }
 
 
-    public List<Outfit> inputOutfits() {
+    public List<Outfit> inputOutfits(UserRepository userRepository) {
         JSONParser jsonParser = new JSONParser();
         List<Outfit> outfitsList = new ArrayList<>();
         try (FileReader reader = new FileReader("outfits.json")) {
@@ -78,7 +78,7 @@ public class InputOutput {
 
             entries.forEach(entry -> outfitsList.add(Outfit.parseJson((org.json.simple.JSONObject) entry,new UserRepository(this))));
             this.outfits = outfitsList;
-            matchUsersAndCollections(collectionsList);
+            matchUsersAndCollections(collectionsList,userRepository);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -320,10 +320,10 @@ public class InputOutput {
         }
 
     }
-    private void matchUsersAndCollections(List<List<UserWithCollection>> lists){
+    private void matchUsersAndCollections(List<List<UserWithCollection>> lists,UserRepository userRepository){
         for(List<UserWithCollection> usersCollections:lists){
             for(UserWithCollection userCollections: usersCollections){
-                User user = findUserById(userCollections.userId);
+                User user = userRepository.findUserById(userCollections.userId);
                 int collectionId = userCollections.collectionId;
                 Collection collection = new Collection(collectionId,userCollections.collectionName,user);
                 for(int outfitId:userCollections.outfitIds){

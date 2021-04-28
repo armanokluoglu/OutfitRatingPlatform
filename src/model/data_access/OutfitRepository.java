@@ -10,9 +10,9 @@ public class OutfitRepository {
 	private InputOutput io;
 	private List<Outfit> outfitList;
 	
-	public OutfitRepository(InputOutput io) {
+	public OutfitRepository(InputOutput io, UserRepository userRepository) {
 		this.io = io;
-		outfitList = io.inputOutfits();
+		outfitList = io.inputOutfits(userRepository);
 	}
 
 	public List<Outfit> findAll(){
