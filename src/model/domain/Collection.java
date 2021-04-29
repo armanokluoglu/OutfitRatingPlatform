@@ -1,5 +1,6 @@
 package model.domain;
 
+import model.data_access.IOParser;
 import org.json.JSONObject;
 import model.utilities.Observer;
 import model.utilities.Subject;
@@ -126,45 +127,6 @@ public class Collection implements Subject {
 
 	public void setObservers(List<Observer> observers) {
 		this.observers = observers;
-	}
-	
-	// JSON METHODS
-
-	public JSONObject toJSON(){
-		JSONObject collectionJSON = new JSONObject();
-		collectionJSON.put("Id", getId());
-		collectionJSON.put("Name", getName());
-		List<JSONObject> outfitsJSON = new ArrayList<>();
-		for(Outfit outfit:outfits){
-			outfitsJSON.add(outfit.toJSON());
-		}
-		collectionJSON.put("Outfits", outfitsJSON);
-
-		return collectionJSON;
-	}
-	
-	// XML METHODS
-	
-	public Node toXMLNode(Document doc) {
-		Element collection = doc.createElement("Collection");
-		//set id attribute
-		collection.setAttribute("id", String.valueOf(getId()));
-		//create name element
-		collection.appendChild(getOutfitElements(doc, collection, "Name", getName()));
-		String outfitIds="";
-		for(Outfit outfit:outfits){
-			outfitIds+=outfit.getId()+" ";
-		}
-		outfitIds = outfitIds.substring(0, outfitIds.length() - 1);
-		collection.appendChild(getOutfitElements(doc,collection,"OutfitIds",outfitIds));
-
-		return collection;
-	}
-	
-	private Node getOutfitElements(Document doc, Element element, String name, String value) {
-		Element node = doc.createElement(name);
-		node.appendChild(doc.createTextNode(value));
-		return node;
 	}
 
 	// OBSERVATION METHODS

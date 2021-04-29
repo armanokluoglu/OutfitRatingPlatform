@@ -14,7 +14,6 @@ public class Comment {
 	private String content;
 	private User author;
 	private Date date;
-	private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 	private static int idCounter=50;
 	public Comment(int id, String content, User author, Date date) {
 		this.id = id;
@@ -59,26 +58,5 @@ public class Comment {
 		this.date = date;
 	}
 	
-	// JSON METHODS
 
-	public JSONObject toJSON(){
-		JSONObject commentJson = new JSONObject();
-		commentJson.put("Id", getId());
-		commentJson.put("Content", getContent());
-		commentJson.put("AuthorId", author.getId());
-		commentJson.put("Date", dateFormat.format(getDate()));
-		return commentJson;
-	}
-	
-	public static Comment parseJson(org.json.simple.JSONObject commentJSON, UserRepository repository) throws ParseException {
-		int id = ((Long) commentJSON.get("Id")).intValue();
-		String content = (String) commentJSON.get("Content");
-		int userId = ((Long) commentJSON.get("AuthorId")).intValue();
-		String dateStr = (String) commentJSON.get("Date");
-		Date date=dateFormat.parse(dateStr);
-
-		User user = repository.findUserById(userId);
-
-		return new Comment(id,content,user,date);
-	}
 }

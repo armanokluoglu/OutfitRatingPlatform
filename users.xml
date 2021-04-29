@@ -40,6 +40,10 @@
                 <Name>collection1</Name>
                 <OutfitIds>1 2</OutfitIds>
             </Collection>
+            <Collection id="10">
+                <Name>xx</Name>
+                <OutfitIds>1</OutfitIds>
+            </Collection>
         </Collections>
     </User>
     <User id="2">

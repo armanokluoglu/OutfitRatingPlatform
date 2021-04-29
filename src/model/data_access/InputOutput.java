@@ -39,7 +39,7 @@ public class InputOutput {
 		List<JSONObject> allOutfitsJSON = new ArrayList<>();
 		JSONObject outfitsJsonList = new JSONObject();
 		for (Outfit outfit : outfits) {
-			allOutfitsJSON.add(outfit.toJSON());
+			allOutfitsJSON.add(IOParser.outfitToJSON(outfit));
 		}
 		outfitsJsonList.put("Outfits", allOutfitsJSON);
 		try {
@@ -69,7 +69,7 @@ public class InputOutput {
 			org.json.simple.JSONArray entries = (org.json.simple.JSONArray) outfits.get("Outfits");
 
 			entries.forEach(entry -> outfitsList
-					.add(Outfit.parseJson((org.json.simple.JSONObject) entry, new UserRepository(this))));
+					.add(IOParser.parseOutfitJson((org.json.simple.JSONObject) entry, new UserRepository(this))));
 			this.outfits = outfitsList;
 			matchUsersAndCollections(collectionsList, userRepository);
 		} catch (FileNotFoundException e) {
@@ -80,29 +80,6 @@ public class InputOutput {
 			e.printStackTrace();
 		}
 		return outfitsList;
-	}
-
-	public void outputUsers(List<User> users) {
-		List<JSONObject> allUsersJSON = new ArrayList<>();
-		for (User user : users) {
-			allUsersJSON.add(user.toJSON());
-		}
-		try {
-			file = new FileWriter("users.json");
-			file.write(allUsersJSON.toString());
-
-		} catch (IOException e) {
-			e.printStackTrace();
-
-		} finally {
-			try {
-				file.flush();
-				file.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 	public void xmlOutput(List<User> users) {
@@ -118,7 +95,7 @@ public class InputOutput {
 
 			// append first child element to root element
 			for (User user : users)
-				rootElement.appendChild(user.toXMLNode(doc));
+				rootElement.appendChild(IOParser.toUserXMLNode(user,doc));
 
 			// for output to file, console
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
