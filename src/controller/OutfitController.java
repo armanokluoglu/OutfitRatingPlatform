@@ -7,12 +7,14 @@ import model.domain.Comment;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
+import model.utilities.Observer;
+import model.utilities.Subject;
 import view.OutfitFrame;
 
-public class OutfitController {
+public class OutfitController implements Observer {
 
 	private SessionManager session;
-	private Model model;
+	private Subject model;
 	private Outfit outfit;
 	private OutfitFrame view;
 	private List<Comment> comments;
@@ -22,19 +24,13 @@ public class OutfitController {
 		this.view = view;
 		this.session = session;
 		this.outfit = outfit;
-		
-		view.addSubject(outfit);
-		outfit.register(view);
-		
 		this.comments = outfit.getComments();
-		
-		view.setCurrentUserId(session.getCurrentUser().getId());
-		view.setOutfit();
 
+		outfit.register(this);
 		setSidebarListeners();
 		setContentListeners();
 	}
-	
+
 	private void setSidebarListeners() {
 		view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
 		view.addLogoutActionListener(new LogoutListener());
@@ -42,7 +38,7 @@ public class OutfitController {
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
 	}
-	
+
 	private void setContentListeners() {
 		view.addLikeOutfitActionListener(new LikeOutfitListener());
 		view.addDislikeOutfitActionListener(new DislikeOutfitListener());
@@ -51,84 +47,86 @@ public class OutfitController {
 			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
 		}
 	}
-	
+
 	class LikeOutfitListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	model.likeOutfitAsUser(outfit, session.getCurrentUser());
-        	for (Comment comment : comments) {
-    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
-    		}
-        }
-    }
-	
+		public void actionPerformed(ActionEvent e) {
+			((Model) model).likeOutfitAsUser(outfit, session.getCurrentUser());
+		}
+	}
+
 	class DislikeOutfitListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	model.dislikeOutfitAsUser(outfit, session.getCurrentUser());
-        	for (Comment comment : comments) {
-    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
-    		}
-        }
-    }
-	
+		public void actionPerformed(ActionEvent e) {
+			((Model) model).dislikeOutfitAsUser(outfit, session.getCurrentUser());
+		}
+	}
+
 	class AddCommentOnOutfitListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	model.commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
-        	view.clearComment();
-        	for (Comment com : comments) {
-    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(com), com.getId());
-    		}
-        }
-    }
-	
-    class RemoveCommentOnOutfitListener implements ActionListener {
-    	private Comment comment;
-    	
-    	public RemoveCommentOnOutfitListener(Comment comment) {
-    		this.comment = comment;
-    	}
-    	
-        public void actionPerformed(ActionEvent e) {
-        	model.removeCommentOnOutfit(outfit, comment);
-        	List<Comment> comments = outfit.getComments();
-    		for (Comment comment : comments) {
-    			view.addRemoveCommentOnOutfitActionListener(new RemoveCommentOnOutfitListener(comment), comment.getId());
-    		}
-        }
-    }
-	
-    class OpenOutfitsListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	session.outfitsPage();
-        }
-    }
-	
-    class OpenUserListener implements ActionListener {
-    	private User user;
-    	
-    	public OpenUserListener(User user) {
-    		this.user = user;
-    	}
-    	
-        public void actionPerformed(ActionEvent e) {
-        	session.userPage(user);
-        }
-    }
-    
-    class OpenHomeListener implements ActionListener {
-    	public void actionPerformed(ActionEvent e) {
-    		session.homePage();
-    	}
-    }
-    
-    class OpenStatisticsListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	session.statisticsPage();
-        }
-    }
-    
-    class LogoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-        	session.loginPage();
-        }
-    }
+		public void actionPerformed(ActionEvent e) {
+			((Model) model).commentOnOutfitAsUser(outfit, view.getComment(), session.getCurrentUser());
+			view.clearComment();
+		}
+	}
+
+	class RemoveCommentOnOutfitListener implements ActionListener {
+		private Comment comment;
+
+		public RemoveCommentOnOutfitListener(Comment comment) {
+			this.comment = comment;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			((Model) model).removeCommentOnOutfit(outfit, comment);
+		}
+	}
+
+	class OpenOutfitsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.outfitsPage();
+		}
+	}
+
+	class OpenUserListener implements ActionListener {
+		private User user;
+
+		public OpenUserListener(User user) {
+			this.user = user;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			session.userPage(user);
+		}
+	}
+
+	class OpenHomeListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.homePage();
+		}
+	}
+
+	class OpenStatisticsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.statisticsPage();
+		}
+	}
+
+	class LogoutListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.loginPage();
+		}
+	}
+
+	@Override
+	public void update() {
+		setContentListeners();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.model = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.model = null;
+	}
 }

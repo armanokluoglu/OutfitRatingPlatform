@@ -105,13 +105,12 @@ public class InputOutput {
 			DOMSource source = new DOMSource(doc);
 
 			// write to console or file
-			StreamResult console = new StreamResult(System.out);
+			//StreamResult console = new StreamResult(System.out);
 			StreamResult file = new StreamResult(new File("users.xml"));
 
 			// write data
-			transformer.transform(source, console);
+			//transformer.transform(source, console);
 			transformer.transform(source, file);
-			// System.out.println("DONE");
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,12 +156,10 @@ public class InputOutput {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(inputFile);
 			doc.getDocumentElement().normalize();
-			// System.out.println("Root element :" +
 			// doc.getDocumentElement().getNodeName());
 			NodeList nList = doc.getElementsByTagName("User");
 
 			Node nNode = nList.item(0);
-			// System.out.println("\nCurrent Element :" + nNode.getNodeName());
 			int length = nNode.getChildNodes().getLength();
 			for (int i = 0; i < length; i++) {
 				if (nNode != null && nNode.getNodeType() == Node.ELEMENT_NODE) {
@@ -207,12 +204,10 @@ public class InputOutput {
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
 				int id = Integer.valueOf(eElement.getAttribute("id"));
-				// System.out.print(id + " ");
 				relatedUsers.add(id);
 			}
 		}
 		return new UserWithUsers(userId, relatedUsers);
-
 	}
 
 	private List<UserWithCollection> nodeToUserWithCollection(int userId, Node node) {
