@@ -1,10 +1,8 @@
 package model.domain;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
-import model.data_access.UserRepository;
 import model.utilities.Brand;
 import model.utilities.Color;
 import model.utilities.Gender;
@@ -13,7 +11,6 @@ import model.utilities.Occasion;
 import model.utilities.Size;
 import model.utilities.Subject;
 import model.utilities.Type;
-import org.json.JSONObject;
 
 public class Outfit implements Subject {
 

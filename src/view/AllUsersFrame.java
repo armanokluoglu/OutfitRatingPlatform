@@ -1,6 +1,5 @@
 package view;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,40 +19,35 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import model.domain.Collection;
 import model.domain.Model;
 import model.domain.User;
-import model.utilities.Observer;
-import model.utilities.Subject;
 
-public class AllUsersFrame extends JFrame implements Observer {
+public class AllUsersFrame extends JFrame {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject model;
+	private Model model;
 	private FrameManager fm;
 	private User currentUser;
-	List<User> users;
+	
 	private JPanel mainPanel;
 	private JPanel leftSide;
 	private JPanel content;
+	
 	private JButton profilePageButton;
 	private JButton outfitsPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
+	
 	private List<JButton> userButtons;
 	private List<JButton> collectionButtons;
 
-	public AllUsersFrame(Model model, FrameManager fm, User currentUser, List<User> users) {
-		this.users = new ArrayList<>(users);
-		this.users.remove(currentUser);
-		this.fm = fm;
+	public AllUsersFrame(Model model, FrameManager fm, User currentUser) {
 		this.currentUser = currentUser;
+		this.fm = fm;
 		this.userButtons = new ArrayList<>();
 		this.collectionButtons = new ArrayList<>();
-		this.model=model;
-		model.register(this);
+		this.model = model;
+		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 
@@ -69,6 +63,7 @@ public class AllUsersFrame extends JFrame implements Observer {
 		mainPanel.add(this.leftSide);
 		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
+		
 		setLeftSide();
 		setCards();
 		getFrameManager().setNewPanel(mainPanel);
@@ -114,10 +109,12 @@ public class AllUsersFrame extends JFrame implements Observer {
 		leftSide.add(outfitsPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
-		this.leftSide = leftSide;
 	}
 
 	public void setCards() {
+		List<User> users = new ArrayList<>(model.getAllUsers());
+		users.remove(currentUser);
+		
 		JPanel cards = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -176,20 +173,5 @@ public class AllUsersFrame extends JFrame implements Observer {
 
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(getFrameManager().getFrame(), message);
-	}
-
-	@Override
-	public void update() {
-		setCards();
-	}
-
-	@Override
-	public void addSubject(Subject sub) {
-		this.model = sub;
-	}
-
-	@Override
-	public void removeSubject(Subject sub) {
-		this.model = null;
 	}
 }

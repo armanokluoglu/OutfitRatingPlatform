@@ -6,106 +6,76 @@ import java.util.List;
 import model.domain.Collection;
 import model.domain.Model;
 import model.domain.User;
-import model.utilities.Observer;
-import model.utilities.Subject;
 import view.AllUsersFrame;
-import view.HomeFrame;
 
-public class AllUsersController implements Observer {
+public class AllUsersController {
 
-    private SessionManager session;
-    private AllUsersFrame view;
-    private List<Collection> collections;
-    private Subject model;
-    private List<User> users;
+	private SessionManager session;
+	private AllUsersFrame view;
+	private Model model;
 
-    public AllUsersController(Model model, AllUsersFrame view, SessionManager session) {
-        this.session = session;
-        this.view = view;
-        this.model = model;
+	public AllUsersController(Model model, AllUsersFrame view, SessionManager session) {
+		this.session = session;
+		this.view = view;
+		this.model = model;
 
-        model.register(view);
+		setSidebarListeners();
+		setContentListeners();
+	}
 
-        this.collections = model.getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
-        this.users = model.getAllUsers();
+	private void setSidebarListeners() {
+		view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
+		view.addLogoutActionListener(new LogoutListener());
+		view.addOutfitsActionListener(new OpenOutfitsListener());
+		view.addStatisticsActionListener(new OpenStatisticsListener());
+	}
 
-        setSidebarListeners();
-        setContentListeners();
-    }
+	private void setContentListeners() {
+		List<User> users = model.getAllUsers();
+		for (User user : users) {
+			view.addOpenUserActionListener(new OpenUserListener(user), user.getUsername());
+		}
+	}
 
-    private void setSidebarListeners() {
-        view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
-        view.addLogoutActionListener(new LogoutListener());
-        view.addOutfitsActionListener(new OpenOutfitsListener());
-        view.addStatisticsActionListener(new OpenStatisticsListener());
-    }
+	class OpenUserListener implements ActionListener {
+		private User user;
 
-    private void setContentListeners() {
-        for (Collection collection : collections) {
-            view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
-            view.addOpenUserActionListener(new OpenUserListener(collection.getCreator()), collection.getCreator().getUsername());
-        }
-        for (User user : users) {
-            view.addOpenUserActionListener(new OpenUserListener(user), user.getUsername());
-        }
-    }
+		public OpenUserListener(User user) {
+			this.user = user;
+		}
 
-    @Override
-    public void update() {
-        setContentListeners();
-    }
+		public void actionPerformed(ActionEvent e) {
+			session.userPage(user);
+		}
+	}
 
-    @Override
-    public void addSubject(Subject sub) {
-        this.model = sub;
-    }
+	class OpenCollectionListener implements ActionListener {
+		private Collection collection;
 
-    @Override
-    public void removeSubject(Subject sub) {
-        this.model = null;
+		public OpenCollectionListener(Collection collection) {
+			this.collection = collection;
+		}
 
-    }
+		public void actionPerformed(ActionEvent e) {
+			session.collectionPage(collection);
+		}
+	}
 
+	class OpenStatisticsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.statisticsPage();
+		}
+	}
 
-    class OpenUserListener implements ActionListener {
-        private User user;
+	class OpenOutfitsListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.outfitsPage();
+		}
+	}
 
-        public OpenUserListener(User user) {
-            this.user = user;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            session.userPage(user);
-        }
-    }
-
-    class OpenCollectionListener implements ActionListener {
-        private Collection collection;
-
-        public OpenCollectionListener(Collection collection) {
-            this.collection = collection;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            session.collectionPage(collection);
-        }
-    }
-
-    class OpenStatisticsListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            session.statisticsPage();
-        }
-    }
-
-    class OpenOutfitsListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            session.outfitsPage();
-        }
-    }
-
-    class LogoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            session.loginPage();
-        }
-    }
+	class LogoutListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.loginPage();
+		}
+	}
 }

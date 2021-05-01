@@ -1,8 +1,6 @@
 package model.data_access;
 
 import model.domain.Outfit;
-import model.domain.User;
-
 import java.util.List;
 
 public class OutfitRepository {

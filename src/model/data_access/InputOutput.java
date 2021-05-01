@@ -22,9 +22,7 @@ public class InputOutput {
 
 	private List<User> users;
 	private List<Outfit> outfits;
-	List<List<UserWithCollection>> collectionsList;
-	List<UserWithUsers> followersList;
-	List<UserWithUsers> followingsList;
+	private List<List<UserWithCollection>> collectionsList;
 	private static FileWriter file;
 
 	public List<User> getUsers() {
@@ -60,6 +58,7 @@ public class InputOutput {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Outfit> inputOutfits(UserRepository userRepository) {
 		JSONParser jsonParser = new JSONParser();
 		List<Outfit> outfitsList = new ArrayList<>();
@@ -115,34 +114,6 @@ public class InputOutput {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	private static Node userNode(Document doc, User user, String id, String name, String age, String role,
-			String gender) {
-		Element employee = doc.createElement("User");
-
-		// set id attribute
-		employee.setAttribute("id", String.valueOf(user.getId()));
-
-		// create name element
-		employee.appendChild(getUserElements(doc, employee, "Username", user.getUsername()));
-
-		// create age element
-		employee.appendChild(getUserElements(doc, employee, "Password", user.getPassword()));
-
-		// create role element
-		employee.appendChild(getUserElements(doc, employee, "role", role));
-
-		// create gender element
-		employee.appendChild(getUserElements(doc, employee, "gender", gender));
-
-		return employee;
-	}
-
-	private static Node getUserElements(Document doc, Element element, String name, String value) {
-		Element node = doc.createElement(name);
-		node.appendChild(doc.createTextNode(value));
-		return node;
 	}
 
 	public List<User> inputUsers() {

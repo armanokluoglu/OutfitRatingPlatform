@@ -1,12 +1,7 @@
 package model.domain;
 
-import model.data_access.IOParser;
-import org.json.JSONObject;
 import model.utilities.Observer;
 import model.utilities.Subject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

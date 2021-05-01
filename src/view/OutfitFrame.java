@@ -43,14 +43,15 @@ public class OutfitFrame extends JFrame implements Observer {
 	private JButton likeButton;
 	private JButton dislikeButton;
 	private JTextField commentField;
-	private List<CommentPanel> commentPanels;
-	private List<JButton> removeCommentButtons;
 
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
+	
+	private List<CommentPanel> commentPanels;
+	private List<JButton> removeCommentButtons;
 
 	public OutfitFrame(FrameManager fm, Outfit outfit, User currentUser) {
 		this.fm = fm;

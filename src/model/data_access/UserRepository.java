@@ -1,9 +1,6 @@
 package model.data_access;
 
-import java.util.Arrays;
 import java.util.List;
-
-import model.domain.Outfit;
 import model.domain.User;
 
 public class UserRepository {

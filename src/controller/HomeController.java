@@ -14,16 +14,14 @@ public class HomeController implements Observer {
 
 	private SessionManager session;
 	private HomeFrame view;
-	private List<Collection> collections;
 	private Subject model;
 
 	public HomeController(Model model, HomeFrame view, SessionManager session) {
 		this.session = session;
 		this.view = view;
-		this.model =model;
+		this.model = model;
+		
 		model.register(this);
-
-		this.collections = model.getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
 
 		setSidebarListeners();
 		setContentListeners();
@@ -38,12 +36,14 @@ public class HomeController implements Observer {
 	}
 
 	private void setContentListeners() {
+		List<Collection> collections = ((Model) model).getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
 		for (Collection collection : collections) {
 			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
 			view.addOpenUserActionListener(new OpenUserListener(collection.getCreator()),
 					collection.getCreator().getUsername());
 		}
 	}
+
 	@Override
 	public void update() {
 		setContentListeners();

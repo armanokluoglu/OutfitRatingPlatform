@@ -1,11 +1,5 @@
 package model.domain;
 
-import model.data_access.UserRepository;
-import org.json.JSONObject;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Comment {

@@ -7,10 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
@@ -22,9 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
 import model.domain.Collection;
-import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
 import model.utilities.Observer;
@@ -35,12 +31,12 @@ public class CollectionFrame extends JFrame implements Observer {
 	private static final long serialVersionUID = -4853864434524144396L;
 	private Subject collection;
 	private FrameManager fm;
+	private User currentUser;
+
 	private JPanel mainPanel;
 	private JPanel leftSide;
 	private JPanel content;
 
-	private User currentUser;
-	private List<JButton> outfitButtons;
 	private JButton addOutfitButton;
 
 	private JButton profilePageButton;
@@ -49,12 +45,16 @@ public class CollectionFrame extends JFrame implements Observer {
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 
+	private List<JButton> outfitButtons;
+
 	public CollectionFrame(FrameManager fm, User currentUser, Collection collection) {
 		this.fm = fm;
 		this.currentUser = currentUser;
 		this.outfitButtons = new ArrayList<>();
 		this.collection = collection;
+
 		collection.register(this);
+
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 
@@ -70,6 +70,7 @@ public class CollectionFrame extends JFrame implements Observer {
 		mainPanel.add(this.leftSide);
 		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
+
 		setLeftSide();
 		setCards();
 		getFrameManager().setNewPanel(mainPanel);

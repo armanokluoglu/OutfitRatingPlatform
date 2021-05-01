@@ -23,8 +23,8 @@ public class IOParser {
     public static Node toUserXMLNode(User user, Document doc) {
         Element userElem = doc.createElement("User");
         userElem.setAttribute("id", String.valueOf(user.getId()));
-        userElem.appendChild(getUserElements(doc, userElem, "UserName", user.getUsername()));
-        userElem.appendChild(getUserElements(doc, userElem, "Password", user.getPassword()));
+        userElem.appendChild(getUserElements(doc, "UserName", user.getUsername()));
+        userElem.appendChild(getUserElements(doc, "Password", user.getPassword()));
 
         Element node = doc.createElement("Followers");
         if(!user.getFollowers().isEmpty()){
@@ -54,13 +54,13 @@ public class IOParser {
         Element userElem = doc.createElement("User");
 
         userElem.setAttribute("id", String.valueOf(user.getId()));
-        userElem.appendChild(getUserElements(doc, userElem, "UserName", user.getUsername()));
-        userElem.appendChild(getUserElements(doc, userElem, "Password", user.getPassword()));
+        userElem.appendChild(getUserElements(doc, "UserName", user.getUsername()));
+        userElem.appendChild(getUserElements(doc, "Password", user.getPassword()));
 
         return userElem;
     }
 
-    private static Node getUserElements(Document doc, Element element, String name, String value) {
+    private static Node getUserElements(Document doc, String name, String value) {
         Element node = doc.createElement(name);
         node.appendChild(doc.createTextNode(value));
         return node;
@@ -104,7 +104,8 @@ public class IOParser {
         return outfitJSON;
     }
 
-    public static Outfit parseOutfitJson(org.json.simple.JSONObject outfitJSON, UserRepository repository) {
+    @SuppressWarnings("unchecked")
+	public static Outfit parseOutfitJson(org.json.simple.JSONObject outfitJSON, UserRepository repository) {
         int id = ((Long) outfitJSON.get("Id")).intValue();
         Brand brand = Brand.valueOf((String) outfitJSON.get("Brand"));
         Type type = Type.valueOf((String) outfitJSON.get("Type"));
@@ -164,18 +165,18 @@ public class IOParser {
         //set id attribute
         collectionElem.setAttribute("id", String.valueOf(collection.getId()));
         //create name element
-        collectionElem.appendChild(getOutfitElements(doc, collectionElem, "Name", collection.getName()));
+        collectionElem.appendChild(getOutfitElements(doc, "Name", collection.getName()));
         String outfitIds="";
         for(Outfit outfit:collection.getOutfits()){
             outfitIds+=outfit.getId()+" ";
         }
         outfitIds = outfitIds.substring(0, outfitIds.length() - 1);
-        collectionElem.appendChild(getOutfitElements(doc,collectionElem,"OutfitIds",outfitIds));
+        collectionElem.appendChild(getOutfitElements(doc,"OutfitIds",outfitIds));
 
         return collectionElem;
     }
 
-    private static Node getOutfitElements(Document doc, Element element, String name, String value) {
+    private static Node getOutfitElements(Document doc, String name, String value) {
         Element node = doc.createElement(name);
         node.appendChild(doc.createTextNode(value));
         return node;
