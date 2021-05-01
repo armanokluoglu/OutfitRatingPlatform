@@ -15,20 +15,14 @@ public class UserController implements Observer {
 	private UserFrame view;
 	private Subject model;
 	private User user;
-	private List<Collection> collections;
 
 	public UserController(Model model, UserFrame view, SessionManager session, User user) {
 		this.model = model;
 		this.session = session;
 		this.view = view;
 		this.user = user;
-		this.collections = user.getCollections();
 
 		user.register(this);
-//		view.addSubject(model);
-//		model.register(view);
-		
-		view.setCards();
 		setSidebarListeners();
 		setContentListeners();
 	}
@@ -39,7 +33,7 @@ public class UserController implements Observer {
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
-		view.addAllUsersActionListener(new OpenAllUserListener(session.getCurrentUser()));
+		view.addAllUsersActionListener(new OpenAllUserListener());
 	}
 	
 	private void setContentListeners() {
@@ -86,14 +80,8 @@ public class UserController implements Observer {
         }
     }
 	class OpenAllUserListener implements ActionListener {
-		private User user;
-
-		public OpenAllUserListener(User user) {
-			this.user = user;
-		}
-
 		public void actionPerformed(ActionEvent e) {
-			session.allUsersPage(user);
+			session.allUsersPage();
 		}
 	}
     
@@ -105,9 +93,6 @@ public class UserController implements Observer {
         	}
         	newCollectionName = newCollectionName.trim();
 			((Model) model).createCollectionForUser(newCollectionName, session.getCurrentUser());
-        	for (Collection collection : collections) {
-    			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
-    		}
         }
     }
 	class UnfollowUserListener implements ActionListener {

@@ -28,7 +28,6 @@ public class UserFrame extends JFrame implements Observer {
 	private static final long serialVersionUID = -4853864434524144396L;
 	private Subject user;
 	private User currentUser;
-	//private User user;
 	private FrameManager fm;
 	private JPanel mainPanel;
 
@@ -57,35 +56,26 @@ public class UserFrame extends JFrame implements Observer {
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
-
-		setLeftSide();
+		
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridBagLayout());
+		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
+		
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 
-		this.createCollectionButton = new JButton("Create New Collection");
-		this.createCollectionButton.setPreferredSize(new Dimension(200, 50));
-		this.createCollectionButton.setBackground(Color.PINK);
-
-		this.unfollowButton = new JButton("Unfollow");
-		this.unfollowButton.setPreferredSize(new Dimension(100, 50));
-		this.unfollowButton.setBackground(Color.RED);
-
-		this.followButton = new JButton("Follow");
-		this.followButton.setPreferredSize(new Dimension(100, 50));
-		this.followButton.setBackground(Color.GREEN);
-
-		mainPanel.add(leftSide);
+		mainPanel.add(this.leftSide);
 		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
+		
+		setLeftSide();
+		setCards();
 		getFrameManager().setNewPanel(mainPanel);
 	}
 
 	public void setLeftSide() {
-		JPanel leftSide = new JPanel();
-		leftSide.setLayout(new GridBagLayout());
-		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -142,21 +132,36 @@ public class UserFrame extends JFrame implements Observer {
 		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
-		this.leftSide = leftSide;
 	}
 
 	public void setCards() {
+		User user = ((User) this.user);
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.insets = new Insets(10, 10, 10, 10);
+		
+		JButton createCollectionButton = new JButton("Create New Collection");
+		createCollectionButton.setPreferredSize(new Dimension(200, 50));
+		createCollectionButton.setBackground(Color.PINK);
+		this.createCollectionButton = createCollectionButton;
 
-		JLabel name = new JLabel("Username: " + ((User)this.user).getUsername());
-		JLabel followers = new JLabel("Followers: " + ((User)this.user).getFollowers().size());
-		JLabel followings = new JLabel("Followings: " + ((User)this.user).getFollowings().size());
+		JButton unfollowButton = new JButton("Unfollow");
+		unfollowButton.setPreferredSize(new Dimension(100, 50));
+		unfollowButton.setBackground(Color.RED);
+		this.unfollowButton = unfollowButton;
+		
+		JButton followButton = new JButton("Follow");
+		followButton.setPreferredSize(new Dimension(100, 50));
+		followButton.setBackground(Color.GREEN);
+		this.followButton = followButton;
+		
+		JLabel name = new JLabel("Username: " + user.getUsername());
+		JLabel followers = new JLabel("Followers: " + user.getFollowers().size());
+		JLabel followings = new JLabel("Followings: " + user.getFollowings().size());
 		JLabel collectionsLabel = new JLabel("Collections:");
 
-		List<Collection> collections = ((User)this.user).getCollections();
+		List<Collection> collections = user.getCollections();
 
 		JPanel collectionsPanel = new JPanel(new GridBagLayout());
 		for (Collection collection : collections) {

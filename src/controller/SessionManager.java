@@ -7,54 +7,56 @@ import model.domain.User;
 import view.*;
 
 public class SessionManager {
-    private User currentUser;
-    private FrameManager fm;
-    private Model model;
+	private User currentUser;
+	private FrameManager fm;
+	private Model model;
 
-    public SessionManager(User currentUser, FrameManager fm, Model model) {
-        this.setCurrentUser(currentUser);
-        this.fm = fm;
-        this.model = model;
-    }
-    
-    public void loginPage() {
-    	LoginFrame loginView = new LoginFrame(fm);
-    	LoginController loginController = new LoginController(model, loginView, this);
-    }
-    
-    public void homePage() {
-    	HomeFrame homeView = new HomeFrame(fm, currentUser);
-    	HomeController homeController = new HomeController(model, homeView, this);
-    }
-    
-    public void userPage(User user) {
-    	UserFrame userView = new UserFrame(fm, currentUser, user);
-    	UserController userController = new UserController(model, userView, this, user);
-    }
-    public void allUsersPage(User user) {
-        AllUsersFrame userView = new AllUsersFrame(fm, currentUser, model.getAllUsers());
-        AllUsersController userController = new AllUsersController(model, userView, this);
-    }
-    
-    public void collectionPage(Collection collection) {
-    	CollectionFrame collectionView = new CollectionFrame(fm, currentUser);
-    	CollectionController collectionController = new CollectionController(model, collectionView, this, collection);
-    }
-    
-    public void outfitPage(Outfit outfit) {
-    	OutfitFrame outfitView = new OutfitFrame(fm, outfit, currentUser);
-    	OutfitController outfitController = new OutfitController(model, outfitView, this, outfit);
-    }
+	public SessionManager(User currentUser, FrameManager fm, Model model) {
+		this.setCurrentUser(currentUser);
+		this.fm = fm;
+		this.model = model;
+	}
 
-    public void outfitsPage() {
-    	OutfitsFrame outfitsView = new OutfitsFrame(fm);
-    	OutfitsController outfitsController = new OutfitsController(model, outfitsView, this);
-    }
-    public void statisticsPage() {
-    	StatisticsFrame statisticsView = new StatisticsFrame(fm);
-    	StatisticsController statisticsControler = new StatisticsController(model, statisticsView, this);
-    }
-    
+	public void loginPage() {
+		LoginFrame loginView = new LoginFrame(fm);
+		LoginController loginController = new LoginController(model, loginView, this);
+	}
+
+	public void homePage() {
+		HomeFrame homeView = new HomeFrame(fm, currentUser);
+		HomeController homeController = new HomeController(model, homeView, this);
+	}
+
+	public void userPage(User user) {
+		UserFrame userView = new UserFrame(fm, currentUser, user);
+		UserController userController = new UserController(model, userView, this, user);
+	}
+
+	public void allUsersPage() {
+		AllUsersFrame userView = new AllUsersFrame(fm, currentUser, model.getAllUsers());
+		AllUsersController userController = new AllUsersController(model, userView, this);
+	}
+
+	public void collectionPage(Collection collection) {
+		CollectionFrame collectionView = new CollectionFrame(fm, currentUser);
+		CollectionController collectionController = new CollectionController(model, collectionView, this, collection);
+	}
+
+	public void outfitPage(Outfit outfit) {
+		OutfitFrame outfitView = new OutfitFrame(fm, outfit, currentUser);
+		OutfitController outfitController = new OutfitController(model, outfitView, this, outfit);
+	}
+
+	public void outfitsPage() {
+		OutfitsFrame outfitsView = new OutfitsFrame(fm);
+		OutfitsController outfitsController = new OutfitsController(model, outfitsView, this);
+	}
+
+	public void statisticsPage() {
+		StatisticsFrame statisticsView = new StatisticsFrame(fm);
+		StatisticsController statisticsControler = new StatisticsController(model, statisticsView, this);
+	}
+
 	public User getCurrentUser() {
 		return currentUser;
 	}

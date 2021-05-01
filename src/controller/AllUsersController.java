@@ -35,7 +35,6 @@ public class AllUsersController {
         view.addOpenProfileActionListener(new OpenUserListener(session.getCurrentUser()));
         view.addLogoutActionListener(new LogoutListener());
         view.addOutfitsActionListener(new OpenOutfitsListener());
-        view.addAllUsersActionListener(new OpenAllUserListener(session.getCurrentUser()));
         view.addStatisticsActionListener(new OpenStatisticsListener());
     }
 
@@ -84,17 +83,6 @@ public class AllUsersController {
     class OpenOutfitsListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             session.outfitsPage();
-        }
-    }
-    class OpenAllUserListener implements ActionListener {
-        private User user;
-
-        public OpenAllUserListener(User user) {
-            this.user = user;
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            session.allUsersPage(user);
         }
     }
 
