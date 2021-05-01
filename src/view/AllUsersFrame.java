@@ -31,7 +31,7 @@ import model.utilities.Subject;
 public class AllUsersFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject sub;
+	private Subject model;
 	private FrameManager fm;
 	private User currentUser;
 	List<User> users;
@@ -45,24 +45,32 @@ public class AllUsersFrame extends JFrame implements Observer {
 	private List<JButton> userButtons;
 	private List<JButton> collectionButtons;
 
-	public AllUsersFrame(FrameManager fm, User currentUser, List<User> users) {
+	public AllUsersFrame(Model model, FrameManager fm, User currentUser, List<User> users) {
 		this.users = new ArrayList<>(users);
 		this.users.remove(currentUser);
 		this.fm = fm;
 		this.currentUser = currentUser;
 		this.userButtons = new ArrayList<>();
 		this.collectionButtons = new ArrayList<>();
+		this.model=model;
+		model.register(this);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 
-		setLeftSide();
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridBagLayout());
+		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
+
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 
-		mainPanel.add(leftSide);
-		mainPanel.add(content);
+		mainPanel.add(this.leftSide);
+		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
+		setLeftSide();
+		setCards();
 		getFrameManager().setNewPanel(mainPanel);
 	}
 
@@ -181,11 +189,11 @@ public class AllUsersFrame extends JFrame implements Observer {
 
 	@Override
 	public void addSubject(Subject sub) {
-		this.sub = sub;
+		this.model = sub;
 	}
 
 	@Override
 	public void removeSubject(Subject sub) {
-		this.sub = null;
+		this.model = null;
 	}
 }

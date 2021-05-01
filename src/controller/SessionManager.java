@@ -33,7 +33,7 @@ public class SessionManager {
 	}
 
 	public void allUsersPage() {
-		AllUsersFrame userView = new AllUsersFrame(fm, currentUser, model.getAllUsers());
+		AllUsersFrame userView = new AllUsersFrame(model,fm, currentUser, model.getAllUsers());
 		AllUsersController userController = new AllUsersController(model, userView, this);
 	}
 
