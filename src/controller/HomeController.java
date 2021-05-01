@@ -6,23 +6,24 @@ import java.util.List;
 import model.domain.Collection;
 import model.domain.Model;
 import model.domain.User;
+import model.utilities.Observer;
+import model.utilities.Subject;
 import view.HomeFrame;
 
-public class HomeController {
+public class HomeController implements Observer {
 
 	private SessionManager session;
 	private HomeFrame view;
 	private List<Collection> collections;
+	private Subject model;
 
 	public HomeController(Model model, HomeFrame view, SessionManager session) {
 		this.session = session;
 		this.view = view;
-
-		view.addSubject(model);
-		model.register(view);
+		this.model =model;
+		model.register(this);
 
 		this.collections = model.getCollectionsOfFollowingsOfUserChronologically(session.getCurrentUser());
-		view.setCards();
 
 		setSidebarListeners();
 		setContentListeners();
@@ -42,6 +43,21 @@ public class HomeController {
 			view.addOpenUserActionListener(new OpenUserListener(collection.getCreator()),
 					collection.getCreator().getUsername());
 		}
+	}
+	@Override
+	public void update() {
+		setContentListeners();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.model = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.model = null;
+
 	}
 
 	class OpenUserListener implements ActionListener {

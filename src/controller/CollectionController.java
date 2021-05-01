@@ -10,12 +10,14 @@ import model.domain.Collection;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
+import model.utilities.Observer;
+import model.utilities.Subject;
 import view.CollectionFrame;
 
-public class CollectionController {
+public class CollectionController implements Observer {
 
 	private SessionManager session;
-	private Model model; 
+	private Subject model;
 	private CollectionFrame view;
 	private Collection collection;
 	private List<Outfit> outfits;
@@ -26,11 +28,9 @@ public class CollectionController {
 		this.view = view;
 		this.collection = collection;
 		
-		view.addSubject(collection);
-		collection.register(view);
-		
+		collection.register(this);
 		this.outfits = collection.getOutfits();
-		view.setCards();
+
 		setSidebarListeners();
 		setContentListeners();
 	}
@@ -49,10 +49,24 @@ public class CollectionController {
 		}
 		view.addAddOutfitActionListener(new AddOutfitListener());
 	}
-	
+	@Override
+	public void update() {
+		setContentListeners();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.model = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.model = null;
+
+	}
 	class AddOutfitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-        	List<Outfit> allOutfits = model.getAllOutfits();
+        	List<Outfit> allOutfits = ((Model)model).getAllOutfits();
         	String[] choices = new String[allOutfits.size()];
         	for (int i = 0; i < allOutfits.size(); i++) {
         		Outfit outfit = allOutfits.get(i);
@@ -65,7 +79,7 @@ public class CollectionController {
         	String str = response.toString();
         	String outfitId = str.substring(0, str.indexOf("."));
         	try {
-        		model.addOutfitToCollection(Integer.parseInt(outfitId), collection);
+				((Model)model).addOutfitToCollection(Integer.parseInt(outfitId), collection);
         	} catch (IllegalStateException e1) {
         		view.showMessage(e1.getMessage());
         		return;

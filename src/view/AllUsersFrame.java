@@ -75,10 +75,6 @@ public class AllUsersFrame extends JFrame implements Observer {
 	}
 
 	public void setLeftSide() {
-		JPanel leftSide = new JPanel();
-		leftSide.setLayout(new GridBagLayout());
-		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;

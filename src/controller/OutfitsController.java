@@ -6,24 +6,23 @@ import java.util.List;
 import model.domain.Model;
 import model.domain.Outfit;
 import model.domain.User;
+import model.utilities.Observer;
+import model.utilities.Subject;
 import view.OutfitsFrame;
 
-public class OutfitsController {
+public class OutfitsController implements Observer {
 
 	private SessionManager session;
 	private OutfitsFrame view;
 	private List<Outfit> outfits;
-	
+	private Subject model;
+
 	public OutfitsController(Model model, OutfitsFrame view, SessionManager session) {
 		this.session = session;
 		this.view = view;
-		
-		view.addSubject(model);
-		model.register(view);
-		
+		model.register(this);
 		this.outfits = model.getAllOutfits();
-		view.setCards();
-		
+
 		setSidebarListeners();
 		setContentListeners();
 	}
@@ -39,6 +38,21 @@ public class OutfitsController {
 		for (Outfit outfit : outfits) {
 			view.addOpenOutfitActionListener(new OpenOutfitListener(outfit), "" + outfit.getId());
 		}
+	}
+	@Override
+	public void update() {
+		setContentListeners();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.model = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.model = null;
+
 	}
 	
     class OpenOutfitListener implements ActionListener {

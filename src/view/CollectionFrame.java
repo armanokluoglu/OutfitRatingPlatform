@@ -33,7 +33,7 @@ import model.utilities.Subject;
 public class CollectionFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject sub;
+	private Subject collection;
 	private FrameManager fm;
 	private JPanel mainPanel;
 	private JPanel leftSide;
@@ -49,33 +49,33 @@ public class CollectionFrame extends JFrame implements Observer {
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 
-	public CollectionFrame(FrameManager fm, User currentUser) {
+	public CollectionFrame(FrameManager fm, User currentUser, Collection collection) {
 		this.fm = fm;
 		this.currentUser = currentUser;
 		this.outfitButtons = new ArrayList<>();
+		this.collection = collection;
+		collection.register(this);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 
-		setLeftSide();
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridBagLayout());
+		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
+
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 
-		this.addOutfitButton = new JButton("Add Outfit To Collection");
-		this.addOutfitButton.setPreferredSize(new Dimension(200, 50));
-		this.addOutfitButton.setBackground(Color.PINK);
-
-		mainPanel.add(leftSide);
-		mainPanel.add(content);
+		mainPanel.add(this.leftSide);
+		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
+		setLeftSide();
+		setCards();
 		getFrameManager().setNewPanel(mainPanel);
 	}
 
 	public void setLeftSide() {
-		JPanel leftSide = new JPanel();
-		leftSide.setLayout(new GridBagLayout());
-		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -121,12 +121,16 @@ public class CollectionFrame extends JFrame implements Observer {
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
-		this.leftSide = leftSide;
 	}
 
 	public void setCards() {
-		Collection collection = (Collection) sub;
+		Collection collection = (Collection) this.collection;
 		List<Outfit> outfits = collection.getOutfits();
+
+		JButton addOutfitButton = new JButton("Add Outfit To Collection");
+		addOutfitButton.setPreferredSize(new Dimension(200, 50));
+		addOutfitButton.setBackground(Color.PINK);
+		this.addOutfitButton = addOutfitButton;
 
 		JPanel cards = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -230,11 +234,11 @@ public class CollectionFrame extends JFrame implements Observer {
 
 	@Override
 	public void addSubject(Subject sub) {
-		this.sub = sub;
+		this.collection = sub;
 	}
 
 	@Override
 	public void removeSubject(Subject sub) {
-		this.sub = null;
+		this.collection = null;
 	}
 }

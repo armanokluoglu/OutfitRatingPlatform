@@ -30,7 +30,7 @@ import model.utilities.Subject;
 public class OutfitsFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject sub;
+	private Subject model;
 	private FrameManager fm;
 	private JPanel mainPanel;
 	private JPanel leftSide;
@@ -41,28 +41,32 @@ public class OutfitsFrame extends JFrame implements Observer {
 	private JButton logoutButton;
 	private List<JButton> outfitButtons;
 	
-	public OutfitsFrame(FrameManager fm) {
+	public OutfitsFrame(Model model, FrameManager fm) {
 		this.fm = fm;
 		this.outfitButtons = new ArrayList<>();
+		this.model = model;
+		model.register(this);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
-		
-		setLeftSide();
+
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridBagLayout());
+		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
+
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 		
-		mainPanel.add(leftSide);
-		mainPanel.add(content);
+		mainPanel.add(this.leftSide);
+		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
-        getFrameManager().setNewPanel(mainPanel);
+		setLeftSide();
+		setCards();
+		getFrameManager().setNewPanel(mainPanel);
 	}
 	
 	public void setLeftSide() {
-		JPanel leftSide = new JPanel();
-		leftSide.setLayout(new GridBagLayout());
-		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -102,11 +106,10 @@ public class OutfitsFrame extends JFrame implements Observer {
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
-		this.leftSide = leftSide;
 	}
 	
 	public void setCards() {
-		Model model = (Model) sub;
+		Model model = (Model) this.model;
 		List<Outfit> outfits = model.getAllOutfits();
 		
         JPanel cards = new JPanel(new GridBagLayout());
@@ -188,12 +191,12 @@ public class OutfitsFrame extends JFrame implements Observer {
 
 	@Override
 	public void addSubject(Subject sub) {
-		this.sub = sub;
+		this.model = sub;
 	}
 
 
 	@Override
 	public void removeSubject(Subject sub) {
-		this.sub = null;
+		this.model = null;
 	}
 }

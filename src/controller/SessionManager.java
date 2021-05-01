@@ -23,7 +23,7 @@ public class SessionManager {
 	}
 
 	public void homePage() {
-		HomeFrame homeView = new HomeFrame(fm, currentUser);
+		HomeFrame homeView = new HomeFrame(model,fm, currentUser);
 		HomeController homeController = new HomeController(model, homeView, this);
 	}
 
@@ -38,7 +38,7 @@ public class SessionManager {
 	}
 
 	public void collectionPage(Collection collection) {
-		CollectionFrame collectionView = new CollectionFrame(fm, currentUser);
+		CollectionFrame collectionView = new CollectionFrame(fm, currentUser,collection);
 		CollectionController collectionController = new CollectionController(model, collectionView, this, collection);
 	}
 
@@ -48,7 +48,7 @@ public class SessionManager {
 	}
 
 	public void outfitsPage() {
-		OutfitsFrame outfitsView = new OutfitsFrame(fm);
+		OutfitsFrame outfitsView = new OutfitsFrame(model,fm);
 		OutfitsController outfitsController = new OutfitsController(model, outfitsView, this);
 	}
 

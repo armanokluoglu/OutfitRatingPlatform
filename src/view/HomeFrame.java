@@ -28,7 +28,7 @@ import model.utilities.Subject;
 public class HomeFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject sub;
+	private Subject model;
 	private FrameManager fm;
 	private User currentUser;
 	private JPanel mainPanel;
@@ -42,30 +42,34 @@ public class HomeFrame extends JFrame implements Observer {
 	private List<JButton> userButtons;
 	private List<JButton> collectionButtons;
 	
-	public HomeFrame(FrameManager fm, User currentUser) {
+	public HomeFrame(Model model, FrameManager fm, User currentUser) {
 		this.fm = fm;
 		this.currentUser = currentUser;
 		this.userButtons = new ArrayList<>();
 		this.collectionButtons = new ArrayList<>();
+		this.model=model;
+		model.register(this);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
-		
-		setLeftSide();
+
+		JPanel leftSide = new JPanel();
+		leftSide.setLayout(new GridBagLayout());
+		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
+
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
 		this.content = content;
 		
-		mainPanel.add(leftSide);
-		mainPanel.add(content);
+		mainPanel.add(this.leftSide);
+		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
-        getFrameManager().setNewPanel(mainPanel);
+		setLeftSide();
+		setCards();
+		getFrameManager().setNewPanel(mainPanel);
 	}
 	
 	public void setLeftSide() {
-		JPanel leftSide = new JPanel();
-		leftSide.setLayout(new GridBagLayout());
-		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
 		GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -111,11 +115,10 @@ public class HomeFrame extends JFrame implements Observer {
 		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
-		this.leftSide = leftSide;
 	}
 	
 	public void setCards() {
-		Model model = (Model) sub;
+		Model model = (Model) this.model;
 		List<Collection> collections = model.getCollectionsOfFollowingsOfUserChronologically(currentUser);
 		
         JPanel cards = new JPanel(new GridBagLayout());
@@ -198,11 +201,11 @@ public class HomeFrame extends JFrame implements Observer {
 
 	@Override
 	public void addSubject(Subject sub) {
-		this.sub = sub;
+		this.model = sub;
 	}
 
 	@Override
 	public void removeSubject(Subject sub) {
-		this.sub = null;
+		this.model = null;
 	}
 }
