@@ -3,10 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import model.domain.Collection;
-import model.domain.Model;
-import model.domain.Outfit;
-import model.domain.User;
+
+import model.domain.*;
 import model.utilities.Observer;
 import model.utilities.Subject;
 import view.CollectionFrame;
@@ -44,6 +42,8 @@ public class CollectionController implements Observer {
 			view.addOpenOutfitActionListener(new OpenOutfitListener(outfit), "" + outfit.getId());
 		}
 		view.addAddOutfitActionListener(new AddOutfitListener());
+		for(Outfit outfit:outfits)
+			view.addRemoveOutfitFromCollectionActionListener(new RemoveOutfitFromCollectionListener(outfit),outfit.getId());
 	}
 
 	@Override
@@ -130,6 +130,17 @@ public class CollectionController implements Observer {
 	class LogoutListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			session.loginPage();
+		}
+	}
+	class RemoveOutfitFromCollectionListener implements ActionListener {
+		private Outfit outfit;
+
+		public RemoveOutfitFromCollectionListener(Outfit outfit) {
+			this.outfit = outfit;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			((Model) model).removeOutfitFromCollection(outfit.getId(), collection);
 		}
 	}
 }

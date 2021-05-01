@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import model.domain.Collection;
+import model.domain.Comment;
 import model.domain.Outfit;
 import model.domain.User;
 import model.utilities.Observer;
@@ -46,12 +47,16 @@ public class CollectionFrame extends JFrame implements Observer {
 	private JButton logoutButton;
 
 	private List<JButton> outfitButtons;
+	private List<JButton> removeOutfitButtons;
+	private List<OutfitPanel> outfitPanels;
 
 	public CollectionFrame(FrameManager fm, User currentUser, Collection collection) {
 		this.fm = fm;
 		this.currentUser = currentUser;
 		this.outfitButtons = new ArrayList<>();
 		this.collection = collection;
+		this.removeOutfitButtons = new ArrayList<>();
+		this.outfitPanels = new ArrayList<>();
 
 		collection.register(this);
 
@@ -157,6 +162,7 @@ public class CollectionFrame extends JFrame implements Observer {
 			JLabel color = new JLabel(outfit.getColor().toString());
 			JLabel type = new JLabel(outfit.getType().toString());
 
+
 			ImageIcon icon = outfit.getImage();
 			if (icon == null) {
 				outfitButton.setText("This outfit does not have an image.");
@@ -174,6 +180,13 @@ public class CollectionFrame extends JFrame implements Observer {
 			panel.add(brand);
 			panel.add(color);
 			panel.add(type);
+			if(currentUser.equals(collection.getCreator())){
+				JButton removeOutfitButton = new JButton("🗑");
+				panel.add(removeOutfitButton);
+				removeOutfitButtons.add(removeOutfitButton);
+				OutfitPanel outfitPanel = new OutfitPanel(outfit,removeOutfitButton);
+				outfitPanels.add(outfitPanel);
+			}
 
 			cards.add(panel, gbc);
 		}
@@ -190,7 +203,13 @@ public class CollectionFrame extends JFrame implements Observer {
 			}
 		}
 	}
-
+	public void addRemoveOutfitFromCollectionActionListener(ActionListener actionListener, int outfitId) {
+		for (OutfitPanel outfitPanel : outfitPanels) {
+			if (outfitPanel.outfit.getId() == outfitId) {
+				outfitPanel.removeButton.addActionListener(actionListener);
+			}
+		}
+	}
 	public void addAddOutfitActionListener(ActionListener actionListener) {
 		addOutfitButton.addActionListener(actionListener);
 	}
@@ -241,5 +260,31 @@ public class CollectionFrame extends JFrame implements Observer {
 	@Override
 	public void removeSubject(Subject sub) {
 		this.collection = null;
+	}
+
+	private class OutfitPanel{
+		private Outfit outfit;
+		private JButton removeButton;
+
+		public OutfitPanel(Outfit outfit, JButton removeButton) {
+			this.outfit = outfit;
+			this.removeButton = removeButton;
+		}
+
+		public Outfit getOutfit() {
+			return outfit;
+		}
+
+		public void setOutfit(Outfit outfit) {
+			this.outfit = outfit;
+		}
+
+		public JButton getRemoveButton() {
+			return removeButton;
+		}
+
+		public void setRemoveButton(JButton removeButton) {
+			this.removeButton = removeButton;
+		}
 	}
 }

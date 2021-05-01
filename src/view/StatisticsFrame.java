@@ -45,6 +45,7 @@ public class StatisticsFrame extends JFrame implements Observer {
 		JPanel leftSide = new JPanel();
 		leftSide.setLayout(new GridBagLayout());
 		leftSide.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		this.leftSide = leftSide;
 
 		JPanel content = new JPanel();
 		this.content = content;

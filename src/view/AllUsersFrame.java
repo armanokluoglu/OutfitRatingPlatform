@@ -34,6 +34,7 @@ public class AllUsersFrame extends JFrame {
 	private JPanel content;
 	
 	private JButton profilePageButton;
+	private JButton homePageButton;
 	private JButton outfitsPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
@@ -83,6 +84,11 @@ public class AllUsersFrame extends JFrame {
 		pageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		pageLabel.setFont(new Font(pageLabel.getFont().getName(), pageLabel.getFont().getStyle(), 20));
 
+		JButton homePageButton = new JButton("Homepage");
+		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		homePageButton.setPreferredSize(new Dimension(100, 50));
+		this.homePageButton = homePageButton;
+
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
@@ -105,6 +111,7 @@ public class AllUsersFrame extends JFrame {
 
 		leftSide.add(titleLabel, gbc);
 		leftSide.add(pageLabel, gbc);
+		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
@@ -153,6 +160,9 @@ public class AllUsersFrame extends JFrame {
 
 	public void addOpenProfileActionListener(ActionListener actionListener) {
 		profilePageButton.addActionListener(actionListener);
+	}
+	public void addHomeActionListener(ActionListener actionListener) {
+		homePageButton.addActionListener(actionListener);
 	}
 
 	public void addOutfitsActionListener(ActionListener actionListener) {

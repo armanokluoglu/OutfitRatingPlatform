@@ -1,9 +1,9 @@
 package model.domain;
 
 import java.util.*;
-import model.data_access.InputOutput;
-import model.data_access.OutfitRepository;
-import model.data_access.UserRepository;
+import model.data_access.implemantation.InputOutput;
+import model.data_access.implemantation.OutfitRepository;
+import model.data_access.implemantation.UserRepository;
 import model.utilities.Observer;
 import model.utilities.Subject;
 

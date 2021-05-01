@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Employees xmlns="https://www.journaldev.com/employee">
+<Users xmlns="CENG431">
     <User id="1">
         <UserName>tugkantuglular</UserName>
         <Password>1234</Password>
@@ -141,15 +141,15 @@
         <Collections>
             <Collection id="5">
                 <Name>collection5</Name>
-                <OutfitIds>5 2 6</OutfitIds>
+                <OutfitIds>2 7</OutfitIds>
             </Collection>
             <Collection id="10">
                 <Name>new collection</Name>
-                <OutfitIds>5</OutfitIds>
+                <OutfitIds/>
             </Collection>
             <Collection id="11">
                 <Name>new collection2</Name>
-                <OutfitIds>9</OutfitIds>
+                <OutfitIds>1</OutfitIds>
             </Collection>
         </Collections>
     </User>
@@ -175,4 +175,4 @@
             </Collection>
         </Collections>
     </User>
-</Employees>
+</Users>

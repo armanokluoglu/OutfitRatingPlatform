@@ -1,4 +1,4 @@
-package model.data_access;
+package model.data_access.implemantation;
 
 import model.domain.Collection;
 import model.domain.Comment;
