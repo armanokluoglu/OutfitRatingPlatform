@@ -3,16 +3,17 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-import model.domain.Collection;
-import model.domain.Model;
-import model.domain.User;
+
+import model.domain.*;
+import model.utilities.Observer;
+import model.utilities.Subject;
 import view.UserFrame;
 
-public class UserController {
+public class UserController implements Observer {
 
 	private SessionManager session;
 	private UserFrame view;
-	private Model model;
+	private Subject model;
 	private User user;
 	private List<Collection> collections;
 
@@ -22,9 +23,10 @@ public class UserController {
 		this.view = view;
 		this.user = user;
 		this.collections = user.getCollections();
-		
-		view.addSubject(model);
-		model.register(view);
+
+		user.register(this);
+//		view.addSubject(model);
+//		model.register(view);
 		
 		view.setCards();
 		setSidebarListeners();
@@ -49,8 +51,24 @@ public class UserController {
 		view.addUnfollowUserActionListener(new UnfollowUserListener());
 		view.addFollowUserActionListener(new FollowUserListener());
 	}
-	
-    class OpenOutfitsListener implements ActionListener {
+
+	@Override
+	public void update() {
+		setContentListeners();
+	}
+
+	@Override
+	public void addSubject(Subject sub) {
+		this.model = sub;
+	}
+
+	@Override
+	public void removeSubject(Subject sub) {
+		this.model = null;
+
+	}
+
+	class OpenOutfitsListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         	session.outfitsPage();
         }
@@ -86,7 +104,7 @@ public class UserController {
         		return;
         	}
         	newCollectionName = newCollectionName.trim();
-        	model.createCollectionForUser(newCollectionName, session.getCurrentUser());
+			((Model) model).createCollectionForUser(newCollectionName, session.getCurrentUser());
         	for (Collection collection : collections) {
     			view.addOpenCollectionActionListener(new OpenCollectionListener(collection), collection.getName());
     		}
@@ -94,13 +112,13 @@ public class UserController {
     }
 	class UnfollowUserListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			model.unfollowUserAsUser(user.getId(), session.getCurrentUser());
+			((Model) model).unfollowUserAsUser(user.getId(), session.getCurrentUser());
 		}
 	}
 
 	class FollowUserListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			model.followUserAsUser(user.getId(), session.getCurrentUser());
+			((Model) model).followUserAsUser(user.getId(), session.getCurrentUser());
 		}
 	}
 

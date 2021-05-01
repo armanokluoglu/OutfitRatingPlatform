@@ -1,9 +1,7 @@
 package view;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -20,10 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import model.domain.Collection;
-import model.domain.Model;
 import model.domain.User;
 import model.utilities.Observer;
 import model.utilities.Subject;
@@ -31,9 +26,9 @@ import model.utilities.Subject;
 public class UserFrame extends JFrame implements Observer {
 
 	private static final long serialVersionUID = -4853864434524144396L;
-	private Subject sub;
+	private Subject user;
 	private User currentUser;
-	private User user;
+	//private User user;
 	private FrameManager fm;
 	private JPanel mainPanel;
 
@@ -57,6 +52,8 @@ public class UserFrame extends JFrame implements Observer {
 		this.currentUser = currentUser;
 		this.collectionButtons = new ArrayList<>();
 		this.user = user;
+
+		user.register(this);
 
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
@@ -154,12 +151,12 @@ public class UserFrame extends JFrame implements Observer {
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.insets = new Insets(10, 10, 10, 10);
 
-		JLabel name = new JLabel("Username: " + user.getUsername());
-		JLabel followers = new JLabel("Followers: " + user.getFollowers().size());
-		JLabel followings = new JLabel("Followings: " + user.getFollowings().size());
+		JLabel name = new JLabel("Username: " + ((User)this.user).getUsername());
+		JLabel followers = new JLabel("Followers: " + ((User)this.user).getFollowers().size());
+		JLabel followings = new JLabel("Followings: " + ((User)this.user).getFollowings().size());
 		JLabel collectionsLabel = new JLabel("Collections:");
 
-		List<Collection> collections = user.getCollections();
+		List<Collection> collections = ((User)this.user).getCollections();
 
 		JPanel collectionsPanel = new JPanel(new GridBagLayout());
 		for (Collection collection : collections) {
@@ -254,11 +251,11 @@ public class UserFrame extends JFrame implements Observer {
 
 	@Override
 	public void addSubject(Subject sub) {
-		this.sub = sub;
+		this.user = sub;
 	}
 
 	@Override
 	public void removeSubject(Subject sub) {
-		this.sub = null;
+		this.user = null;
 	}
 }
