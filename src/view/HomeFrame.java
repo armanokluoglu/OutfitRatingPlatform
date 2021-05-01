@@ -90,12 +90,17 @@ public class HomeFrame extends JFrame implements Observer {
 		pageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		pageLabel.setFont(new Font(pageLabel.getFont().getName(), pageLabel.getFont().getStyle(), 20));
 
+		JButton homePageButton = new JButton("Homepage");
+		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		homePageButton.setPreferredSize(new Dimension(100, 50));
+		homePageButton.setEnabled(false);
+		
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
 
-		JButton outfitsPageButton = new JButton("Outfits");
+		JButton outfitsPageButton = new JButton("List All Outfits");
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
@@ -117,6 +122,7 @@ public class HomeFrame extends JFrame implements Observer {
 
 		leftSide.add(titleLabel, gbc);
 		leftSide.add(pageLabel, gbc);
+		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
 		leftSide.add(allUsersPageButton, gbc);

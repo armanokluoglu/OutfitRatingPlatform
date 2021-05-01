@@ -101,8 +101,11 @@ public class UserFrame extends JFrame implements Observer {
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
+		if (user.equals(currentUser)) {
+			profilePageButton.setEnabled(false);
+		}
 
-		JButton outfitsPageButton = new JButton("Outfits");
+		JButton outfitsPageButton = new JButton("List All Outfits");
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
@@ -125,9 +128,7 @@ public class UserFrame extends JFrame implements Observer {
 		leftSide.add(titleLabel, gbc);
 		leftSide.add(pageLabel, gbc);
 		leftSide.add(homePageButton, gbc);
-		if (!user.equals(currentUser)) {
-			leftSide.add(profilePageButton, gbc);
-		}
+		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
 		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);

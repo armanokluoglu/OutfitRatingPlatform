@@ -28,17 +28,17 @@ public class AllUsersFrame extends JFrame {
 	private Model model;
 	private FrameManager fm;
 	private User currentUser;
-	
+
 	private JPanel mainPanel;
 	private JPanel leftSide;
 	private JPanel content;
-	
+
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
-	
+
 	private List<JButton> userButtons;
 	private List<JButton> collectionButtons;
 
@@ -48,7 +48,7 @@ public class AllUsersFrame extends JFrame {
 		this.userButtons = new ArrayList<>();
 		this.collectionButtons = new ArrayList<>();
 		this.model = model;
-		
+
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridLayout(1, 2));
 
@@ -64,7 +64,7 @@ public class AllUsersFrame extends JFrame {
 		mainPanel.add(this.leftSide);
 		mainPanel.add(this.content);
 		this.mainPanel = mainPanel;
-		
+
 		setLeftSide();
 		setCards();
 		getFrameManager().setNewPanel(mainPanel, "all_users");
@@ -80,7 +80,7 @@ public class AllUsersFrame extends JFrame {
 		titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel.getFont().getStyle(), 30));
 
-		JLabel pageLabel = new JLabel("Homepage", JLabel.CENTER);
+		JLabel pageLabel = new JLabel("All Users", JLabel.CENTER);
 		pageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		pageLabel.setFont(new Font(pageLabel.getFont().getName(), pageLabel.getFont().getStyle(), 20));
 
@@ -94,10 +94,15 @@ public class AllUsersFrame extends JFrame {
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
 
-		JButton outfitsPageButton = new JButton("Outfits");
+		JButton outfitsPageButton = new JButton("List All Outfits");
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		allUsersPageButton.setEnabled(false);
 
 		JButton statisticsPageButton = new JButton("Statistics");
 		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -114,6 +119,7 @@ public class AllUsersFrame extends JFrame {
 		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 	}
@@ -121,7 +127,7 @@ public class AllUsersFrame extends JFrame {
 	public void setCards() {
 		List<User> users = new ArrayList<>(model.getAllUsers());
 		users.remove(currentUser);
-		
+
 		JPanel cards = new JPanel(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -161,6 +167,7 @@ public class AllUsersFrame extends JFrame {
 	public void addOpenProfileActionListener(ActionListener actionListener) {
 		profilePageButton.addActionListener(actionListener);
 	}
+
 	public void addHomeActionListener(ActionListener actionListener) {
 		homePageButton.addActionListener(actionListener);
 	}

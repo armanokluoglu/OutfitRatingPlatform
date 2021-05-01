@@ -21,6 +21,7 @@ public class StatisticsController {
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addLogoutActionListener(new LogoutListener());
 		view.addOutfitsActionListener(new OpenOutfitsListener());
+		view.addAllUsersActionListener(new OpenAllUserListener());
 		view.addOpenUserActionListener(new OpenUserListener(session.getCurrentUser()));
 	}
 	
@@ -35,6 +36,12 @@ public class StatisticsController {
         	session.userPage(user);
         }
     }
+    
+	class OpenAllUserListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.allUsersPage();
+		}
+	}
     
     class OpenStatisticsListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {

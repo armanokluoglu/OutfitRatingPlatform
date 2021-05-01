@@ -36,6 +36,7 @@ public class OutfitController implements Observer {
 		view.addLogoutActionListener(new LogoutListener());
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
 		view.addHomeActionListener(new OpenHomeListener());
+		view.addAllUsersActionListener(new OpenAllUserListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
 	}
 
@@ -79,6 +80,12 @@ public class OutfitController implements Observer {
 		}
 	}
 
+	class OpenAllUserListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.allUsersPage();
+		}
+	}
+	
 	class OpenOutfitsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			session.outfitsPage();

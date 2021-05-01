@@ -44,6 +44,7 @@ public class OutfitFrame extends JFrame implements Observer {
 	private JButton dislikeButton;
 	private JTextField commentField;
 
+	private JButton allUsersPageButton;
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
@@ -101,16 +102,21 @@ public class OutfitFrame extends JFrame implements Observer {
 		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		homePageButton.setPreferredSize(new Dimension(100, 50));
 		this.homePageButton = homePageButton;
-
+		
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
 
-		JButton outfitsPageButton = new JButton("Outfits");
+		JButton outfitsPageButton = new JButton("List All Outfits");
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		this.allUsersPageButton = allUsersPageButton;
 
 		JButton statisticsPageButton = new JButton("Statistics");
 		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -127,10 +133,11 @@ public class OutfitFrame extends JFrame implements Observer {
 		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 	}
-
+	
 	public void setOutfit() {
 		Outfit outfit = ((Outfit) this.outfit);
 		JPanel panel = new JPanel(new GridBagLayout());
@@ -245,12 +252,16 @@ public class OutfitFrame extends JFrame implements Observer {
 		}
 	}
 
-	public void addOpenProfileActionListener(ActionListener actionListener) {
-		profilePageButton.addActionListener(actionListener);
+	public void addAllUsersActionListener(ActionListener actionListener) {
+		allUsersPageButton.addActionListener(actionListener);
 	}
-
+	
 	public void addOpenOutfitsActionListener(ActionListener actionListener) {
 		outfitsPageButton.addActionListener(actionListener);
+	}
+	
+	public void addOpenProfileActionListener(ActionListener actionListener) {
+		profilePageButton.addActionListener(actionListener);
 	}
 
 	public void addStatisticsActionListener(ActionListener actionListener) {

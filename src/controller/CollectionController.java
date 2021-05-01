@@ -3,7 +3,6 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
-
 import model.domain.*;
 import model.utilities.Observer;
 import model.utilities.Subject;
@@ -33,6 +32,7 @@ public class CollectionController implements Observer {
 		view.addLogoutActionListener(new LogoutListener());
 		view.addHomeActionListener(new OpenHomeListener());
 		view.addOpenOutfitsActionListener(new OpenOutfitsListener());
+		view.addAllUsersActionListener(new OpenAllUserListener());
 		view.addStatisticsActionListener(new OpenStatisticsListener());
 	}
 
@@ -118,6 +118,12 @@ public class CollectionController implements Observer {
 	class OpenOutfitsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			session.outfitsPage();
+		}
+	}
+	
+	class OpenAllUserListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			session.allUsersPage();
 		}
 	}
 

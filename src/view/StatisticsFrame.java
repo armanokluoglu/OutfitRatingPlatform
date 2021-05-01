@@ -33,6 +33,7 @@ public class StatisticsFrame extends JFrame implements Observer {
 	private JButton homePageButton;
 	private JButton profilePageButton;
 	private JButton outfitsPageButton;
+	private JButton allUsersPageButton;
 	private JButton logoutButton;
 
 	public StatisticsFrame(FrameManager fm, Model model) {
@@ -77,16 +78,26 @@ public class StatisticsFrame extends JFrame implements Observer {
 		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		homePageButton.setPreferredSize(new Dimension(100, 50));
 		this.homePageButton = homePageButton;
-
+		
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
 
-		JButton outfitsPageButton = new JButton("Outfits");
+		JButton outfitsPageButton = new JButton("List All Outfits");
 		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
 		this.outfitsPageButton = outfitsPageButton;
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		this.allUsersPageButton = allUsersPageButton;
+
+		JButton statisticsPageButton = new JButton("Statistics");
+		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		statisticsPageButton.setPreferredSize(new Dimension(100, 50));
+		statisticsPageButton.setEnabled(false);
 
 		JButton logoutButton = new JButton("Logout");
 		logoutButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -98,6 +109,8 @@ public class StatisticsFrame extends JFrame implements Observer {
 		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
 		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
+		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 	}
 
@@ -136,6 +149,10 @@ public class StatisticsFrame extends JFrame implements Observer {
 		getFrameManager().setNewPanel(mainPanel, "statistics");
 	}
 
+	public void addAllUsersActionListener(ActionListener actionListener) {
+		allUsersPageButton.addActionListener(actionListener);
+	}
+	
 	public void addOpenUserActionListener(ActionListener actionListener) {
 		profilePageButton.addActionListener(actionListener);
 	}

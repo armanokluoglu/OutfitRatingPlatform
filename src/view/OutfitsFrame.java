@@ -35,6 +35,7 @@ public class OutfitsFrame extends JFrame {
 
 	private JButton profilePageButton;
 	private JButton homePageButton;
+	private JButton allUsersPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 
@@ -76,7 +77,7 @@ public class OutfitsFrame extends JFrame {
 		titleLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		titleLabel.setFont(new Font(titleLabel.getFont().getName(), titleLabel.getFont().getStyle(), 30));
 
-		JLabel pageLabel = new JLabel("Outfits", JLabel.CENTER);
+		JLabel pageLabel = new JLabel("All Outfits", JLabel.CENTER);
 		pageLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		pageLabel.setFont(new Font(pageLabel.getFont().getName(), pageLabel.getFont().getStyle(), 20));
 
@@ -84,11 +85,21 @@ public class OutfitsFrame extends JFrame {
 		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		homePageButton.setPreferredSize(new Dimension(100, 50));
 		this.homePageButton = homePageButton;
-
+		
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
+
+		JButton outfitsPageButton = new JButton("List All Outfits");
+		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
+		outfitsPageButton.setEnabled(false);
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		this.allUsersPageButton = allUsersPageButton;
 
 		JButton statisticsPageButton = new JButton("Statistics");
 		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -104,6 +115,8 @@ public class OutfitsFrame extends JFrame {
 		leftSide.add(pageLabel, gbc);
 		leftSide.add(homePageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
+		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 	}
@@ -157,7 +170,11 @@ public class OutfitsFrame extends JFrame {
 			}
 		}
 	}
-
+	
+	public void addAllUsersActionListener(ActionListener actionListener) {
+		allUsersPageButton.addActionListener(actionListener);
+	}
+	
 	public void addOpenProfileActionListener(ActionListener actionListener) {
 		profilePageButton.addActionListener(actionListener);
 	}

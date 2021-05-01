@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import model.domain.Collection;
-import model.domain.Comment;
 import model.domain.Outfit;
 import model.domain.User;
 import model.utilities.Observer;
@@ -43,6 +42,7 @@ public class CollectionFrame extends JFrame implements Observer {
 	private JButton profilePageButton;
 	private JButton homePageButton;
 	private JButton outfitsPageButton;
+	private JButton allUsersPageButton;
 	private JButton statisticsPageButton;
 	private JButton logoutButton;
 
@@ -99,16 +99,21 @@ public class CollectionFrame extends JFrame implements Observer {
 		homePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		homePageButton.setPreferredSize(new Dimension(100, 50));
 		this.homePageButton = homePageButton;
-
-		JButton outfitsPageButton = new JButton("Outfits");
-		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
-		this.outfitsPageButton = outfitsPageButton;
-
+		
 		JButton profilePageButton = new JButton("My Profile");
 		profilePageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		profilePageButton.setPreferredSize(new Dimension(100, 50));
 		this.profilePageButton = profilePageButton;
+
+		JButton outfitsPageButton = new JButton("List All Outfits");
+		outfitsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		outfitsPageButton.setPreferredSize(new Dimension(100, 50));
+		this.outfitsPageButton = outfitsPageButton;
+
+		JButton allUsersPageButton = new JButton("List All Users");
+		allUsersPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+		allUsersPageButton.setPreferredSize(new Dimension(100, 50));
+		this.allUsersPageButton = allUsersPageButton;
 
 		JButton statisticsPageButton = new JButton("Statistics");
 		statisticsPageButton.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -123,8 +128,9 @@ public class CollectionFrame extends JFrame implements Observer {
 		leftSide.add(titleLabel, gbc);
 		leftSide.add(pageLabel, gbc);
 		leftSide.add(homePageButton, gbc);
-		leftSide.add(outfitsPageButton, gbc);
 		leftSide.add(profilePageButton, gbc);
+		leftSide.add(outfitsPageButton, gbc);
+		leftSide.add(allUsersPageButton, gbc);
 		leftSide.add(statisticsPageButton, gbc);
 		leftSide.add(logoutButton, gbc);
 	}
@@ -213,6 +219,10 @@ public class CollectionFrame extends JFrame implements Observer {
 	public void addAddOutfitActionListener(ActionListener actionListener) {
 		addOutfitButton.addActionListener(actionListener);
 	}
+	
+	public void addAllUsersActionListener(ActionListener actionListener) {
+		allUsersPageButton.addActionListener(actionListener);
+	}
 
 	public void addOpenProfileActionListener(ActionListener actionListener) {
 		profilePageButton.addActionListener(actionListener);
@@ -268,22 +278,6 @@ public class CollectionFrame extends JFrame implements Observer {
 
 		public OutfitPanel(Outfit outfit, JButton removeButton) {
 			this.outfit = outfit;
-			this.removeButton = removeButton;
-		}
-
-		public Outfit getOutfit() {
-			return outfit;
-		}
-
-		public void setOutfit(Outfit outfit) {
-			this.outfit = outfit;
-		}
-
-		public JButton getRemoveButton() {
-			return removeButton;
-		}
-
-		public void setRemoveButton(JButton removeButton) {
 			this.removeButton = removeButton;
 		}
 	}
