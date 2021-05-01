@@ -63,15 +63,17 @@ public class HomeFrame extends JFrame implements Observer {
 
 		JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
+		content.setName("content");
 		this.content = content;
 
 		mainPanel.add(this.leftSide);
 		mainPanel.add(this.content);
+		mainPanel.setName("mainpanel");
 		this.mainPanel = mainPanel;
 		
 		setLeftSide();
 		setCards();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "homepage");
 	}
 
 	public void setLeftSide() {
@@ -154,7 +156,9 @@ public class HomeFrame extends JFrame implements Observer {
 
 		content.removeAll();
 		content.add(new JScrollPane(cards));
-		getFrameManager().setNewPanel(mainPanel);
+		if(getFrameManager().getCurrentPage().equals("homepage")) {
+			getFrameManager().setNewPanel(mainPanel, "homepage");
+		}
 	}
 
 	public void addOpenCollectionActionListener(ActionListener actionListener, String collectionName) {

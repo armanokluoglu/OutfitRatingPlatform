@@ -80,7 +80,7 @@ public class OutfitFrame extends JFrame implements Observer {
 
 		setLeftSide();
 		setOutfit();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "outfit");
 	}
 
 	public void setLeftSide() {
@@ -193,7 +193,7 @@ public class OutfitFrame extends JFrame implements Observer {
 
 		content.removeAll();
 		content.add(new JScrollPane(panel));
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "outfit");
 	}
 
 	@Override

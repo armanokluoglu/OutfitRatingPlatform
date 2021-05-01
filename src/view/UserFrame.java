@@ -72,7 +72,7 @@ public class UserFrame extends JFrame implements Observer {
 		
 		setLeftSide();
 		setCards();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "user");
 	}
 
 	public void setLeftSide() {
@@ -190,7 +190,7 @@ public class UserFrame extends JFrame implements Observer {
 
 		content.removeAll();
 		content.add(new JScrollPane(panel));
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "user");
 	}
 
 	public void addOpenCollectionActionListener(ActionListener actionListener, String collectionName) {

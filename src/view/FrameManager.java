@@ -4,7 +4,8 @@ import java.awt.*;
 
 public class FrameManager {
 
-    JFrame frame;
+    private JFrame frame;
+    private String currentPage;
 
     public FrameManager() {
         this.frame = new JFrame();
@@ -14,8 +15,9 @@ public class FrameManager {
         frame.setVisible(true);
     }
 
-    public void setNewPanel(JPanel panel){
+    public void setNewPanel(JPanel panel, String currentPage){
         frame.getContentPane().removeAll();
+        setCurrentPage(currentPage);
         frame.add(panel, BorderLayout.CENTER);
         frame.revalidate();
         frame.repaint();
@@ -24,4 +26,12 @@ public class FrameManager {
     public JFrame getFrame() {
         return frame;
     }
+
+	public String getCurrentPage() {
+		return currentPage;
+	}
+
+	public void setCurrentPage(String currentPage) {
+		this.currentPage = currentPage;
+	}
 }

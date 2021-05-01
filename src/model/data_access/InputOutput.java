@@ -195,8 +195,14 @@ public class InputOutput {
 
 				String outfitIds = eElement.getElementsByTagName("OutfitIds").item(0).getTextContent();
 				String[] values = outfitIds.split(" ");
-				for (String s : values)
-					outfitIdsList.add(Integer.valueOf(s));
+				if(values.length > 0) {
+					for (String s : values)
+						try {
+							outfitIdsList.add(Integer.valueOf(s));
+						} catch (NumberFormatException e) {
+							outfitIdsList = new ArrayList<>();
+						}
+				}
 				UserWithCollection userWithCollection = new UserWithCollection(userId, id, name, outfitIdsList);
 				userWithCollections.add(userWithCollection);
 			}

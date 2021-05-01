@@ -73,7 +73,7 @@ public class CollectionFrame extends JFrame implements Observer {
 
 		setLeftSide();
 		setCards();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "collection");
 	}
 
 	public void setLeftSide() {
@@ -180,7 +180,7 @@ public class CollectionFrame extends JFrame implements Observer {
 
 		content.removeAll();
 		content.add(new JScrollPane(cards));
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "collection");
 	}
 
 	public void addOpenOutfitActionListener(ActionListener actionListener, String outfitId) {

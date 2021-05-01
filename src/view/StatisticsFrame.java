@@ -55,7 +55,7 @@ public class StatisticsFrame extends JFrame implements Observer {
 
 		setLeftSide();
 		setContent();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "statistics");
 	}
 
 	public void setLeftSide() {
@@ -132,7 +132,7 @@ public class StatisticsFrame extends JFrame implements Observer {
 		content.add(mostLikedLabel, gbc);
 		content.add(mostDislikedLabel, gbc);
 		content.add(mostFollowedLabel, gbc);
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "statistics");
 	}
 
 	public void addOpenUserActionListener(ActionListener actionListener) {

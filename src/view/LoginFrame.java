@@ -39,7 +39,7 @@ public class LoginFrame extends JFrame {
         content.add(loginButton, gbc);
         
         panel.add(content);
-        getFrameManager().setNewPanel(panel);
+        getFrameManager().setNewPanel(panel, "login");
 	}
 	
     public void addLoginActionListener(ActionListener actionListener) {

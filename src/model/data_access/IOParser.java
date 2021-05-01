@@ -170,7 +170,9 @@ public class IOParser {
         for(Outfit outfit:collection.getOutfits()){
             outfitIds+=outfit.getId()+" ";
         }
-        outfitIds = outfitIds.substring(0, outfitIds.length() - 1);
+        if(outfitIds.length() > 0) {
+        	outfitIds = outfitIds.substring(0, outfitIds.length() - 1);
+        }
         collectionElem.appendChild(getOutfitElements(doc,"OutfitIds",outfitIds));
 
         return collectionElem;

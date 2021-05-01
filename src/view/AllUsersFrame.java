@@ -66,7 +66,7 @@ public class AllUsersFrame extends JFrame {
 		
 		setLeftSide();
 		setCards();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "all_users");
 	}
 
 	public void setLeftSide() {
@@ -132,7 +132,7 @@ public class AllUsersFrame extends JFrame {
 
 		content.removeAll();
 		content.add(new JScrollPane(cards));
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "all_users");
 	}
 
 	public void addOpenCollectionActionListener(ActionListener actionListener, String collectionName) {

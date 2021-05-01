@@ -63,7 +63,7 @@ public class OutfitsFrame extends JFrame {
 
 		setLeftSide();
 		setCards();
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "outfits");
 	}
 
 	public void setLeftSide() {
@@ -147,7 +147,7 @@ public class OutfitsFrame extends JFrame {
 
 		content.removeAll();
 		content.add(new JScrollPane(cards));
-		getFrameManager().setNewPanel(mainPanel);
+		getFrameManager().setNewPanel(mainPanel, "outfits");
 	}
 
 	public void addOpenOutfitActionListener(ActionListener actionListener, String outfitId) {
